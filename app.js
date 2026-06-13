@@ -1,7 +1,7 @@
 const DATA_URL = "data/aaslt-db.json";
 const WEATHER_LOCATION = "West Point, NY";
 const WEATHER_URL =
-  "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7";
+  "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7";
 const TASKS_KEY = "aaslt.tasks.v1";
 const S4_KEY = "aaslt.s4.items.v3";
 const DELETED_SOURCE_KEY = "aaslt.deletedSource.v1";
@@ -312,6 +312,26 @@ function weatherCodeLabel(code) {
   return WEATHER_CODE_LABELS[Number(code)] || "Forecast";
 }
 
+function heatIndexF(temp, humidity) {
+  const t = Number(temp);
+  const rh = Number(humidity);
+  if (Number.isNaN(t) || Number.isNaN(rh)) return undefined;
+  if (t < 80) return t;
+  let hi =
+    -42.379 +
+    2.04901523 * t +
+    10.14333127 * rh -
+    0.22475541 * t * rh -
+    0.00683783 * t * t -
+    0.05481717 * rh * rh +
+    0.00122874 * t * t * rh +
+    0.00085282 * t * rh * rh -
+    0.00000199 * t * t * rh * rh;
+  if (rh < 13 && t >= 80 && t <= 112) hi -= ((13 - rh) / 4) * Math.sqrt((17 - Math.abs(t - 95)) / 17);
+  if (rh > 85 && t >= 80 && t <= 87) hi += ((rh - 85) / 10) * ((87 - t) / 5);
+  return hi;
+}
+
 function humidityByDate(hourly = {}) {
   const totals = {};
   (hourly.time || []).forEach((time, index) => {
@@ -325,11 +345,25 @@ function humidityByDate(hourly = {}) {
   return Object.fromEntries(Object.entries(totals).map(([iso, value]) => [iso, Math.round(value.sum / value.count)]));
 }
 
+function heatIndexByDate(hourly = {}) {
+  const maxByDate = {};
+  (hourly.time || []).forEach((time, index) => {
+    if (!time) return;
+    const heatIndex = heatIndexF((hourly.temperature_2m || [])[index], (hourly.relative_humidity_2m || [])[index]);
+    if (heatIndex === undefined) return;
+    const iso = String(time).slice(0, 10);
+    maxByDate[iso] = Math.max(maxByDate[iso] ?? heatIndex, heatIndex);
+  });
+  return Object.fromEntries(Object.entries(maxByDate).map(([iso, value]) => [iso, Math.round(value)]));
+}
+
 function normalizeWeather(payload = {}) {
   const daily = payload.daily || {};
   const humidity = humidityByDate(payload.hourly || {});
+  const heatIndex = heatIndexByDate(payload.hourly || {});
   const todayIso = String(payload.current?.time || "").slice(0, 10);
   const currentHumidity = Number(payload.current?.relative_humidity_2m);
+  const currentHeatIndex = heatIndexF(payload.current?.temperature_2m, payload.current?.relative_humidity_2m);
   return (daily.time || []).slice(0, 7).map((iso, index) => ({
     iso,
     label: index === 0 ? "Today" : index === 1 ? "Tomorrow" : formatShortWeekday(iso),
@@ -338,6 +372,7 @@ function normalizeWeather(payload = {}) {
     high: Math.round(Number((daily.temperature_2m_max || [])[index])),
     low: Math.round(Number((daily.temperature_2m_min || [])[index])),
     humidity: iso === todayIso && !Number.isNaN(currentHumidity) ? Math.round(currentHumidity) : humidity[iso],
+    heatIndex: iso === todayIso && currentHeatIndex !== undefined ? Math.max(Math.round(currentHeatIndex), heatIndex[iso] || Math.round(currentHeatIndex)) : heatIndex[iso],
   }));
 }
 
@@ -1774,7 +1809,9 @@ function renderWeather() {
     const cardHead = createElement("div", { className: "weather-card-head" });
     cardHead.append(createElement("span", { text: day.label }), createElement("strong", { text: `${formatTemp(day.high)} / ${formatTemp(day.low)}` }));
     card.append(cardHead, createElement("p", { text: day.condition }));
-    card.append(createElement("small", { text: day.humidity === undefined ? "Humidity TBD" : `Humidity ${day.humidity}%` }));
+    const humidityText = day.humidity === undefined ? "Humidity TBD" : `Humidity ${day.humidity}%`;
+    const heatIndexText = day.heatIndex === undefined ? "HI TBD" : `HI ${formatTemp(day.heatIndex)}`;
+    card.append(createElement("small", { text: `${humidityText} / ${heatIndexText}` }));
     focus.append(card);
   });
 
