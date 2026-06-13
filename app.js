@@ -585,7 +585,7 @@ function addDayMinusTwoMarneMedicalSupportEvents(events) {
       date: dayEvent.date,
       start: "08:00",
       end: "11:00",
-      title: "Medical coverage - MARNE",
+      title: "0800-1100 Medical coverage - MARNE",
       category: "Medical",
       group: "Medical Coverage",
       classKey: dayEvent.classKey,
