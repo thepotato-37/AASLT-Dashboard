@@ -62,10 +62,10 @@ The dashboard can sync shared edits through Firebase. GitHub Pages hosts the sta
 1. In Firebase Console, create or open a Firebase project.
 2. Add a Web app and copy its Firebase config object.
 3. Enable Cloud Firestore.
-4. Enable Firebase Storage if you want uploaded hand receipt files to sync across devices.
+4. Firebase Storage currently requires upgrading this project out of Spark, so this build leaves receipt files local-only unless Storage is later enabled.
 5. Paste the Web app config into `firebase-config.js` and set `enabled: true`.
 6. In Firestore rules, use `firestore.rules`.
-7. In Storage rules, use `storage.rules` if receipt files should be public to dashboard users.
+7. If Storage is later enabled, put the bucket name back into `firebase-config.js` and use `storage.rules` if receipt files should be public to dashboard users.
 
 The Firebase web config is not a password; it is expected to be public in browser apps. The included rules are intentionally open so anyone who can reach the site can read and write dashboard state. That matches the current requested operating model, but it is not secure against unwanted edits if the URL spreads.
 
@@ -79,7 +79,7 @@ Synced through Firestore:
 
 Synced through Firebase Storage when configured:
 
-- uploaded hand receipt files
+- uploaded hand receipt files, only if Firebase Storage is enabled; on Spark, receipt files stay local in the browser and the shared register syncs as metadata
 
 ## Local State
 

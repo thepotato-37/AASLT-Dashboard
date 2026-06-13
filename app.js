@@ -2023,12 +2023,21 @@ async function storeReceipt(file) {
   const db = await openDb();
   const record = { id: crypto.randomUUID(), name: file.name, type: file.type, size: file.size, addedAt: new Date().toISOString(), blob: file };
   if (state.cloud.storage && state.cloud.storageRef && state.cloud.uploadBytes && state.cloud.getDownloadURL) {
-    const safeName = file.name.replace(/[^\w.\-]+/g, "_");
-    record.storagePath = `receipts/${record.id}-${safeName}`;
-    const fileRef = state.cloud.storageRef(state.cloud.storage, record.storagePath);
-    await state.cloud.uploadBytes(fileRef, file);
-    record.downloadUrl = await state.cloud.getDownloadURL(fileRef);
-    record.synced = true;
+    try {
+      const safeName = file.name.replace(/[^\w.\-]+/g, "_");
+      record.storagePath = `receipts/${record.id}-${safeName}`;
+      const fileRef = state.cloud.storageRef(state.cloud.storage, record.storagePath);
+      await state.cloud.uploadBytes(fileRef, file);
+      record.downloadUrl = await state.cloud.getDownloadURL(fileRef);
+      record.synced = true;
+    } catch (error) {
+      console.warn("Firebase Storage upload failed; keeping receipt local", error);
+      delete record.storagePath;
+      record.synced = false;
+      record.syncError = "Local file only";
+    }
+  } else {
+    record.synced = false;
   }
   return new Promise((resolve, reject) => {
     const tx = db.transaction(RECEIPT_STORE, "readwrite");
@@ -2090,7 +2099,12 @@ function renderReceipts() {
     const info = createElement("div");
     info.append(createElement("strong", { text: record.name }));
     info.append(createElement("span", { text: `${(record.size / 1024).toFixed(1)} KB / ${new Date(record.addedAt).toLocaleString()}` }));
+    info.append(createElement("small", { text: record.downloadUrl ? "Synced file" : record.blob ? "Local file in this browser" : "Metadata only" }));
     const download = createElement("button", { className: "icon-button", html: '<i data-lucide="download"></i>', attrs: { type: "button", title: "Download", "aria-label": "Download" } });
+    if (!record.blob && !record.downloadUrl) {
+      download.disabled = true;
+      download.title = "File is not available in this browser";
+    }
     download.addEventListener("click", () => {
       const url = record.blob ? URL.createObjectURL(record.blob) : record.downloadUrl;
       if (!url) return;
