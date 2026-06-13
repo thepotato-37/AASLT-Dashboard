@@ -601,6 +601,145 @@ main {
   visibility: hidden;
 }
 
+.weather-panel {
+  display: grid;
+  gap: 6px;
+  border-top: 1px solid var(--line);
+  padding: 8px 10px 10px;
+}
+
+.weather-head,
+.weather-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.weather-head > div {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.weather-title {
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.weather-head small,
+.weather-updated,
+.weather-card small,
+.weather-day small {
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.weather-updated {
+  flex: 0 0 auto;
+  padding-top: 1px;
+  white-space: nowrap;
+}
+
+.weather-focus {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.weather-card {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(50, 116, 168, 0.08), rgba(102, 125, 52, 0.06)), var(--surface-soft);
+  padding: 6px 7px;
+}
+
+.weather-card-head span {
+  color: var(--ink-soft);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.weather-card-head strong {
+  color: var(--ink);
+  font-size: 0.82rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.weather-card p {
+  margin: 2px 0 1px;
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+  font-weight: 850;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.weather-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.weather-day {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  padding: 4px 2px;
+  text-align: center;
+}
+
+.weather-day span,
+.weather-day strong,
+.weather-day small {
+  display: block;
+  line-height: 1.05;
+}
+
+.weather-day span {
+  color: var(--ink-soft);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.weather-day strong {
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.weather-day small {
+  margin-top: 2px;
+}
+
+.weather-empty {
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  padding: 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-align: center;
+}
+
 .calendar-dots,
 .event-dots,
 .day-dots {

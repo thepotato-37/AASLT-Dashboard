@@ -1,4 +1,7 @@
 const DATA_URL = "data/aaslt-db.json";
+const WEATHER_LOCATION = "West Point, NY";
+const WEATHER_URL =
+  "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7";
 const TASKS_KEY = "aaslt.tasks.v1";
 const S4_KEY = "aaslt.s4.items.v3";
 const DELETED_SOURCE_KEY = "aaslt.deletedSource.v1";
@@ -84,6 +87,37 @@ const CADET_MESS_TIMES = {
   Dinner: "18:00",
 };
 
+const WEATHER_CODE_LABELS = {
+  0: "Clear",
+  1: "Mainly clear",
+  2: "Partly cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Rime fog",
+  51: "Light drizzle",
+  53: "Drizzle",
+  55: "Heavy drizzle",
+  56: "Freezing drizzle",
+  57: "Freezing drizzle",
+  61: "Light rain",
+  63: "Rain",
+  65: "Heavy rain",
+  66: "Freezing rain",
+  67: "Freezing rain",
+  71: "Light snow",
+  73: "Snow",
+  75: "Heavy snow",
+  77: "Snow grains",
+  80: "Rain showers",
+  81: "Rain showers",
+  82: "Heavy showers",
+  85: "Snow showers",
+  86: "Heavy snow showers",
+  95: "Thunderstorms",
+  96: "Storms with hail",
+  99: "Storms with hail",
+};
+
 const state = {
   data: null,
   rawEvents: [],
@@ -101,6 +135,12 @@ const state = {
   eventOverrides: {},
   s4Items: [],
   receipts: [],
+  weather: {
+    status: "loading",
+    days: [],
+    updatedAt: "",
+    error: "",
+  },
   cloud: {
     enabled: false,
     ready: false,
@@ -257,6 +297,48 @@ function formatCompactDate(iso) {
 
 function formatMonth(date) {
   return date.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+}
+
+function formatShortWeekday(iso) {
+  return parseDate(iso).toLocaleDateString(undefined, { weekday: "short" });
+}
+
+function formatTemp(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return "--";
+  return `${Math.round(Number(value))}\u00b0`;
+}
+
+function weatherCodeLabel(code) {
+  return WEATHER_CODE_LABELS[Number(code)] || "Forecast";
+}
+
+function humidityByDate(hourly = {}) {
+  const totals = {};
+  (hourly.time || []).forEach((time, index) => {
+    const humidity = Number((hourly.relative_humidity_2m || [])[index]);
+    if (!time || Number.isNaN(humidity)) return;
+    const iso = String(time).slice(0, 10);
+    totals[iso] ||= { sum: 0, count: 0 };
+    totals[iso].sum += humidity;
+    totals[iso].count += 1;
+  });
+  return Object.fromEntries(Object.entries(totals).map(([iso, value]) => [iso, Math.round(value.sum / value.count)]));
+}
+
+function normalizeWeather(payload = {}) {
+  const daily = payload.daily || {};
+  const humidity = humidityByDate(payload.hourly || {});
+  const todayIso = String(payload.current?.time || "").slice(0, 10);
+  const currentHumidity = Number(payload.current?.relative_humidity_2m);
+  return (daily.time || []).slice(0, 7).map((iso, index) => ({
+    iso,
+    label: index === 0 ? "Today" : index === 1 ? "Tomorrow" : formatShortWeekday(iso),
+    weekday: formatShortWeekday(iso),
+    condition: weatherCodeLabel((daily.weather_code || [])[index]),
+    high: Math.round(Number((daily.temperature_2m_max || [])[index])),
+    low: Math.round(Number((daily.temperature_2m_min || [])[index])),
+    humidity: iso === todayIso && !Number.isNaN(currentHumidity) ? Math.round(currentHumidity) : humidity[iso],
+  }));
 }
 
 function escapeRegex(text) {
@@ -1464,7 +1546,32 @@ async function init() {
   renderStaticControls();
   await loadReceipts();
   renderAll();
+  loadWeather();
   await initCloudSync();
+}
+
+async function loadWeather() {
+  state.weather = { status: "loading", days: [], updatedAt: "", error: "" };
+  renderWeather();
+  try {
+    const response = await fetch(WEATHER_URL);
+    if (!response.ok) throw new Error(`Weather request failed: ${response.status}`);
+    const payload = await response.json();
+    state.weather = {
+      status: "ready",
+      days: normalizeWeather(payload),
+      updatedAt: payload.current?.time || "",
+      error: "",
+    };
+  } catch (error) {
+    state.weather = {
+      status: "error",
+      days: [],
+      updatedAt: "",
+      error: error.message || "Weather unavailable",
+    };
+  }
+  renderWeather();
 }
 
 function initSettings() {
@@ -1582,6 +1689,7 @@ function renderStaticControls() {
 function renderAll() {
   renderSummary();
   renderCalendar();
+  renderWeather();
   renderDay();
   renderAssignments();
   renderNextDay();
@@ -1626,6 +1734,58 @@ function renderCalendar() {
     button.addEventListener("click", () => selectDate(iso));
     grid.append(button);
   }
+}
+
+function formatWeatherUpdated(value) {
+  if (!value) return "Live forecast";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Live forecast";
+  return `Updated ${date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}`;
+}
+
+function renderWeather() {
+  const panel = $("#weatherPanel");
+  if (!panel) return;
+  panel.replaceChildren();
+  const header = createElement("div", { className: "weather-head" });
+  const title = createElement("div");
+  title.append(createElement("span", { className: "weather-title", text: "Weather" }), createElement("small", { text: WEATHER_LOCATION }));
+  header.append(title, createElement("span", { className: "weather-updated", text: formatWeatherUpdated(state.weather.updatedAt) }));
+
+  if (state.weather.status === "loading") {
+    panel.append(header, createElement("div", { className: "weather-empty", text: "Loading West Point forecast..." }));
+    return;
+  }
+
+  if (state.weather.status === "error") {
+    panel.append(header, createElement("div", { className: "weather-empty", text: "Weather unavailable." }));
+    return;
+  }
+
+  const days = state.weather.days || [];
+  if (!days.length) {
+    panel.append(header, createElement("div", { className: "weather-empty", text: "No weather data." }));
+    return;
+  }
+
+  const focus = createElement("div", { className: "weather-focus" });
+  days.slice(0, 2).forEach((day) => {
+    const card = createElement("article", { className: "weather-card" });
+    const cardHead = createElement("div", { className: "weather-card-head" });
+    cardHead.append(createElement("span", { text: day.label }), createElement("strong", { text: `${formatTemp(day.high)} / ${formatTemp(day.low)}` }));
+    card.append(cardHead, createElement("p", { text: day.condition }));
+    card.append(createElement("small", { text: day.humidity === undefined ? "Humidity TBD" : `Humidity ${day.humidity}%` }));
+    focus.append(card);
+  });
+
+  const week = createElement("div", { className: "weather-week", attrs: { "aria-label": "Seven day temperatures" } });
+  days.forEach((day) => {
+    const chip = createElement("div", { className: "weather-day" });
+    chip.append(createElement("span", { text: day.weekday }), createElement("strong", { text: formatTemp(day.high) }), createElement("small", { text: formatTemp(day.low) }));
+    week.append(chip);
+  });
+
+  panel.append(header, focus, week);
 }
 
 function selectDate(iso) {
