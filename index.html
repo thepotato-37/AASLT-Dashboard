@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AASLT Control Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <script src="firebase-config.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="command">
+        <div class="identity">
+          <div class="mark">AA</div>
+          <div>
+            <p class="eyebrow">West Point Air Assault</p>
+            <h1>AASLT Control Dashboard</h1>
+          </div>
+        </div>
+        <div class="command-actions">
+          <label class="search-box" for="globalSearch">
+            <i data-lucide="search"></i>
+            <input id="globalSearch" type="search" placeholder="Search task, unit, source, location" />
+          </label>
+          <button class="icon-button" id="todayButton" type="button" title="Today" aria-label="Today">
+            <i data-lucide="calendar-days"></i>
+          </button>
+          <button class="icon-button" id="exportStateButton" type="button" title="Export local state" aria-label="Export local state">
+            <i data-lucide="download"></i>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="summary-strip" aria-label="Operation summary">
+          <div class="summary-card">
+            <span class="metric-label">Active Tracks</span>
+            <strong id="summaryTracks">0</strong>
+          </div>
+          <div class="summary-card">
+            <span class="metric-label">Open Taskings</span>
+            <strong id="summaryOpenTasks">0</strong>
+          </div>
+          <div class="summary-card">
+            <span class="metric-label">Next Meal</span>
+            <strong id="summaryNextMeal">Stand by</strong>
+          </div>
+          <div class="summary-card sync-card">
+            <span class="metric-label">Sync</span>
+            <strong id="syncStatus">Local only</strong>
+          </div>
+          <button class="summary-action" id="openNextPaneButton" type="button">
+            <i data-lucide="panel-right-open"></i>
+            <span>Next Day</span>
+          </button>
+        </section>
+
+        <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+        <aside id="nextDrawer" class="next-drawer" aria-label="Next day pane" aria-hidden="true">
+          <div class="drawer-head">
+            <div>
+              <p class="eyebrow">Next Day</p>
+              <h2 id="nextDrawerDate">Tomorrow</h2>
+            </div>
+            <button class="icon-button" id="closeNextPaneButton" type="button" title="Close next day" aria-label="Close next day">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <section>
+            <div class="drawer-section-head">
+              <h3>Meal Status</h3>
+              <span id="mealStatusCount" class="status-pill">0</span>
+            </div>
+            <div id="mealStatusBoard" class="meal-status"></div>
+          </section>
+          <section>
+            <div class="drawer-section-head">
+              <h3>Timeline</h3>
+              <span id="nextDayCount" class="status-pill">0</span>
+            </div>
+            <div id="nextDayList" class="next-list"></div>
+          </section>
+          <section>
+            <div class="drawer-section-head">
+              <h3>Open Taskings</h3>
+              <span id="nextTaskCount" class="status-pill">0</span>
+            </div>
+            <div id="nextTaskList" class="next-list"></div>
+          </section>
+        </aside>
+
+        <section class="control-grid">
+          <aside class="pane calendar-pane">
+            <div class="pane-header">
+              <div>
+                <p class="eyebrow">Calendar</p>
+                <h2 id="monthLabel">Loading</h2>
+              </div>
+              <div class="button-row">
+                <button class="icon-button" id="prevMonthButton" type="button" title="Previous month" aria-label="Previous month">
+                  <i data-lucide="chevron-left"></i>
+                </button>
+                <button class="icon-button" id="nextMonthButton" type="button" title="Next month" aria-label="Next month">
+                  <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="weekday-grid" aria-hidden="true">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+          </aside>
+
+          <section class="pane day-pane">
+            <div class="pane-header day-heading">
+              <div>
+                <p class="eyebrow">Selected Day</p>
+                <h2 id="selectedDateLabel">Loading</h2>
+                <p id="selectedDaySubtitle" class="subtle"></p>
+              </div>
+              <div class="button-row">
+                <button class="icon-button" id="prevDayButton" type="button" title="Previous day" aria-label="Previous day">
+                  <i data-lucide="arrow-left"></i>
+                </button>
+                <button class="icon-button" id="nextDayButton" type="button" title="Next day" aria-label="Next day">
+                  <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="day-kpis">
+              <div><span>Track 1</span><strong id="dayTrackOne">0</strong></div>
+              <div><span>Track 2</span><strong id="dayTrackTwo">0</strong></div>
+              <div><span>Unassigned</span><strong id="dayShared">0</strong></div>
+              <div><span>Meals</span><strong id="dayMeals">0</strong></div>
+            </div>
+            <div class="timeline-tools">
+              <div class="segmented" role="tablist" aria-label="Day views">
+                <button class="segment is-active" data-day-view="tracks" type="button">Tracks</button>
+                <button class="segment" data-day-view="all" type="button">All Events</button>
+                <button class="segment" data-day-view="table" type="button">Table</button>
+              </div>
+              <select id="sourceFilter" aria-label="Source filter">
+                <option value="all">All sources</option>
+              </select>
+            </div>
+            <div id="trackTimelines" class="timeline-split"></div>
+            <div id="dayTimeline" class="timeline is-hidden"></div>
+            <div id="dayTableWrap" class="table-wrap is-hidden"></div>
+          </section>
+
+          <aside class="pane load-pane">
+            <div class="pane-header">
+              <div>
+                <p class="eyebrow">Cadre Tasking</p>
+                <h2>Assignments</h2>
+              </div>
+              <button class="icon-button solid" id="quickTaskButton" type="button" title="Add task" aria-label="Add task">
+                <i data-lucide="plus"></i>
+              </button>
+            </div>
+            <form id="taskForm" class="task-form is-hidden" aria-hidden="true">
+              <div class="task-form-head">
+                <div>
+                  <p id="taskFormMode" class="eyebrow">New Task</p>
+                  <h3 id="taskFormTitle">New Task</h3>
+                </div>
+                <button class="icon-button" id="closeTaskFormButton" type="button" title="Close task editor" aria-label="Close task editor">
+                  <i data-lucide="x"></i>
+                </button>
+              </div>
+              <label class="wide">Task<input id="taskTitle" placeholder="e.g. Confirm MRE pickup for AA2" required /></label>
+              <label>Date<input id="taskDate" type="date" required /></label>
+              <label>Start<input id="taskStart" type="time" /></label>
+              <label>End<input id="taskEnd" type="time" /></label>
+              <label>Track
+                <select id="taskTrack">
+                  <option value="Shared">Shared</option>
+                  <option value="Air Assault 1">Air Assault 1</option>
+                  <option value="Air Assault 2">Air Assault 2</option>
+                  <option value="Air Assault 3">Air Assault 3</option>
+                  <option value="Air Assault 4">Air Assault 4</option>
+                  <option value="Air Assault 5">Air Assault 5</option>
+                </select>
+              </label>
+              <label>Cadre Slots<input id="taskSlots" type="number" min="1" max="12" value="1" /></label>
+              <label>Taskees<input id="taskTaskees" type="number" min="0" max="99" value="0" /></label>
+              <div class="wide task-owner-field">
+                <span>Assigned</span>
+                <div id="taskOwners" class="person-picker" role="group" aria-label="Assigned people"></div>
+              </div>
+              <label>Status
+                <select id="taskStatus">
+                  <option value="open">Open</option>
+                  <option value="claimed">Claimed</option>
+                  <option value="done">Done</option>
+                </select>
+              </label>
+              <label class="wide">Notes<input id="taskNotes" placeholder="Location, handoff, special coordination" /></label>
+              <button class="task-submit" type="submit"><i data-lucide="check"></i><span id="taskSubmitLabel">Save Task</span></button>
+            </form>
+            <div class="assignment-tools">
+              <div class="segmented" role="tablist" aria-label="Assignment views">
+                <button class="segment is-active" data-assignment-view="timeline" type="button">By Time</button>
+                <button class="segment" data-assignment-view="list" type="button">List</button>
+              </div>
+              <span id="assignmentCount" class="status-pill">0</span>
+            </div>
+            <div id="assignmentTimeline" class="assignment-timeline"></div>
+            <div id="assignmentBoard" class="assignment-list is-hidden"></div>
+          </aside>
+        </section>
+
+        <section class="ops-deck">
+          <nav class="tabs" aria-label="Operations panes">
+            <button class="tab is-active" data-tab="s4" type="button"><i data-lucide="boxes"></i><span>S4</span></button>
+            <button class="tab" data-tab="receipts" type="button"><i data-lucide="file-check-2"></i><span>Receipts</span></button>
+            <button class="tab" data-tab="sources" type="button"><i data-lucide="table-2"></i><span>Sources</span></button>
+            <button class="tab" data-tab="notes" type="button"><i data-lucide="notebook-tabs"></i><span>Data</span></button>
+          </nav>
+
+          <section id="tab-s4" class="tab-panel is-active">
+            <div class="panel-grid">
+              <form id="s4Form" class="pane form-pane">
+                <div class="pane-header">
+                  <div>
+                    <p class="eyebrow">S4 Tracker</p>
+                    <h2>Support Control</h2>
+                  </div>
+                  <button class="icon-button solid" type="submit" title="Add draw" aria-label="Add draw">
+                    <i data-lucide="plus"></i>
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <label>Lane
+                    <select id="s4Type">
+                      <option>Draw</option>
+                      <option>Transportation</option>
+                      <option>Water Buffalo</option>
+                      <option>FLA Request</option>
+                    </select>
+                  </label>
+                  <label>Item<input id="s4Item" required /></label>
+                  <label>Qty / Assets<input id="s4Qty" type="number" min="1" value="1" /></label>
+                  <label>Date / Time<input id="s4NeedBy" type="datetime-local" /></label>
+                  <label>Status
+                    <select id="s4Status">
+                      <option>Planned</option>
+                      <option>Requested</option>
+                      <option>Drawn</option>
+                      <option>Dispatched</option>
+                      <option>Refilled</option>
+                      <option>Complete</option>
+                      <option>Issued</option>
+                      <option>Returned</option>
+                    </select>
+                  </label>
+                  <label>Owner<input id="s4Owner" /></label>
+                </div>
+              </form>
+              <div class="pane table-pane">
+                <div class="pane-header">
+                  <div>
+                    <p class="eyebrow">Current</p>
+                    <h2>Support Items</h2>
+                  </div>
+                  <button class="icon-button" id="clearCompletedS4" type="button" title="Clear returned" aria-label="Clear returned">
+                    <i data-lucide="archive-x"></i>
+                  </button>
+                </div>
+                <div id="s4List" class="s4-list"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="tab-receipts" class="tab-panel">
+            <div class="panel-grid">
+              <div class="pane upload-pane">
+                <div class="pane-header">
+                  <div>
+                    <p class="eyebrow">Hand Receipts</p>
+                    <h2>Vault</h2>
+                  </div>
+                  <label class="file-button" title="Upload receipts">
+                    <i data-lucide="upload"></i>
+                    <input id="receiptInput" type="file" multiple />
+                  </label>
+                </div>
+                <div id="dropZone" class="drop-zone">
+                  <i data-lucide="file-up"></i>
+                  <span>Drop receipt files</span>
+                </div>
+              </div>
+              <div class="pane table-pane">
+                <div class="pane-header">
+                  <div>
+                    <p class="eyebrow">Stored Locally</p>
+                    <h2>Receipt Register</h2>
+                  </div>
+                  <span id="receiptCount" class="status-pill">0</span>
+                </div>
+                <div id="receiptList" class="receipt-list"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="tab-sources" class="tab-panel">
+            <div class="pane source-pane">
+              <div class="pane-header">
+                <div>
+                  <p class="eyebrow">Workbook Source</p>
+                  <h2>Cell Explorer</h2>
+                </div>
+                <div class="source-controls">
+                  <select id="sourceSelect" aria-label="Workbook"></select>
+                  <select id="sheetSelect" aria-label="Worksheet"></select>
+                  <label class="mini-search">
+                    <i data-lucide="search"></i>
+                    <input id="sourceSearch" type="search" placeholder="Search cells" />
+                  </label>
+                </div>
+              </div>
+              <div id="sourceTable" class="source-table table-wrap"></div>
+            </div>
+          </section>
+
+          <section id="tab-notes" class="tab-panel">
+            <div class="pane notes-pane">
+              <div class="pane-header">
+                <div>
+                  <p class="eyebrow">Database</p>
+                  <h2>Data Issues</h2>
+                </div>
+                <span id="noteCount" class="status-pill">0</span>
+              </div>
+              <div id="notesList" class="notes-list"></div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="eventDialog" class="event-dialog">
+      <div class="dialog-head">
+        <div>
+          <p id="dialogCategory" class="eyebrow"></p>
+          <h2 id="dialogTitle"></h2>
+        </div>
+        <button class="icon-button" id="closeDialog" type="button" title="Close" aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <dl id="dialogDetails" class="detail-list"></dl>
+    </dialog>
+
+    <dialog id="eventEditDialog" class="event-dialog">
+      <form id="eventEditForm" class="event-edit-form">
+        <div class="dialog-head">
+          <div>
+            <p class="eyebrow">Edit Timeline Event</p>
+            <h2 id="eventEditHeading">Event</h2>
+          </div>
+          <button class="icon-button" id="closeEditDialog" type="button" title="Close editor" aria-label="Close editor">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <input id="eventEditId" type="hidden" />
+        <div class="event-edit-grid">
+          <label class="wide">
+            Title
+            <input id="eventEditTitle" required />
+          </label>
+          <label>
+            Date
+            <input id="eventEditDate" type="date" required />
+          </label>
+          <label>
+            Start
+            <input id="eventEditStart" type="time" />
+          </label>
+          <label>
+            End
+            <input id="eventEditEnd" type="time" />
+          </label>
+          <label>
+            Track
+            <select id="eventEditTrack">
+              <option value="">Shared / Unassigned</option>
+              <option value="Air Assault 1">Air Assault 1</option>
+              <option value="Air Assault 2">Air Assault 2</option>
+              <option value="Air Assault 3">Air Assault 3</option>
+              <option value="Air Assault 4">Air Assault 4</option>
+              <option value="Air Assault 5">Air Assault 5</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <select id="eventEditCategory">
+              <option>Training</option>
+              <option>Instruction</option>
+              <option>Medical</option>
+              <option>Meals</option>
+              <option>Cadre</option>
+              <option>Logistics</option>
+              <option>Operations</option>
+            </select>
+          </label>
+          <label class="wide">
+            Location
+            <input id="eventEditLocation" />
+          </label>
+          <label class="wide">
+            Notes
+            <textarea id="eventEditNotes" rows="3"></textarea>
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button id="resetEventEdit" class="secondary-button danger" type="button">Reset Source</button>
+          <span></span>
+          <button id="cancelEventEdit" class="secondary-button" type="button">Cancel</button>
+          <button class="task-submit" type="submit">
+            <i data-lucide="save"></i>
+            <span>Save Event</span>
+          </button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
