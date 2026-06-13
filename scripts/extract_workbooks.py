@@ -825,6 +825,9 @@ def parse_medical(path: Path, events: list[dict[str, Any]]) -> None:
                     value_cells=value_cells,
                     class_by_date_day=class_by_date_day,
                 )
+                if medical_day is not None and medical_day < 0:
+                    row_idx += 3
+                    continue
                 title_parts = ["Medical coverage"]
                 if location:
                     title_parts.append(location)

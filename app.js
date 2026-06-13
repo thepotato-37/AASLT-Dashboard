@@ -624,34 +624,6 @@ function coalesceSharedMedicalEvents(events) {
     .sort(eventSort);
 }
 
-function addMarneMedicalSupportEvents(events) {
-  const existing = new Set(
-    events
-      .filter((event) => event.category === "Medical" && /MARNE/i.test(`${event.title || ""} ${event.location || ""} ${event.notes || ""}`))
-      .map((event) => `${event.date}|${event.classKey}`)
-  );
-  const dayMinusTwoEvents = events.filter((event) => dayLabelFromTitle(event.title) === "Day -2" && classNumberFromKey(event.classKey) >= 2);
-  dayMinusTwoEvents.forEach((dayEvent) => {
-    const key = `${dayEvent.date}|${dayEvent.classKey}`;
-    if (existing.has(key)) return;
-    existing.add(key);
-    events.push({
-      id: `generated-marne-fla-${dayEvent.date}-${dayEvent.classKey.replace(/\s+/g, "-").toLowerCase()}`,
-      date: dayEvent.date,
-      start: "",
-      end: "",
-      title: "Medical coverage - MARNE",
-      category: "Medical",
-      classKey: dayEvent.classKey,
-      sourceKind: "generated-medical",
-      location: "MARNE",
-      notes: "X1 FLA support",
-      relatedSources: [...(dayEvent.relatedSources || [])],
-    });
-  });
-  return events;
-}
-
 function mealLocationScore(event) {
   if (!event.location) return 0;
   if (/^(Cadet Mess|MRE|A-Frame|TBD meal type)$/i.test(event.location)) return 1;
@@ -791,7 +763,6 @@ function buildOperationalEvents(rawEvents) {
 
   const lrtcPreferred = removeClassEventsCoveredByLrtc(operational);
   const southDockNormalized = normalizeSouthDockPeEvents(lrtcPreferred);
-  addMarneMedicalSupportEvents(southDockNormalized);
   const timedOperational = removeUntimedClassEvents(southDockNormalized);
   return coalesceSharedMedicalEvents(coalesceMealEvents(mergeEvents(timedOperational)));
 }

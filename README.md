@@ -26,9 +26,7 @@ Review the generated summary in the terminal, then commit the updated `data/aasl
 
 The mess matrix extraction intentionally ignores Air Assault headcounts in the operational view. It treats the mess matrix as the authority for meal type. Cadet Mess (`CM`) meals use fixed meal times: 07:30 breakfast, 12:00 lunch, and 18:00 dinner. MRE meals (`M`, `M+`, `HM+`) use the CLASSES workbook schedule time when one is available. The next-day meal board stays focused on whether each simultaneous Air Assault class is eating in the Cadet Mess or receiving MREs, with the source cells still available in the source explorer.
 
-The medical coverage extraction reads the workbook's font-color coding. In combined date headers such as `DAY 9/DAY 2`, default/black medical rows attach to the first day/class and red rows attach to the second day/class. The extractor also handles the June-to-July rollover in that workbook and keeps ruck FLA support class-aware.
-
-The dashboard also generates a MARNE medical-support event on every `Day -2` for Air Assault 2 and later. Those generated events show as `Medical coverage - MARNE` with `X1 FLA support`.
+The medical coverage extraction reads the workbook's font-color coding. In combined date headers such as `DAY 9/DAY 2`, default/black medical rows attach to the first day/class and red rows attach to the second day/class. The extractor also handles the June-to-July rollover in that workbook, keeps ruck FLA support class-aware, and skips negative-day medical rows because pre-course detail days should not show documented medical coverage.
 
 PE/PT events such as Clean PE, PE1, PE2, PE3, and AA PT are normalized to South Dock. When CLASSES and LRTC both describe the same PE/PT window, the dashboard keeps the South Dock LRTC event and folds the CLASSES source reference into it instead of showing a Washington Hall duplicate.
 
