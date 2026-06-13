@@ -1,7 +1,7 @@
 const DATA_URL = "data/aaslt-db.json";
 const WEATHER_LOCATION = "West Point, NY";
 const WEATHER_URL =
-  "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7";
+  "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=16";
 const TASKS_KEY = "aaslt.tasks.v1";
 const S4_KEY = "aaslt.s4.items.v3";
 const DELETED_SOURCE_KEY = "aaslt.deletedSource.v1";
@@ -364,7 +364,7 @@ function normalizeWeather(payload = {}) {
   const todayIso = String(payload.current?.time || "").slice(0, 10);
   const currentHumidity = Number(payload.current?.relative_humidity_2m);
   const currentHeatIndex = heatIndexF(payload.current?.temperature_2m, payload.current?.relative_humidity_2m);
-  return (daily.time || []).slice(0, 7).map((iso, index) => ({
+  return (daily.time || []).map((iso, index) => ({
     iso,
     label: index === 0 ? "Today" : index === 1 ? "Tomorrow" : formatShortWeekday(iso),
     weekday: formatShortWeekday(iso),
@@ -1817,7 +1817,7 @@ function renderWeather() {
   });
 
   const week = createElement("div", { className: "weather-week", attrs: { "aria-label": "Seven day temperatures" } });
-  days.forEach((day) => {
+  days.slice(0, 7).forEach((day) => {
     const chip = createElement("div", { className: "weather-day" });
     chip.append(createElement("span", { text: day.weekday }), createElement("strong", { text: formatTemp(day.high) }), createElement("small", { text: formatTemp(day.low) }));
     week.append(chip);
@@ -1826,30 +1826,39 @@ function renderWeather() {
   panel.append(header, focus, week);
 }
 
+function selectedWeatherLabel() {
+  if (!state.selectedDate) return "Selected Weather";
+  const todayIso = toIso(new Date());
+  if (state.selectedDate === todayIso) return "Weather Today";
+  if (state.selectedDate === addDays(todayIso, 1)) return "Weather Tomorrow";
+  return `Weather ${formatCompactDate(state.selectedDate)}`;
+}
+
 function renderTodayWeatherStrip() {
   const strip = $("#todayWeatherStrip");
   if (!strip) return;
   strip.replaceChildren();
+  const label = selectedWeatherLabel();
   if (state.weather.status === "loading") {
-    strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }), createElement("strong", { className: "today-weather-chip", text: "Loading forecast" }));
+    strip.append(createElement("span", { className: "today-weather-label", text: label }), createElement("strong", { className: "today-weather-chip", text: "Loading forecast" }));
     return;
   }
   if (state.weather.status === "error") {
-    strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }), createElement("strong", { className: "today-weather-chip", text: "Weather unavailable" }));
+    strip.append(createElement("span", { className: "today-weather-label", text: label }), createElement("strong", { className: "today-weather-chip", text: "Weather unavailable" }));
     return;
   }
-  const today = (state.weather.days || [])[0];
-  if (!today) {
-    strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }), createElement("strong", { className: "today-weather-chip", text: "No forecast" }));
+  const selectedWeather = (state.weather.days || []).find((day) => day.iso === state.selectedDate);
+  if (!selectedWeather) {
+    strip.append(createElement("span", { className: "today-weather-label", text: label }), createElement("strong", { className: "today-weather-chip", text: "Forecast unavailable" }));
     return;
   }
   const chips = [
-    today.condition,
-    `${formatTemp(today.high)} / ${formatTemp(today.low)}`,
-    today.heatIndex === undefined ? "HI TBD" : `HI ${formatTemp(today.heatIndex)}`,
-    today.humidity === undefined ? "Humidity TBD" : `Humidity ${today.humidity}%`,
+    selectedWeather.condition,
+    `${formatTemp(selectedWeather.high)} / ${formatTemp(selectedWeather.low)}`,
+    selectedWeather.heatIndex === undefined ? "HI TBD" : `HI ${formatTemp(selectedWeather.heatIndex)}`,
+    selectedWeather.humidity === undefined ? "Humidity TBD" : `Humidity ${selectedWeather.humidity}%`,
   ];
-  strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }));
+  strip.append(createElement("span", { className: "today-weather-label", text: label }));
   chips.forEach((chip, index) => {
     strip.append(createElement(index === 1 ? "strong" : "span", { className: "today-weather-chip", text: chip }));
   });
