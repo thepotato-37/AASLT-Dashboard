@@ -809,8 +809,35 @@ function eventsForDate(iso, events = filteredEvents()) {
   return events.filter((event) => event.date === iso);
 }
 
+function manualEventFromOverride(id, override = {}) {
+  return {
+    id,
+    date: override.date || state.selectedDate,
+    start: override.start || "",
+    end: override.end || "",
+    title: override.title || "New timeline event",
+    category: override.category || "Operations",
+    group: override.category || "Operations",
+    location: override.location || "",
+    people: [],
+    notes: override.notes || "",
+    classKey: override.classKey || "",
+    sourceKind: "manual-event",
+    relatedSources: [],
+    source: null,
+    isEdited: true,
+    isManual: true,
+  };
+}
+
+function createManualEventId() {
+  const randomId = globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `manual-event-${randomId}`;
+}
+
 function applyEventOverrides(events) {
-  return events.map((event) => {
+  const sourceIds = new Set(events.map((event) => event.id));
+  const editedSourceEvents = events.map((event) => {
     const override = state.eventOverrides[event.id];
     if (!override) return event;
     return {
@@ -823,6 +850,10 @@ function applyEventOverrides(events) {
       isEdited: true,
     };
   });
+  const manualEvents = Object.entries(state.eventOverrides)
+    .filter(([id, override]) => override?.sourceKind === "manual-event" && !sourceIds.has(id))
+    .map(([id, override]) => manualEventFromOverride(id, override));
+  return [...editedSourceEvents, ...manualEvents].filter((event) => event.start);
 }
 
 function rebuildEvents() {
@@ -1330,6 +1361,7 @@ function bindEvents() {
   });
   $("#prevDayButton").addEventListener("click", () => selectDate(addDays(state.selectedDate, -1)));
   $("#nextDayButton").addEventListener("click", () => selectDate(addDays(state.selectedDate, 1)));
+  $("#addEventButton").addEventListener("click", openNewEventEditor);
   $("#sourceFilter").addEventListener("change", (event) => {
     state.sourceFilter = event.target.value;
     renderAll();
@@ -1685,7 +1717,9 @@ function createTaskFromEvent(event) {
 
 function openEventEditor(event) {
   $("#eventDialog").close();
+  $("#eventEditForm").dataset.mode = "edit";
   $("#eventEditId").value = event.id;
+  $("#eventEditModeLabel").textContent = event.isManual ? "Edit Manual Event" : "Edit Timeline Event";
   $("#eventEditHeading").textContent = event.title;
   $("#eventEditTitle").value = event.title || "";
   $("#eventEditDate").value = event.date || state.selectedDate;
@@ -1696,14 +1730,40 @@ function openEventEditor(event) {
   $("#eventEditLocation").value = event.location || "";
   $("#eventEditNotes").value = event.notes || "";
   $("#resetEventEdit").hidden = !state.eventOverrides[event.id];
+  $("#resetEventEdit").textContent = event.isManual ? "Delete Event" : "Reset Source";
+  $("#eventEditSubmitLabel").textContent = "Save Event";
   $("#eventEditDialog").showModal();
+  refreshIcons();
+}
+
+function openNewEventEditor() {
+  const tracks = activeTracksForDate(state.selectedDate);
+  $("#eventDialog").close();
+  $("#eventEditForm").dataset.mode = "create";
+  $("#eventEditId").value = "";
+  $("#eventEditModeLabel").textContent = "New Timeline Event";
+  $("#eventEditHeading").textContent = "New Event";
+  $("#eventEditTitle").value = "";
+  $("#eventEditDate").value = state.selectedDate;
+  $("#eventEditStart").value = "";
+  $("#eventEditEnd").value = "";
+  $("#eventEditTrack").value = tracks[0] || "";
+  $("#eventEditCategory").value = "Training";
+  $("#eventEditLocation").value = "";
+  $("#eventEditNotes").value = "";
+  $("#resetEventEdit").hidden = true;
+  $("#resetEventEdit").textContent = "Reset Source";
+  $("#eventEditSubmitLabel").textContent = "Add Event";
+  $("#eventEditDialog").showModal();
+  $("#eventEditTitle").focus();
   refreshIcons();
 }
 
 function saveEventEdit(event) {
   event.preventDefault();
-  const id = $("#eventEditId").value;
-  if (!id) return;
+  const existingId = $("#eventEditId").value;
+  const id = existingId || createManualEventId();
+  const isManual = !existingId || state.eventOverrides[existingId]?.sourceKind === "manual-event";
   const override = {
     title: $("#eventEditTitle").value.trim(),
     date: $("#eventEditDate").value,
@@ -1715,6 +1775,12 @@ function saveEventEdit(event) {
     notes: $("#eventEditNotes").value.trim(),
     updatedAt: new Date().toISOString(),
   };
+  if (isManual) {
+    override.sourceKind = "manual-event";
+    state.sourceFilter = "all";
+    $("#sourceFilter").value = "all";
+    saveSettings();
+  }
   state.eventOverrides[id] = override;
   saveEventOverrides();
   $("#eventEditDialog").close();
@@ -1728,11 +1794,12 @@ function saveEventEdit(event) {
 function resetEditedEvent() {
   const id = $("#eventEditId").value;
   if (!id) return;
+  const wasManual = state.eventOverrides[id]?.sourceKind === "manual-event";
   delete state.eventOverrides[id];
   saveEventOverrides();
   $("#eventEditDialog").close();
   rebuildEvents();
-  const restored = eventById(id);
+  const restored = wasManual ? null : eventById(id);
   if (restored) {
     state.selectedDate = restored.date;
     state.viewMonth = parseDate(restored.date);
