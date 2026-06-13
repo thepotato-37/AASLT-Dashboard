@@ -1619,7 +1619,7 @@ function initSettings() {
   const sourceNames = new Set((state.data.sources || []).map((source) => source.name));
   state.sourceFilter = settings.sourceFilter && (settings.sourceFilter === "all" || sourceNames.has(settings.sourceFilter)) ? settings.sourceFilter : "all";
   state.dayView = settings.dayView || "tracks";
-  state.assignmentView = settings.assignmentView || "list";
+  state.assignmentView = "list";
 }
 
 function bindEvents() {
