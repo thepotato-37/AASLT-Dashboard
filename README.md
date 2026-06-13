@@ -28,6 +28,8 @@ The mess matrix extraction intentionally ignores Air Assault headcounts in the o
 
 The medical coverage extraction reads the workbook's font-color coding. In combined date headers such as `DAY 9/DAY 2`, default/black medical rows attach to the first day/class and red rows attach to the second day/class. The extractor also handles the June-to-July rollover in that workbook, keeps ruck FLA support class-aware, and skips negative-day medical rows because pre-course detail days should not show documented medical coverage.
 
+The dashboard generates a timed `08:00-11:00` MARNE medical FLA support card on each class `Day -2`. These generated cards are timed medical events, not all-day events.
+
 PE/PT events such as Clean PE, PE1, PE2, PE3, and AA PT are normalized to South Dock. When CLASSES and LRTC both describe the same PE/PT window, the dashboard keeps the South Dock LRTC event and folds the CLASSES source reference into it instead of showing a Washington Hall duplicate.
 
 Untimed source rows are hidden from the operational dashboard. This removes context-only cells such as `DAY X WP###`, location headers, and untimed classroom notes while preserving the day labels for the track headers and still using mess-matrix rows to generate timed meal events.

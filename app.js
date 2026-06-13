@@ -569,6 +569,35 @@ function removeUntimedEvents(events) {
   return events.filter((event) => event.start);
 }
 
+function addDayMinusTwoMarneMedicalSupportEvents(events) {
+  const existing = new Set(
+    events
+      .filter((event) => event.category === "Medical" && /MARNE/i.test(`${event.title || ""} ${event.location || ""} ${event.notes || ""}`))
+      .map((event) => `${event.date}|${event.classKey}|${event.start || ""}|${event.end || ""}`)
+  );
+  const dayMinusTwoEvents = events.filter((event) => event.date && event.classKey && dayLabelFromTitle(event.title) === "Day -2");
+  dayMinusTwoEvents.forEach((dayEvent) => {
+    const key = `${dayEvent.date}|${dayEvent.classKey}|08:00|11:00`;
+    if (existing.has(key)) return;
+    existing.add(key);
+    events.push({
+      id: `generated-day-minus-two-marne-fla-${dayEvent.date}-${dayEvent.classKey.replace(/\s+/g, "-").toLowerCase()}`,
+      date: dayEvent.date,
+      start: "08:00",
+      end: "11:00",
+      title: "Medical coverage - MARNE",
+      category: "Medical",
+      group: "Medical Coverage",
+      classKey: dayEvent.classKey,
+      sourceKind: "generated-medical",
+      location: "MARNE",
+      notes: "X1 FLA support",
+      relatedSources: [...(dayEvent.relatedSources || [])],
+    });
+  });
+  return events;
+}
+
 function isCanonicalLrtcEvent(event) {
   if (event.sourceKind !== "lrtc") return true;
   const sources = event.relatedSources || [event.source].filter(Boolean);
@@ -763,7 +792,8 @@ function buildOperationalEvents(rawEvents) {
 
   const lrtcPreferred = removeClassEventsCoveredByLrtc(operational);
   const southDockNormalized = normalizeSouthDockPeEvents(lrtcPreferred);
-  const timedOperational = removeUntimedEvents(southDockNormalized);
+  const withDayMinusTwoSupport = addDayMinusTwoMarneMedicalSupportEvents(southDockNormalized);
+  const timedOperational = removeUntimedEvents(withDayMinusTwoSupport);
   return coalesceSharedMedicalEvents(coalesceMealEvents(mergeEvents(timedOperational)));
 }
 
