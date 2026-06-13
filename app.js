@@ -59,7 +59,7 @@ const state = {
   sourceFilter: "all",
   search: "",
   dayView: "tracks",
-  assignmentView: "timeline",
+  assignmentView: "list",
   tasks: [],
   editingTaskId: null,
   taskFormOpen: false,
@@ -1352,7 +1352,7 @@ function initSettings() {
   const sourceNames = new Set((state.data.sources || []).map((source) => source.name));
   state.sourceFilter = settings.sourceFilter && (settings.sourceFilter === "all" || sourceNames.has(settings.sourceFilter)) ? settings.sourceFilter : "all";
   state.dayView = settings.dayView || "tracks";
-  state.assignmentView = settings.assignmentView || "timeline";
+  state.assignmentView = settings.assignmentView || "list";
 }
 
 function bindEvents() {
@@ -2421,7 +2421,7 @@ function printAssignments(tasks) {
   const done = tasks.filter((task) => task.status === "done").length;
   const claimed = tasks.filter((task) => task.status === "claimed").length;
   const open = tasks.filter((task) => task.status !== "done").length;
-  const viewLabel = state.assignmentView === "list" ? "List" : "By Time";
+  const viewLabel = state.assignmentView === "list" ? "By Task" : "By Person";
   return `
     <section class="print-section">
       <div class="print-section-head">
