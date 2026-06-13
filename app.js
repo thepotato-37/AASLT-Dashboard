@@ -229,6 +229,19 @@ function escapeRegex(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+}
+
+function safeClassName(value) {
+  return (
+    String(value || "none")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "none"
+  );
+}
+
 function cleanTitle(text) {
   return String(text || "")
     .replace(/\s+/g, " ")
@@ -1424,6 +1437,7 @@ function bindEvents() {
   $("#closeEditDialog").addEventListener("click", () => $("#eventEditDialog").close());
   $("#cancelEventEdit").addEventListener("click", () => $("#eventEditDialog").close());
   $("#resetEventEdit").addEventListener("click", resetEditedEvent);
+  $("#printDayButton").addEventListener("click", printSelectedDay);
   $("#exportStateButton").addEventListener("click", exportLocalState);
 }
 
@@ -2280,6 +2294,540 @@ function openEvent(event) {
   details.append(createElement("dt", { text: "Action" }), createElement("dd", { children: [actions] }));
   $("#eventDialog").showModal();
   refreshIcons();
+}
+
+function printValue(value, fallback = "TBD") {
+  const text = String(value ?? "").trim();
+  return text ? escapeHtml(text) : escapeHtml(fallback);
+}
+
+function printTimeRange(item) {
+  if (!item.start) return "Unscheduled";
+  return `${item.start}${item.end ? `-${item.end}` : ""}`;
+}
+
+function printStat(label, value) {
+  return `<article class="print-stat"><span>${escapeHtml(label)}</span><strong>${printValue(value)}</strong></article>`;
+}
+
+function printEventCard(event) {
+  const meta = [event.location, event.notes].filter(Boolean).join(" / ");
+  const chips = [event.classKey ? event.classKey.replace("Air Assault ", "AA") : "", event.isEdited ? "Edited" : ""].filter(Boolean);
+  return `
+    <article class="print-card print-event print-${safeClassName(event.category)}">
+      <div class="print-card-top">
+        <span class="print-badge">${printValue(event.category, "Operations")}</span>
+        ${chips.length ? `<span class="print-chips">${chips.map((chip) => `<b>${escapeHtml(chip)}</b>`).join("")}</span>` : ""}
+      </div>
+      <strong>${printValue(event.title, "Untitled event")}</strong>
+      ${meta ? `<p>${escapeHtml(meta)}</p>` : ""}
+    </article>
+  `;
+}
+
+function printTimeline(events) {
+  if (!events.length) return `<div class="print-empty">No timeline items for this lane.</div>`;
+  const grouped = events.reduce((acc, event) => {
+    const key = event.start || "Unscheduled";
+    acc[key] ||= [];
+    acc[key].push(event);
+    return acc;
+  }, {});
+  return Object.entries(grouped)
+    .map(
+      ([time, items]) => `
+        <section class="print-time-row">
+          <div class="print-time">${escapeHtml(time)}</div>
+          <div class="print-stack">${items.map(printEventCard).join("")}</div>
+        </section>
+      `
+    )
+    .join("");
+}
+
+function printTimelineSections(dayEvents) {
+  const byTrack = eventsByTrack(dayEvents);
+  const sections = byTrack.tracks.map((track, index) => {
+    const dayLabel = byTrack[index]?.dayLabel;
+    const title = [track, dayLabel].filter(Boolean).join(" - ");
+    return `
+      <section class="print-timeline-section">
+        <div class="print-section-head">
+          <h2>${printValue(title, track)}</h2>
+          <span>${(byTrack[index]?.events.length || 0).toString()} items</span>
+        </div>
+        ${printTimeline((byTrack[index]?.events || []).sort(eventSort))}
+      </section>
+    `;
+  });
+  if (byTrack.shared.length) {
+    sections.push(`
+      <section class="print-timeline-section print-shared">
+        <div class="print-section-head">
+          <h2>Shared / Unassigned Timeline</h2>
+          <span>${byTrack.shared.length} items</span>
+        </div>
+        ${printTimeline(byTrack.shared.sort(eventSort))}
+      </section>
+    `);
+  }
+  if (!sections.length) return `<div class="print-empty">No timeline items for this day.</div>`;
+  return `<div class="print-timeline-grid${sections.length === 1 ? " single" : ""}">${sections.join("")}</div>`;
+}
+
+function printTaskCard(task) {
+  const notes = String(task.notes || "").trim();
+  return `
+    <article class="print-card print-task status-${safeClassName(task.status)}">
+      <div class="print-card-top">
+        <span class="print-time-chip">${escapeHtml(printTimeRange(task))}</span>
+        <span class="print-badge">${printValue(task.status || "open")}</span>
+      </div>
+      <strong>${printValue(task.title, "Untitled task")}</strong>
+      <p>${printValue(task.track || "Shared")} / ${escapeHtml(taskStaffingText(task))}</p>
+      <p>Owners: ${escapeHtml(ownersLabel(task))}</p>
+      ${notes ? `<p>${escapeHtml(notes)}</p>` : ""}
+    </article>
+  `;
+}
+
+function printAssignmentsByTime(tasks) {
+  if (!tasks.length) return `<div class="print-empty">No cadre taskings for this day.</div>`;
+  const laneTasks = new Map(TRACKED_PEOPLE.map((person) => [person, []]));
+  tasks.forEach((task) => {
+    const owners = taskOwners(task);
+    const people = owners.length ? owners : ["Unassigned"];
+    people.forEach((person) => laneTasks.get(person)?.push(task));
+  });
+  const lanes = TRACKED_PEOPLE.map((person) => {
+    const tasksForPerson = laneTasks.get(person) || [];
+    if (!tasksForPerson.length) return "";
+    return `
+      <section class="print-person-lane">
+        <h3>${escapeHtml(person)}</h3>
+        <div class="print-task-stack">${tasksForPerson.map(printTaskCard).join("")}</div>
+      </section>
+    `;
+  }).filter(Boolean);
+  return `<div class="print-person-grid">${lanes.join("")}</div>`;
+}
+
+function printAssignmentsList(tasks) {
+  if (!tasks.length) return `<div class="print-empty">No cadre taskings for this day.</div>`;
+  return `<div class="print-task-list">${tasks.map(printTaskCard).join("")}</div>`;
+}
+
+function printAssignments(tasks) {
+  const done = tasks.filter((task) => task.status === "done").length;
+  const claimed = tasks.filter((task) => task.status === "claimed").length;
+  const open = tasks.filter((task) => task.status !== "done").length;
+  const viewLabel = state.assignmentView === "list" ? "List" : "By Time";
+  return `
+    <section class="print-section">
+      <div class="print-section-head">
+        <div>
+          <p class="print-eyebrow">Current Task List</p>
+          <h2>Cadre Tasking - ${escapeHtml(viewLabel)}</h2>
+        </div>
+        <span>${open} open / ${claimed} claimed / ${done} done</span>
+      </div>
+      ${state.assignmentView === "list" ? printAssignmentsList(tasks) : printAssignmentsByTime(tasks)}
+    </section>
+  `;
+}
+
+function printMealSummary(dayEvents) {
+  const meals = dayEvents.filter((event) => event.category === "Meals").sort(eventSort);
+  if (!meals.length) return `<div class="print-empty">No meals found for this day.</div>`;
+  return `
+    <div class="print-meal-grid">
+      ${meals
+        .map(
+          (meal) => `
+            <article class="print-meal">
+              <strong>${printValue(meal.title, "Meal")}</strong>
+              <span>${escapeHtml(printTimeRange(meal))}</span>
+              <p>${printValue([meal.classKey, meal.location].filter(Boolean).join(" / "), "Location TBD")}</p>
+            </article>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function printS4Item(item) {
+  const notes = String(item.notes || "").trim();
+  return `
+    <article class="print-card print-s4-item status-${safeClassName(item.status)}">
+      <div class="print-card-top">
+        <span class="print-badge">${printValue(item.status || "Planned")}</span>
+        <span class="print-time-chip">${printValue(formatSupportDateTime(item.needBy), "TBD")}</span>
+      </div>
+      <strong>${printValue(item.item, "Support item")}</strong>
+      <p>${Number(item.qty || 1)} asset${Number(item.qty || 1) === 1 ? "" : "s"} / Owner: ${printValue(item.owner || "Unassigned")}</p>
+      ${notes ? `<p>${escapeHtml(notes)}</p>` : ""}
+    </article>
+  `;
+}
+
+function printS4Page() {
+  const total = state.s4Items.length;
+  return `
+    <section class="sheet s4-page">
+      <header class="print-page-head">
+        <div>
+          <p class="print-eyebrow">Support Control</p>
+          <h1>S4 Tracker</h1>
+        </div>
+        <span>${total} active support item${total === 1 ? "" : "s"}</span>
+      </header>
+      <div class="print-s4-grid">
+        ${S4_LANES.map((lane) => {
+          const laneItems = state.s4Items.filter((item) => item.type === lane).sort((a, b) => (a.needBy || "9999").localeCompare(b.needBy || "9999"));
+          return `
+            <section class="print-s4-lane">
+              <div class="print-section-head">
+                <h2>${escapeHtml(lane)}</h2>
+                <span>${laneItems.length}</span>
+              </div>
+              ${laneItems.length ? laneItems.map(printS4Item).join("") : `<div class="print-empty">Nothing tracked.</div>`}
+            </section>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function buildPrintHtml(options = {}) {
+  const autoPrint = Boolean(options.autoPrint);
+  const iso = state.selectedDate;
+  const dayEvents = eventsForDate(iso).sort(eventSort);
+  const dayTasks = tasksForDate(iso);
+  const trackLabels = activeTracksForDate(iso).map((track) => [track, classDayLabelForTrack(iso, track)].filter(Boolean).join(" - "));
+  const nextMeal = dayEvents.find((event) => event.category === "Meals" && (event.start || "99:99") >= new Date().toTimeString().slice(0, 5)) || dayEvents.find((event) => event.category === "Meals");
+  const openTasks = dayTasks.filter((task) => task.status !== "done").length;
+  const printedAt = new Date().toLocaleString();
+  const sourceLabel = state.sourceFilter === "all" ? "All sources" : state.sourceFilter;
+  const searchLabel = state.search.trim() ? `Search: ${state.search.trim()}` : "No search filter";
+  const s4Counts = S4_LANES.map((lane) => `${lane}: ${state.s4Items.filter((item) => item.type === lane).length}`).join(" / ");
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AASLT Print - ${escapeHtml(formatFullDate(iso))}</title>
+    <style>
+      @page { size: letter portrait; margin: 0.45in; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #e8eef0;
+        color: #162326;
+        font: 11px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      .print-now {
+        position: fixed;
+        right: 18px;
+        top: 18px;
+        z-index: 2;
+        border: 1px solid #255f66;
+        border-radius: 6px;
+        background: #2e7076;
+        color: #fff;
+        padding: 9px 12px;
+        font-weight: 800;
+      }
+      .sheet {
+        width: min(100%, 8.5in);
+        min-height: 10.6in;
+        margin: 18px auto;
+        padding: 0.28in;
+        border: 1px solid #c7d3d6;
+        background: #fff;
+        box-shadow: 0 14px 35px rgba(20, 33, 37, 0.14);
+      }
+      .s4-page { break-before: page; page-break-before: always; }
+      .print-page-head,
+      .print-section-head,
+      .print-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .print-page-head {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #244f55;
+      }
+      .print-page-head h1 {
+        margin: 2px 0 0;
+        font-size: 24px;
+        line-height: 1.05;
+      }
+      .print-page-head span,
+      .print-section-head span {
+        color: #52666b;
+        font-weight: 800;
+        text-align: right;
+      }
+      .print-eyebrow {
+        margin: 0;
+        color: #66787d;
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+      .print-section {
+        margin-top: 14px;
+      }
+      .print-section-head {
+        margin-bottom: 7px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #c8d5d8;
+      }
+      h2 {
+        margin: 0;
+        font-size: 14px;
+      }
+      h3 {
+        margin: 0 0 5px;
+        font-size: 11px;
+      }
+      p {
+        margin: 3px 0 0;
+      }
+      .print-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .print-stat,
+      .print-meal,
+      .print-card,
+      .print-empty {
+        border: 1px solid #c8d5d8;
+        border-radius: 6px;
+        background: #f8fbfa;
+      }
+      .print-stat {
+        padding: 7px 8px;
+      }
+      .print-stat span,
+      .print-card p,
+      .print-meal p {
+        color: #52666b;
+      }
+      .print-stat span {
+        display: block;
+        font-size: 8px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .print-stat strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 12px;
+      }
+      .print-meal-grid,
+      .print-person-grid,
+      .print-s4-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+      }
+      .print-meal {
+        padding: 7px 8px;
+      }
+      .print-meal span {
+        float: right;
+        color: #244f55;
+        font-weight: 900;
+      }
+      .print-timeline-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        align-items: start;
+      }
+      .print-timeline-grid.single {
+        grid-template-columns: 1fr;
+      }
+      .print-shared {
+        grid-column: 1 / -1;
+      }
+      .print-timeline-section,
+      .print-person-lane,
+      .print-s4-lane {
+        border: 1px solid #c8d5d8;
+        border-radius: 6px;
+        padding: 7px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .print-time-row {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 6px;
+        margin-top: 6px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .print-time {
+        color: #2e7076;
+        font-size: 10px;
+        font-weight: 900;
+      }
+      .print-stack,
+      .print-task-stack {
+        display: grid;
+        gap: 5px;
+      }
+      .print-card {
+        padding: 6px 7px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .print-card strong {
+        display: block;
+        margin-top: 3px;
+        font-size: 11px;
+      }
+      .print-badge,
+      .print-time-chip,
+      .print-chips b {
+        display: inline-flex;
+        align-items: center;
+        min-height: 18px;
+        border-radius: 999px;
+        padding: 1px 6px;
+        font-size: 8px;
+        font-weight: 900;
+      }
+      .print-badge { background: #e0eced; color: #225b61; }
+      .print-time-chip { background: #fff; border: 1px solid #c8d5d8; color: #225b61; }
+      .print-chips {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        justify-content: flex-end;
+      }
+      .print-chips b { background: #eef4f4; color: #53686d; }
+      .print-training { border-left: 4px solid #667d34; }
+      .print-instruction { border-left: 4px solid #386da3; }
+      .print-medical { border-left: 4px solid #a3483e; }
+      .print-meals { border-left: 4px solid #a7641b; }
+      .print-cadre { border-left: 4px solid #6e628f; }
+      .print-logistics,
+      .print-operations { border-left: 4px solid #2e7076; }
+      .print-task-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .print-empty {
+        padding: 9px;
+        color: #6a7a7f;
+        font-weight: 700;
+        text-align: center;
+      }
+      .print-s4-lane {
+        min-height: 1.5in;
+      }
+      .print-s4-lane .print-card + .print-card {
+        margin-top: 5px;
+      }
+      .status-done { opacity: 0.72; }
+      @media print {
+        body { background: #fff; }
+        .print-now { display: none; }
+        .sheet {
+          width: auto;
+          min-height: auto;
+          margin: 0;
+          padding: 0;
+          border: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="print-now" type="button" onclick="window.print()">Print</button>
+    <section class="sheet">
+      <header class="print-page-head">
+        <div>
+          <p class="print-eyebrow">West Point Air Assault</p>
+          <h1>${escapeHtml(formatFullDate(iso))}</h1>
+        </div>
+        <span>Printed ${escapeHtml(printedAt)}<br />${escapeHtml(sourceLabel)} / ${escapeHtml(searchLabel)}</span>
+      </header>
+
+      <section class="print-section">
+        <div class="print-stats">
+          ${printStat("Active Tracks", trackLabels.length ? trackLabels.join(" / ") : "Shared")}
+          ${printStat("Timeline Items", dayEvents.length)}
+          ${printStat("Open Taskings", openTasks)}
+          ${printStat("Next Meal", nextMeal ? `${printTimeRange(nextMeal)} ${nextMeal.title}` : "No meal found")}
+        </div>
+      </section>
+
+      <section class="print-section">
+        <div class="print-section-head">
+          <div>
+            <p class="print-eyebrow">General Info</p>
+            <h2>Meal and Support Snapshot</h2>
+          </div>
+          <span>${escapeHtml(s4Counts)}</span>
+        </div>
+        ${printMealSummary(dayEvents)}
+      </section>
+
+      <section class="print-section">
+        <div class="print-section-head">
+          <div>
+            <p class="print-eyebrow">Timeline</p>
+            <h2>Selected Day Schedule</h2>
+          </div>
+          <span>${state.dayView === "all" ? "All Events view" : state.dayView === "table" ? "Table view" : "Tracks view"}</span>
+        </div>
+        ${printTimelineSections(dayEvents)}
+      </section>
+
+      ${printAssignments(dayTasks)}
+    </section>
+
+    ${printS4Page()}
+    ${
+      autoPrint
+        ? `<script>
+      window.addEventListener("load", () => {
+        window.setTimeout(() => window.print(), 300);
+      });
+    <\/script>`
+        : ""
+    }
+  </body>
+</html>`;
+}
+
+function printSelectedDay() {
+  const previewOnly = new URLSearchParams(window.location.search).has("printPreview");
+  const blob = new Blob([buildPrintHtml({ autoPrint: !previewOnly })], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const printWindow = window.open(url, "_blank");
+  if (!printWindow) {
+    URL.revokeObjectURL(url);
+    window.alert("Print window was blocked. Allow pop-ups for this site and try again.");
+    return;
+  }
+  printWindow.focus();
+  window.setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
 function exportLocalState() {
