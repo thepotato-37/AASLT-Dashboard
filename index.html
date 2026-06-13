@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260613-13" />
+    <link rel="stylesheet" href="styles.css?v=20260613-14" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="firebase-config.js?v=20260613-13" defer></script>
-    <script src="app.js?v=20260613-13" defer></script>
+    <script src="firebase-config.js?v=20260613-14" defer></script>
+    <script src="app.js?v=20260613-14" defer></script>
   </head>
   <body>
     <div class="app-shell">
@@ -95,6 +95,7 @@
         </aside>
 
         <section class="control-grid">
+          <div class="side-stack left-stack">
           <aside class="pane calendar-pane">
             <div class="pane-header">
               <div>
@@ -116,6 +117,25 @@
             <div id="calendarGrid" class="calendar-grid"></div>
             <section id="weatherPanel" class="weather-panel" aria-live="polite"></section>
           </aside>
+
+          <section class="pane rfi-pane">
+            <div class="pane-header compact">
+              <div>
+                <p class="eyebrow">RFI List</p>
+                <h2>Questions</h2>
+              </div>
+              <span id="rfiCount" class="status-pill">0 open</span>
+            </div>
+            <form id="rfiForm" class="mini-form">
+              <input id="rfiText" placeholder="Add RFI" required aria-label="RFI" />
+              <select id="rfiOwner" aria-label="RFI owner"></select>
+              <button class="icon-button solid" type="submit" title="Add RFI" aria-label="Add RFI">
+                <i data-lucide="plus"></i>
+              </button>
+            </form>
+            <div id="rfiList" class="ops-mini-list"></div>
+          </section>
+          </div>
 
           <section class="pane day-pane">
             <div class="pane-header day-heading">
@@ -158,6 +178,7 @@
             <div id="dayTableWrap" class="table-wrap is-hidden"></div>
           </section>
 
+          <div class="side-stack right-stack">
           <aside class="pane load-pane">
             <div class="pane-header">
               <div>
@@ -218,6 +239,25 @@
             <div id="assignmentTimeline" class="assignment-timeline"></div>
             <div id="assignmentBoard" class="assignment-list is-hidden"></div>
           </aside>
+
+          <section class="pane persistent-pane">
+            <div class="pane-header compact">
+              <div>
+                <p class="eyebrow">Persistent Tasks</p>
+                <h2>Standing Work</h2>
+              </div>
+              <span id="persistentTaskCount" class="status-pill">0 open</span>
+            </div>
+            <form id="persistentTaskForm" class="mini-form">
+              <input id="persistentTaskTitle" placeholder="Add standing task" required aria-label="Persistent task" />
+              <select id="persistentTaskOwner" aria-label="Persistent task owner"></select>
+              <button class="icon-button solid" type="submit" title="Add persistent task" aria-label="Add persistent task">
+                <i data-lucide="plus"></i>
+              </button>
+            </form>
+            <div id="persistentTaskList" class="ops-mini-list"></div>
+          </section>
+          </div>
         </section>
 
         <section class="ops-deck">

@@ -3,6 +3,8 @@ const WEATHER_LOCATION = "West Point, NY";
 const WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=16";
 const TASKS_KEY = "aaslt.tasks.v1";
+const RFI_KEY = "aaslt.rfis.v1";
+const PERSISTENT_TASKS_KEY = "aaslt.persistentTasks.v1";
 const S4_KEY = "aaslt.s4.items.v3";
 const DELETED_SOURCE_KEY = "aaslt.deletedSource.v1";
 const SETTINGS_KEY = "aaslt.settings.v2";
@@ -129,6 +131,8 @@ const state = {
   dayView: "tracks",
   assignmentView: "list",
   tasks: [],
+  rfis: [],
+  persistentTasks: [],
   editingTaskId: null,
   taskFormOpen: false,
   deletedSource: { taskings: [], supportItems: [] },
@@ -1052,6 +1056,49 @@ function normalizeDeletedSource(value = {}) {
   };
 }
 
+function normalizedOwner(owner = "") {
+  return TRACKED_PEOPLE.includes(owner) ? owner : "Unassigned";
+}
+
+function normalizeRfi(item = {}) {
+  const text = String(item.text || item.title || "").trim();
+  return {
+    id: item.id || crypto.randomUUID(),
+    text,
+    owner: normalizedOwner(item.owner),
+    status: item.status === "answered" || item.status === "done" ? "answered" : "open",
+    createdAt: item.createdAt || new Date().toISOString(),
+    updatedAt: item.updatedAt || item.createdAt || new Date().toISOString(),
+  };
+}
+
+function migrateRfis(items = []) {
+  return (Array.isArray(items) ? items : []).map(normalizeRfi).filter((item) => item.text);
+}
+
+function normalizePersistentTask(item = {}) {
+  const title = String(item.title || item.text || "").trim();
+  return {
+    id: item.id || crypto.randomUUID(),
+    title,
+    owner: normalizedOwner(item.owner),
+    status: item.status === "done" || item.complete === true ? "done" : "open",
+    createdAt: item.createdAt || new Date().toISOString(),
+    updatedAt: item.updatedAt || item.createdAt || new Date().toISOString(),
+  };
+}
+
+function migratePersistentTasks(items = []) {
+  return (Array.isArray(items) ? items : []).map(normalizePersistentTask).filter((item) => item.title);
+}
+
+function populatePersonSelect(select, selected = "Unassigned") {
+  if (!select) return;
+  select.replaceChildren();
+  TRACKED_PEOPLE.forEach((person) => select.append(createElement("option", { text: person, attrs: { value: person } })));
+  select.value = normalizedOwner(selected);
+}
+
 function saveDeletedSource() {
   state.deletedSource = normalizeDeletedSource(state.deletedSource);
   localStorage.setItem(DELETED_SOURCE_KEY, JSON.stringify(state.deletedSource));
@@ -1078,6 +1125,8 @@ function isCloudConfigured(config = cloudConfig()) {
 
 function persistLocalStateSnapshot() {
   localStorage.setItem(TASKS_KEY, JSON.stringify(state.tasks));
+  localStorage.setItem(RFI_KEY, JSON.stringify(state.rfis));
+  localStorage.setItem(PERSISTENT_TASKS_KEY, JSON.stringify(state.persistentTasks));
   localStorage.setItem(S4_KEY, JSON.stringify(state.s4Items));
   localStorage.setItem(EVENT_OVERRIDES_KEY, JSON.stringify(state.eventOverrides));
   state.deletedSource = normalizeDeletedSource(state.deletedSource);
@@ -1090,6 +1139,8 @@ function cloudStatePayload() {
     sourceGeneratedAt: state.data?.generatedAt || "",
     clientUpdatedAt: new Date().toISOString(),
     tasks: consolidateTasks(state.tasks),
+    rfis: migrateRfis(state.rfis),
+    persistentTasks: migratePersistentTasks(state.persistentTasks),
     s4Items: state.s4Items,
     eventOverrides: state.eventOverrides,
     deletedSource: normalizeDeletedSource(state.deletedSource),
@@ -1131,6 +1182,8 @@ function applyCloudState(payload = {}) {
     state.deletedSource = normalizeDeletedSource(payload.deletedSource || {});
     state.eventOverrides = payload.eventOverrides || {};
     state.tasks = mergeSourceTaskings(Array.isArray(payload.tasks) ? payload.tasks : [], state.data.taskings || []);
+    state.rfis = migrateRfis(Array.isArray(payload.rfis) ? payload.rfis : state.rfis);
+    state.persistentTasks = migratePersistentTasks(Array.isArray(payload.persistentTasks) ? payload.persistentTasks : state.persistentTasks);
     state.s4Items = mergeSourceSupportItems(migrateS4(Array.isArray(payload.s4Items) ? payload.s4Items : []), state.data.supportItems || []);
     if (Array.isArray(payload.receiptRegister)) {
       const localReceipts = new Map(state.receipts.map((receipt) => [receipt.id, receipt]));
@@ -1204,6 +1257,18 @@ function saveTasks() {
   state.tasks = consolidateTasks(state.tasks);
   localStorage.setItem(TASKS_KEY, JSON.stringify(state.tasks));
   scheduleCloudSave("tasks");
+}
+
+function saveRfis() {
+  state.rfis = migrateRfis(state.rfis);
+  localStorage.setItem(RFI_KEY, JSON.stringify(state.rfis));
+  scheduleCloudSave("rfis");
+}
+
+function savePersistentTasks() {
+  state.persistentTasks = migratePersistentTasks(state.persistentTasks);
+  localStorage.setItem(PERSISTENT_TASKS_KEY, JSON.stringify(state.persistentTasks));
+  scheduleCloudSave("persistent-tasks");
 }
 
 function saveEventOverrides() {
@@ -1564,6 +1629,8 @@ function mergeSourceSupportItems(existingItems, sourceItems = []) {
 
 async function init() {
   state.tasks = loadJson(TASKS_KEY, []);
+  state.rfis = migrateRfis(loadJson(RFI_KEY, []));
+  state.persistentTasks = migratePersistentTasks(loadJson(PERSISTENT_TASKS_KEY, []));
   state.deletedSource = normalizeDeletedSource(loadJson(DELETED_SOURCE_KEY, {}));
   state.eventOverrides = loadJson(EVENT_OVERRIDES_KEY, {});
   state.s4Items = migrateS4(loadJson(S4_KEY, []));
@@ -1665,6 +1732,8 @@ function bindEvents() {
   $$(".tab").forEach((button) => button.addEventListener("click", () => selectTab(button.dataset.tab)));
   $("#taskForm").addEventListener("submit", saveTaskFromForm);
   $("#closeTaskFormButton").addEventListener("click", closeTaskForm);
+  $("#rfiForm").addEventListener("submit", addRfiFromForm);
+  $("#persistentTaskForm").addEventListener("submit", addPersistentTaskFromForm);
   $("#s4Type").addEventListener("change", configureS4Form);
   $("#s4Form").addEventListener("submit", addS4Item);
   $("#clearCompletedS4").addEventListener("click", () => {
@@ -1716,6 +1785,8 @@ function renderStaticControls() {
   const ownerSelect = $("#taskOwners");
   ownerSelect.replaceChildren();
   ASSIGNABLE_PEOPLE.forEach((person) => ownerSelect.append(renderPersonOption(person, false, () => {})));
+  populatePersonSelect($("#rfiOwner"));
+  populatePersonSelect($("#persistentTaskOwner"));
   $("#taskDate").value = state.selectedDate;
   configureS4Form();
   renderSourceControls();
@@ -1727,6 +1798,8 @@ function renderAll() {
   renderWeather();
   renderDay();
   renderAssignments();
+  renderRfis();
+  renderPersistentTasks();
   renderNextDay();
   renderMealStatus();
   renderS4();
@@ -2183,6 +2256,161 @@ function resetEditedEvent() {
     $("#taskDate").value = restored.date;
   }
   renderAll();
+}
+
+function sortOpenFirst(a, b) {
+  const aOpen = a.status !== "done" && a.status !== "answered";
+  const bOpen = b.status !== "done" && b.status !== "answered";
+  if (aOpen !== bOpen) return aOpen ? -1 : 1;
+  return String(b.updatedAt || b.createdAt || "").localeCompare(String(a.updatedAt || a.createdAt || ""));
+}
+
+function renderOwnerControl(owner, onChange, label) {
+  const select = createElement("select", { attrs: { "aria-label": label } });
+  populatePersonSelect(select, owner);
+  select.addEventListener("change", () => onChange(select.value));
+  return select;
+}
+
+function addRfiFromForm(event) {
+  event.preventDefault();
+  const text = $("#rfiText").value.trim();
+  if (!text) return;
+  state.rfis.unshift(
+    normalizeRfi({
+      id: crypto.randomUUID(),
+      text,
+      owner: $("#rfiOwner").value,
+      status: "open",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    })
+  );
+  $("#rfiText").value = "";
+  $("#rfiOwner").value = "Unassigned";
+  saveRfis();
+  renderRfis();
+  refreshIcons();
+}
+
+function updateRfi(id, patch) {
+  state.rfis = state.rfis.map((item) => (item.id === id ? normalizeRfi({ ...item, ...patch, updatedAt: new Date().toISOString() }) : item));
+  saveRfis();
+  renderRfis();
+  refreshIcons();
+}
+
+function deleteRfi(id) {
+  state.rfis = state.rfis.filter((item) => item.id !== id);
+  saveRfis();
+  renderRfis();
+  refreshIcons();
+}
+
+function renderRfiItem(item) {
+  const rfi = normalizeRfi(item);
+  const row = createElement("article", { className: `ops-mini-item status-${rfi.status}` });
+  const main = createElement("div", { className: "ops-mini-main" });
+  const titleRow = createElement("label", { className: "ops-mini-title-row" });
+  const checkbox = createElement("input", { attrs: { type: "checkbox", "aria-label": `Mark ${rfi.text} answered` } });
+  checkbox.checked = rfi.status === "answered";
+  checkbox.addEventListener("change", () => updateRfi(rfi.id, { status: checkbox.checked ? "answered" : "open" }));
+  titleRow.append(checkbox, createElement("span", { className: "ops-mini-title", text: rfi.text }));
+  main.append(
+    titleRow,
+    createElement("div", { className: "ops-mini-meta", text: `${rfi.owner} / ${rfi.status === "answered" ? "answered" : "open"}` })
+  );
+
+  const actions = createElement("div", { className: "ops-mini-actions" });
+  actions.append(
+    renderOwnerControl(rfi.owner, (owner) => updateRfi(rfi.id, { owner }), `Owner for ${rfi.text}`),
+    createElement("button", { className: "icon-button", html: '<i data-lucide="trash-2"></i>', attrs: { type: "button", title: "Remove RFI", "aria-label": `Remove ${rfi.text}` } })
+  );
+  actions.lastElementChild.addEventListener("click", () => deleteRfi(rfi.id));
+  row.append(main, actions);
+  return row;
+}
+
+function renderRfis() {
+  state.rfis = migrateRfis(state.rfis);
+  const list = $("#rfiList");
+  list.replaceChildren();
+  const openCount = state.rfis.filter((item) => item.status !== "answered").length;
+  $("#rfiCount").textContent = `${openCount} open`;
+  if (!state.rfis.length) {
+    list.append(createElement("div", { className: "empty compact", text: "No RFIs yet." }));
+    return;
+  }
+  state.rfis.slice().sort(sortOpenFirst).forEach((item) => list.append(renderRfiItem(item)));
+}
+
+function addPersistentTaskFromForm(event) {
+  event.preventDefault();
+  const title = $("#persistentTaskTitle").value.trim();
+  if (!title) return;
+  state.persistentTasks.unshift(
+    normalizePersistentTask({
+      id: crypto.randomUUID(),
+      title,
+      owner: $("#persistentTaskOwner").value,
+      status: "open",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    })
+  );
+  $("#persistentTaskTitle").value = "";
+  $("#persistentTaskOwner").value = "Unassigned";
+  savePersistentTasks();
+  renderPersistentTasks();
+  refreshIcons();
+}
+
+function updatePersistentTask(id, patch) {
+  state.persistentTasks = state.persistentTasks.map((item) => (item.id === id ? normalizePersistentTask({ ...item, ...patch, updatedAt: new Date().toISOString() }) : item));
+  savePersistentTasks();
+  renderPersistentTasks();
+  refreshIcons();
+}
+
+function deletePersistentTask(id) {
+  state.persistentTasks = state.persistentTasks.filter((item) => item.id !== id);
+  savePersistentTasks();
+  renderPersistentTasks();
+  refreshIcons();
+}
+
+function renderPersistentTaskItem(item) {
+  const task = normalizePersistentTask(item);
+  const row = createElement("article", { className: `ops-mini-item status-${task.status}` });
+  const main = createElement("div", { className: "ops-mini-main" });
+  const titleRow = createElement("label", { className: "ops-mini-title-row" });
+  const checkbox = createElement("input", { attrs: { type: "checkbox", "aria-label": `Mark ${task.title} complete` } });
+  checkbox.checked = task.status === "done";
+  checkbox.addEventListener("change", () => updatePersistentTask(task.id, { status: checkbox.checked ? "done" : "open" }));
+  titleRow.append(checkbox, createElement("span", { className: "ops-mini-title", text: task.title }));
+  main.append(titleRow, createElement("div", { className: "ops-mini-meta", text: `${task.owner} / ${task.status === "done" ? "complete" : "open"}` }));
+
+  const actions = createElement("div", { className: "ops-mini-actions" });
+  actions.append(
+    renderOwnerControl(task.owner, (owner) => updatePersistentTask(task.id, { owner }), `Owner for ${task.title}`),
+    createElement("button", { className: "icon-button", html: '<i data-lucide="trash-2"></i>', attrs: { type: "button", title: "Remove persistent task", "aria-label": `Remove ${task.title}` } })
+  );
+  actions.lastElementChild.addEventListener("click", () => deletePersistentTask(task.id));
+  row.append(main, actions);
+  return row;
+}
+
+function renderPersistentTasks() {
+  state.persistentTasks = migratePersistentTasks(state.persistentTasks);
+  const list = $("#persistentTaskList");
+  list.replaceChildren();
+  const openCount = state.persistentTasks.filter((item) => item.status !== "done").length;
+  $("#persistentTaskCount").textContent = `${openCount} open`;
+  if (!state.persistentTasks.length) {
+    list.append(createElement("div", { className: "empty compact", text: "No persistent tasks yet." }));
+    return;
+  }
+  state.persistentTasks.slice().sort(sortOpenFirst).forEach((item) => list.append(renderPersistentTaskItem(item)));
 }
 
 function renderAssignments() {
@@ -3337,6 +3565,8 @@ function exportLocalState() {
     exportedAt: new Date().toISOString(),
     selectedDate: state.selectedDate,
     tasks: state.tasks,
+    rfis: state.rfis,
+    persistentTasks: state.persistentTasks,
     deletedSource: state.deletedSource,
     eventOverrides: state.eventOverrides,
     s4Items: state.s4Items,
