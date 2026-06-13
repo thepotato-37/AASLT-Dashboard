@@ -565,8 +565,8 @@ function removeClassEventsCoveredByLrtc(events) {
   });
 }
 
-function removeUntimedClassEvents(events) {
-  return events.filter((event) => !(event.sourceKind === "class-calendar" && !event.start));
+function removeUntimedEvents(events) {
+  return events.filter((event) => event.start);
 }
 
 function isCanonicalLrtcEvent(event) {
@@ -763,7 +763,7 @@ function buildOperationalEvents(rawEvents) {
 
   const lrtcPreferred = removeClassEventsCoveredByLrtc(operational);
   const southDockNormalized = normalizeSouthDockPeEvents(lrtcPreferred);
-  const timedOperational = removeUntimedClassEvents(southDockNormalized);
+  const timedOperational = removeUntimedEvents(southDockNormalized);
   return coalesceSharedMedicalEvents(coalesceMealEvents(mergeEvents(timedOperational)));
 }
 
@@ -1489,7 +1489,7 @@ function renderTimeline(events, wrap) {
     return;
   }
   const grouped = events.reduce((acc, event) => {
-    const key = event.start || "All day";
+    const key = event.start || "Unscheduled";
     acc[key] ||= [];
     acc[key].push(event);
     return acc;
@@ -1774,7 +1774,7 @@ function deleteTask(id) {
 function renderTaskMini(task) {
   const item = createElement("article", { className: `task-mini status-${task.status}`, attrs: { "data-task-id": task.id } });
   const main = createElement("button", { className: "task-mini-main", attrs: { type: "button", "aria-label": `Open ${task.title}` } });
-  main.append(createElement("span", { text: task.start || "All day" }));
+  main.append(createElement("span", { text: task.start || "Unscheduled" }));
   main.append(createElement("strong", { text: task.title }));
   main.append(createElement("small", { text: `${task.track || "Shared"} / ${task.status} / ${taskStaffingText(task)}` }));
   main.addEventListener("click", () => editTask(task));
@@ -1800,7 +1800,7 @@ function renderTaskRow(task) {
     editTask(task);
   });
   main.append(createElement("strong", { text: task.title }));
-  main.append(createElement("small", { className: "task-line", text: `${task.start || "All day"}${task.end ? `-${task.end}` : ""} / ${task.track || "Shared"} / ${task.status || "open"} / ${taskStaffingText(task)}` }));
+  main.append(createElement("small", { className: "task-line", text: `${task.start || "Unscheduled"}${task.end ? `-${task.end}` : ""} / ${task.track || "Shared"} / ${task.status || "open"} / ${taskStaffingText(task)}` }));
   main.append(createElement("small", { className: "task-owner-line", text: `Owners: ${ownersLabel(task)}` }));
   const controls = createElement("div", { className: "task-row-controls" });
   const remove = createElement("button", { className: "icon-button", html: '<i data-lucide="trash-2"></i>', attrs: { type: "button", title: "Remove", "aria-label": "Remove" } });
@@ -1872,7 +1872,7 @@ function renderMealStatus() {
 
 function renderCompactEvent(event) {
   const item = createElement("button", { className: "compact-event", attrs: { type: "button" } });
-  item.append(createElement("span", { text: event.start || "All day" }));
+  item.append(createElement("span", { text: event.start || "Unscheduled" }));
   item.append(createElement("strong", { text: `${event.classKey ? `${event.classKey}: ` : ""}${event.title}` }));
   item.addEventListener("click", () => openEvent(event));
   return item;
@@ -2165,7 +2165,7 @@ function openEvent(event) {
   details.replaceChildren();
   [
     ["Date", formatFullDate(event.date)],
-    ["Time", event.start ? `${event.start}${event.end ? `-${event.end}` : ""}` : "All day"],
+    ["Time", event.start ? `${event.start}${event.end ? `-${event.end}` : ""}` : "Unscheduled"],
     ["Track", event.classKey || "Shared"],
     ["Location", event.location],
     ["Notes", event.notes],

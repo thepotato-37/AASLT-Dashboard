@@ -30,7 +30,7 @@ The medical coverage extraction reads the workbook's font-color coding. In combi
 
 PE/PT events such as Clean PE, PE1, PE2, PE3, and AA PT are normalized to South Dock. When CLASSES and LRTC both describe the same PE/PT window, the dashboard keeps the South Dock LRTC event and folds the CLASSES source reference into it instead of showing a Washington Hall duplicate.
 
-Untimed CLASSES rows are hidden from the operational timeline. This removes context-only cells such as `DAY X WP###`, location headers, and untimed classroom notes while preserving the day labels for the track headers.
+Untimed source rows are hidden from the operational dashboard. This removes context-only cells such as `DAY X WP###`, location headers, and untimed classroom notes while preserving the day labels for the track headers and still using mess-matrix rows to generate timed meal events.
 
 LRTC cadence, admin, and support cells are split before publishing. Trainee timeline cells stay on the Air Assault timeline; cadre/admin cells seed the assignment list; medic-column FLA cells seed S4 FLA requests instead of cluttering the medical timeline. LRTC schedule rows also supersede covered CLASSES training/instruction rows when the newer workbook changes the same event window.
 
