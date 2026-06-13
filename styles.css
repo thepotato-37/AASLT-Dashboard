@@ -1618,6 +1618,8 @@ label {
 .status-planned,
 .status-requested,
 .status-drawn,
+.status-sent,
+.status-complete,
 .status-issued,
 .status-returned {
   border-color: transparent;
@@ -1636,6 +1638,16 @@ label {
 .status-drawn {
   background: var(--accent-soft);
   color: var(--accent-strong);
+}
+
+.status-sent {
+  background: var(--violet-soft);
+  color: var(--violet);
+}
+
+.status-complete {
+  background: var(--olive-soft);
+  color: #4e641f;
 }
 
 .status-issued {
@@ -2417,6 +2429,10 @@ body.drawer-open .next-drawer {
   font-weight: 850;
 }
 
+.s4-field[hidden] {
+  display: none;
+}
+
 .assignment-timeline,
 .s4-list {
   display: grid;
@@ -2690,7 +2706,7 @@ body.drawer-open .next-drawer {
 }
 
 .s4-list {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
   align-items: start;
 }
 
@@ -2700,10 +2716,6 @@ body.drawer-open .next-drawer {
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   overflow: hidden;
-}
-
-.s4-lane[data-lane="FLA Request"] {
-  grid-column: 1 / -1;
 }
 
 .s4-lane-head {
@@ -2723,16 +2735,34 @@ body.drawer-open .next-drawer {
   font-weight: 850;
 }
 
+.s4-lane-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+}
+
+.s4-lane-summary span {
+  display: inline-flex;
+  min-height: 20px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #eef3f4;
+  color: var(--ink-muted);
+  padding: 1px 6px;
+  font-size: 0.66rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
 .s4-lane-body {
   display: grid;
   gap: 8px;
-  max-height: 360px;
+  max-height: 420px;
   overflow: auto;
   padding: 10px;
-}
-
-.s4-lane[data-lane="FLA Request"] .s4-lane-body {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .s4-lane .s4-item {
@@ -2751,7 +2781,7 @@ body.drawer-open .next-drawer {
 
 .s4-main {
   display: grid;
-  gap: 6px;
+  gap: 7px;
   min-width: 0;
 }
 
@@ -2784,6 +2814,18 @@ body.drawer-open .next-drawer {
   padding: 2px 7px;
   font-size: 0.7rem;
   font-weight: 800;
+}
+
+.s4-lane[data-lane="Water Buffalo"] .s4-item {
+  border-left-color: var(--blue);
+}
+
+.s4-lane[data-lane="LMTV TMR"] .s4-item {
+  border-left-color: var(--violet);
+}
+
+.s4-lane[data-lane="FLA Request"] .s4-item {
+  border-left-color: var(--red);
 }
 
 .empty.compact {

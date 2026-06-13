@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260613-7" />
+    <link rel="stylesheet" href="styles.css?v=20260613-8" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="firebase-config.js?v=20260613-7" defer></script>
-    <script src="app.js?v=20260613-7" defer></script>
+    <script src="firebase-config.js?v=20260613-8" defer></script>
+    <script src="app.js?v=20260613-8" defer></script>
   </head>
   <body>
     <div class="app-shell">
@@ -234,35 +234,46 @@
                     <p class="eyebrow">S4 Tracker</p>
                     <h2>Support Control</h2>
                   </div>
-                  <button class="icon-button solid" type="submit" title="Add draw" aria-label="Add draw">
+                  <button class="icon-button solid" type="submit" title="Add support item" aria-label="Add support item">
                     <i data-lucide="plus"></i>
                   </button>
                 </div>
                 <div class="form-grid">
-                  <label>Lane
+                  <label class="s4-field">Lane
                     <select id="s4Type">
                       <option>Draw</option>
-                      <option>Transportation</option>
                       <option>Water Buffalo</option>
+                      <option>LMTV TMR</option>
                       <option>FLA Request</option>
                     </select>
                   </label>
-                  <label>Item<input id="s4Item" required /></label>
-                  <label>Qty / Assets<input id="s4Qty" type="number" min="1" value="1" /></label>
-                  <label>Date / Time<input id="s4NeedBy" type="datetime-local" /></label>
-                  <label>Status
-                    <select id="s4Status">
-                      <option>Planned</option>
-                      <option>Requested</option>
-                      <option>Drawn</option>
-                      <option>Dispatched</option>
-                      <option>Refilled</option>
-                      <option>Complete</option>
-                      <option>Issued</option>
-                      <option>Returned</option>
+                  <label class="s4-field wide" data-s4-field="item"><span id="s4ItemLabel">Item / Mission</span><input id="s4Item" /></label>
+                  <label class="s4-field" data-s4-field="action">Request
+                    <select id="s4RequestKind">
+                      <option>Refill</option>
+                      <option>Drain</option>
+                      <option>Pickup</option>
+                      <option>Placement</option>
                     </select>
                   </label>
-                  <label>Owner<input id="s4Owner" /></label>
+                  <label class="s4-field" data-s4-field="location">Location
+                    <select id="s4Location">
+                      <option>Davis Shelf</option>
+                      <option>South Dock</option>
+                      <option>MARNE</option>
+                    </select>
+                  </label>
+                  <label class="s4-field wide" data-s4-field="placement">Placement<input id="s4Placement" placeholder="e.g. Bartlett, Davis Shelf, South Dock" /></label>
+                  <label class="s4-field" data-s4-field="qty"><span id="s4QtyLabel">Qty</span><input id="s4Qty" type="number" min="1" value="1" /></label>
+                  <label class="s4-field" data-s4-field="pax">PAX<input id="s4Pax" type="number" min="0" value="0" /></label>
+                  <label class="s4-field" data-s4-field="needBy"><span id="s4NeedByLabel">Date / Time</span><input id="s4NeedBy" type="datetime-local" /></label>
+                  <label class="s4-field" data-s4-field="pickup">Pickup<input id="s4PickupTime" type="datetime-local" /></label>
+                  <label class="s4-field" data-s4-field="return">Return<input id="s4ReturnTime" type="datetime-local" /></label>
+                  <label class="s4-field" data-s4-field="status">Status
+                    <select id="s4Status">
+                    </select>
+                  </label>
+                  <label class="s4-field wide" data-s4-field="notes">Notes<input id="s4Notes" placeholder="TMR number, driver, handoff, special coordination" /></label>
                 </div>
               </form>
               <div class="pane table-pane">
@@ -271,7 +282,7 @@
                     <p class="eyebrow">Current</p>
                     <h2>Support Items</h2>
                   </div>
-                  <button class="icon-button" id="clearCompletedS4" type="button" title="Clear returned" aria-label="Clear returned">
+                  <button class="icon-button" id="clearCompletedS4" type="button" title="Clear complete support items" aria-label="Clear complete support items">
                     <i data-lucide="archive-x"></i>
                   </button>
                 </div>

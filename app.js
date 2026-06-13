@@ -25,7 +25,41 @@ const TRACKED_PEOPLE = [
 ];
 const ASSIGNABLE_PEOPLE = TRACKED_PEOPLE.filter((person) => person !== "Unassigned");
 
-const S4_LANES = ["Draw", "Transportation", "Water Buffalo", "FLA Request"];
+const S4_LANES = ["Draw", "Water Buffalo", "LMTV TMR", "FLA Request"];
+const S4_STATUS_OPTIONS = {
+  Draw: ["Planned", "Drawn", "Complete"],
+  "Water Buffalo": ["Planned", "Sent", "Complete"],
+  "LMTV TMR": ["Planned", "Sent", "Complete"],
+  "FLA Request": ["Planned", "Sent", "Complete"],
+};
+const S4_FIELD_CONFIG = {
+  Draw: {
+    visible: ["item", "qty", "needBy", "status", "notes"],
+    itemLabel: "Draw Item",
+    itemPlaceholder: "e.g. Skedco litter, radios, cones",
+    qtyLabel: "Qty",
+    timeLabel: "Draw Time",
+    required: ["item"],
+  },
+  "Water Buffalo": {
+    visible: ["action", "location", "needBy", "status", "notes"],
+    timeLabel: "TMR Time",
+    required: ["location"],
+  },
+  "LMTV TMR": {
+    visible: ["item", "pax", "needBy", "pickup", "return", "status", "notes"],
+    itemLabel: "Mission / Pickup Point",
+    itemPlaceholder: "e.g. Enabler PLT movement",
+    timeLabel: "Request Time",
+    required: ["item"],
+  },
+  "FLA Request": {
+    visible: ["qty", "placement", "needBy", "status", "notes"],
+    qtyLabel: "FLAs",
+    timeLabel: "Request Time",
+    required: ["placement"],
+  },
+};
 
 const CATEGORY_ORDER = ["Training", "Instruction", "Medical", "Meals", "Cadre", "Logistics", "Operations"];
 const CATEGORY_CLASS = {
@@ -1274,8 +1308,93 @@ function mergeSourceTaskings(existingTasks, sourceTaskings = []) {
   return consolidateTasks([...manualTasks, ...mergedSeeds]);
 }
 
+function normalizeS4Lane(type) {
+  if (type === "FLA") return "FLA Request";
+  if (type === "Transportation") return "LMTV TMR";
+  return S4_LANES.includes(type) ? type : "Draw";
+}
+
+function inferS4Location(text = "") {
+  const upper = String(text).toUpperCase();
+  if (upper.includes("SOUTH DOCK")) return "South Dock";
+  if (upper.includes("DAVIS")) return "Davis Shelf";
+  if (upper.includes("MARNE")) return "MARNE";
+  return "";
+}
+
+function inferWaterAction(text = "") {
+  const upper = String(text).toUpperCase();
+  if (upper.includes("DRAIN")) return "Drain";
+  if (upper.includes("PICKUP") || upper.includes("PICK UP")) return "Pickup";
+  if (upper.includes("PLACE")) return "Placement";
+  return "Refill";
+}
+
+function inferFlaPlacement(text = "") {
+  return String(text || "")
+    .replace(/^\s*\d+\s*x?\s*/i, "")
+    .replace(/\bFLA\b/gi, "")
+    .replace(/\b(at|on|to|for)\b/gi, "")
+    .replace(/^[\s:;-]+|[\s:;-]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeS4Status(type, status = "") {
+  const options = S4_STATUS_OPTIONS[type] || S4_STATUS_OPTIONS.Draw;
+  if (options.includes(status)) return status;
+  if (["Requested", "Dispatched", "Issued"].includes(status)) return "Sent";
+  if (["Refilled", "Returned"].includes(status)) return "Complete";
+  return options[0];
+}
+
+function normalizeS4Item(item = {}) {
+  const type = normalizeS4Lane(item.type || item.lane);
+  const title = item.item || item.title || "";
+  const needBy = item.needBy || item.datetime || item.requestTime || item.drawTime || "";
+  const normalized = {
+    ...item,
+    type,
+    item: title || (type === "FLA Request" ? "FLA Request" : type),
+    qty: Math.max(1, Number(item.qty || item.count || 1)),
+    needBy,
+    requestTime: item.requestTime || needBy,
+    drawTime: item.drawTime || needBy,
+    status: normalizeS4Status(type, item.status || "Planned"),
+    owner: item.owner || "",
+    notes: item.notes || "",
+  };
+
+  if (type === "Water Buffalo") {
+    normalized.requestKind = item.requestKind || inferWaterAction(title);
+    normalized.location = item.location || inferS4Location(title) || "Davis Shelf";
+    normalized.item = `${normalized.requestKind} Water Buffalo`;
+  }
+
+  if (type === "LMTV TMR") {
+    normalized.pax = Math.max(0, Number(item.pax || item.qty || 0));
+    normalized.location = "MARNE";
+    normalized.requestKind = "Round Trip";
+    normalized.pickupTime = item.pickupTime || item.pickup || "";
+    normalized.returnTime = item.returnTime || item.return || "";
+    normalized.item = title || "LMTV Round Trip";
+  }
+
+  if (type === "FLA Request") {
+    normalized.placement = item.placement || item.location || inferFlaPlacement(title);
+    normalized.location = normalized.placement;
+    normalized.item = `${normalized.qty}x FLA${normalized.placement ? ` - ${normalized.placement}` : ""}`;
+  }
+
+  if (type === "Draw") {
+    normalized.drawTime = item.drawTime || needBy;
+  }
+
+  return normalized;
+}
+
 function s4FromSourceSupport(item) {
-  return {
+  return normalizeS4Item({
     id: `seed-${item.id}`,
     sourceSeedId: item.id,
     sourceKind: "lrtc-support",
@@ -1286,7 +1405,7 @@ function s4FromSourceSupport(item) {
     status: item.status || "Planned",
     owner: item.owner || "",
     notes: [item.track && item.track !== "Shared" ? item.track : "", sourceSummary(item)].filter(Boolean).join(" / "),
-  };
+  });
 }
 
 function mergeSourceSupportItems(existingItems, sourceItems = []) {
@@ -1308,16 +1427,22 @@ function mergeSourceSupportItems(existingItems, sourceItems = []) {
   const mergedSeeds = seeds.map((seed) => {
     const existing = existingBySeed.get(seed.sourceSeedId);
     if (!existing) return seed;
-    return {
+    return normalizeS4Item({
       ...seed,
       id: existing.id || seed.id,
       status: existing.status || seed.status,
       owner: existing.owner || seed.owner,
       notes: existing.notes || seed.notes,
-    };
+      requestKind: existing.requestKind || seed.requestKind,
+      location: existing.location || seed.location,
+      placement: existing.placement || seed.placement,
+      pax: existing.pax ?? seed.pax,
+      pickupTime: existing.pickupTime || seed.pickupTime,
+      returnTime: existing.returnTime || seed.returnTime,
+    });
   });
 
-  return [...manualItems, ...mergedSeeds];
+  return [...manualItems.map(normalizeS4Item), ...mergedSeeds];
 }
 
 async function init() {
@@ -1398,12 +1523,13 @@ function bindEvents() {
   $$(".tab").forEach((button) => button.addEventListener("click", () => selectTab(button.dataset.tab)));
   $("#taskForm").addEventListener("submit", saveTaskFromForm);
   $("#closeTaskFormButton").addEventListener("click", closeTaskForm);
+  $("#s4Type").addEventListener("change", configureS4Form);
   $("#s4Form").addEventListener("submit", addS4Item);
   $("#clearCompletedS4").addEventListener("click", () => {
     state.s4Items.forEach((item) => {
-      if (item.status === "Returned" || item.status === "Complete") rememberDeletedSupportSource(item);
+      if (normalizeS4Item(item).status === "Complete") rememberDeletedSupportSource(item);
     });
-    state.s4Items = state.s4Items.filter((item) => item.status !== "Returned" && item.status !== "Complete");
+    state.s4Items = state.s4Items.filter((item) => normalizeS4Item(item).status !== "Complete");
     saveS4();
     renderS4();
   });
@@ -1449,6 +1575,7 @@ function renderStaticControls() {
   ownerSelect.replaceChildren();
   ASSIGNABLE_PEOPLE.forEach((person) => ownerSelect.append(renderPersonOption(person, false, () => {})));
   $("#taskDate").value = state.selectedDate;
+  configureS4Form();
   renderSourceControls();
 }
 
@@ -2000,26 +2127,66 @@ function toggleNextDrawer(force) {
 
 function migrateS4(items) {
   return items
-    .map((item) => ({ ...item, type: item.type === "FLA" ? "FLA Request" : item.type || "Draw", notes: item.notes || "" }))
+    .map(normalizeS4Item)
     .filter((item) => item.item);
+}
+
+function configureS4Form() {
+  const type = $("#s4Type")?.value || "Draw";
+  const config = S4_FIELD_CONFIG[type] || S4_FIELD_CONFIG.Draw;
+  const visible = new Set(config.visible);
+  $$(".s4-field[data-s4-field]").forEach((field) => {
+    const key = field.dataset.s4Field;
+    const isVisible = visible.has(key);
+    field.hidden = !isVisible;
+    $$("input, select, textarea", field).forEach((input) => {
+      input.disabled = !isVisible;
+      input.required = isVisible && (config.required || []).includes(key);
+    });
+  });
+  $("#s4ItemLabel").textContent = config.itemLabel || "Item";
+  $("#s4Item").placeholder = config.itemPlaceholder || "";
+  $("#s4QtyLabel").textContent = config.qtyLabel || "Qty";
+  $("#s4NeedByLabel").textContent = config.timeLabel || "Date / Time";
+  const statusSelect = $("#s4Status");
+  const current = statusSelect.value;
+  statusSelect.replaceChildren();
+  (S4_STATUS_OPTIONS[type] || S4_STATUS_OPTIONS.Draw).forEach((status) => statusSelect.append(createElement("option", { text: status, attrs: { value: status } })));
+  statusSelect.value = (S4_STATUS_OPTIONS[type] || []).includes(current) ? current : (S4_STATUS_OPTIONS[type] || S4_STATUS_OPTIONS.Draw)[0];
 }
 
 function addS4Item(event) {
   event.preventDefault();
+  const type = $("#s4Type")?.value || "Draw";
+  const qty = Number($("#s4Qty")?.value || 1);
+  const placement = $("#s4Placement")?.value.trim() || "";
+  const baseItem = $("#s4Item")?.value.trim() || "";
   const item = {
     id: crypto.randomUUID(),
-    type: $("#s4Type")?.value || "Draw",
-    item: $("#s4Item").value.trim(),
-    qty: Number($("#s4Qty").value || 1),
-    needBy: $("#s4NeedBy").value,
-    status: $("#s4Status").value,
-    owner: $("#s4Owner").value.trim(),
-    notes: "",
+    type,
+    item: baseItem,
+    qty,
+    needBy: $("#s4NeedBy")?.value || "",
+    requestTime: $("#s4NeedBy")?.value || "",
+    drawTime: $("#s4NeedBy")?.value || "",
+    status: $("#s4Status")?.value || "Planned",
+    owner: "",
+    notes: $("#s4Notes")?.value.trim() || "",
+    requestKind: $("#s4RequestKind")?.value || "",
+    location: $("#s4Location")?.value || "",
+    placement,
+    pax: Number($("#s4Pax")?.value || 0),
+    pickupTime: $("#s4PickupTime")?.value || "",
+    returnTime: $("#s4ReturnTime")?.value || "",
   };
   state.s4Items.unshift(item);
+  state.s4Items = migrateS4(state.s4Items);
   saveS4();
   event.target.reset();
+  $("#s4Type").value = type;
   $("#s4Qty").value = 1;
+  $("#s4Pax").value = 0;
+  configureS4Form();
   renderS4();
 }
 
@@ -2048,36 +2215,89 @@ function renderS4() {
   const list = $("#s4List");
   list.replaceChildren();
   S4_LANES.forEach((type) => {
-    const laneItems = state.s4Items.filter((item) => item.type === type);
+    const laneItems = state.s4Items.filter((item) => normalizeS4Lane(item.type) === type);
     const lane = createElement("section", { className: "s4-lane", attrs: { "data-lane": type } });
     const laneHead = createElement("div", { className: "s4-lane-head" });
-    laneHead.append(createElement("h3", { text: type }), createElement("span", { className: "status-pill", text: String(laneItems.length) }));
+    laneHead.append(createElement("h3", { text: type }), renderS4LaneSummary(type, laneItems));
     const laneBody = createElement("div", { className: "s4-lane-body" });
     if (!laneItems.length) laneBody.append(createElement("div", { className: "empty compact", text: "Nothing tracked." }));
-    laneItems.sort((a, b) => (a.needBy || "9999").localeCompare(b.needBy || "9999")).forEach((item) => laneBody.append(renderS4Item(item)));
+    laneItems
+      .sort((a, b) => (s4PrimaryTime(a) || "9999").localeCompare(s4PrimaryTime(b) || "9999"))
+      .forEach((item) => laneBody.append(renderS4Item(item)));
     lane.append(laneHead, laneBody);
     list.append(lane);
   });
   refreshIcons();
 }
 
+function renderS4LaneSummary(type, items) {
+  const wrap = createElement("div", { className: "s4-lane-summary" });
+  const options = S4_STATUS_OPTIONS[type] || S4_STATUS_OPTIONS.Draw;
+  options.forEach((status) => {
+    const count = items.filter((item) => normalizeS4Item(item).status === status).length;
+    wrap.append(createElement("span", { text: `${status} ${count}` }));
+  });
+  return wrap;
+}
+
+function s4PrimaryTime(item) {
+  item = normalizeS4Item(item);
+  if (item.type === "Draw") return item.drawTime || item.needBy;
+  if (item.type === "LMTV TMR") return item.requestTime || item.needBy || item.pickupTime;
+  return item.requestTime || item.needBy;
+}
+
+function s4Title(item) {
+  item = normalizeS4Item(item);
+  if (item.type === "Water Buffalo") return `${item.requestKind || "Refill"} Water Buffalo`;
+  if (item.type === "LMTV TMR") return item.item || "LMTV Round Trip";
+  if (item.type === "FLA Request") return item.item || `${item.qty || 1}x FLA Request`;
+  return item.item || "Draw";
+}
+
+function s4Meta(item) {
+  item = normalizeS4Item(item);
+  if (item.type === "Water Buffalo") {
+    return [`TMR ${item.status}`, item.requestKind, item.location, formatSupportDateTime(item.requestTime || item.needBy)].filter(Boolean);
+  }
+  if (item.type === "LMTV TMR") {
+    return [`TMR ${item.status}`, `${item.pax || 0} PAX`, "Round trip to MARNE", formatSupportDateTime(item.requestTime || item.needBy)].filter(Boolean);
+  }
+  if (item.type === "FLA Request") {
+    return [`${item.qty || 1} FLA`, formatSupportDateTime(item.requestTime || item.needBy), item.placement || item.location || "Placement TBD"].filter(Boolean);
+  }
+  return [`${item.qty || 1} item${Number(item.qty || 1) === 1 ? "" : "s"}`, formatSupportDateTime(item.drawTime || item.needBy), item.status].filter(Boolean);
+}
+
+function s4DetailLines(item) {
+  item = normalizeS4Item(item);
+  const lines = [];
+  if (item.type === "LMTV TMR") {
+    if (item.pickupTime) lines.push(`Pickup: ${formatSupportDateTime(item.pickupTime)}`);
+    if (item.returnTime) lines.push(`Return: ${formatSupportDateTime(item.returnTime)}`);
+  }
+  if (item.owner) lines.push(`Owner: ${item.owner}`);
+  if (item.notes) lines.push(item.notes);
+  return lines;
+}
+
 function renderS4Item(item) {
-  const rowEl = createElement("article", { className: `s4-item status-${String(item.status || "planned").toLowerCase()}` });
+  const normalized = normalizeS4Item(item);
+  const rowEl = createElement("article", { className: `s4-item status-${safeClassName(normalized.status)}` });
   const main = createElement("div", { className: "s4-main" });
-  main.append(createElement("strong", { text: item.item }));
+  main.append(createElement("strong", { text: s4Title(normalized) }));
   const meta = createElement("div", { className: "s4-meta" });
-  meta.append(
-    createElement("span", { text: `${item.qty || 1} asset${Number(item.qty || 1) === 1 ? "" : "s"}` }),
-    createElement("span", { text: formatSupportDateTime(item.needBy) }),
-    createElement("span", { text: item.owner || "Unassigned" })
-  );
+  s4Meta(normalized).forEach((line) => meta.append(createElement("span", { text: line })));
   main.append(meta);
-  if (item.notes) main.append(createElement("small", { text: item.notes }));
-  const status = createElement("select", { attrs: { "aria-label": `Status for ${item.item}` } });
-  ["Planned", "Requested", "Drawn", "Dispatched", "Refilled", "Complete", "Returned"].forEach((value) => status.append(createElement("option", { text: value, attrs: { value } })));
-  status.value = item.status;
+  s4DetailLines(normalized).forEach((line) => main.append(createElement("small", { text: line })));
+  const status = createElement("select", { attrs: { "aria-label": `Status for ${normalized.item}` } });
+  const statusOptions = S4_STATUS_OPTIONS[normalized.type] || S4_STATUS_OPTIONS.Draw;
+  Array.from(new Set([...statusOptions, normalized.status])).forEach((value) => status.append(createElement("option", { text: value, attrs: { value } })));
+  status.value = normalized.status;
   status.addEventListener("change", () => {
     item.status = status.value;
+    item.type = normalized.type;
+    if (status.value === "Sent" || status.value === "Drawn" || status.value === "Complete") item.sentAt = item.sentAt || new Date().toISOString();
     saveS4();
     renderS4();
   });
@@ -2456,16 +2676,17 @@ function printMealSummary(dayEvents) {
 }
 
 function printS4Item(item) {
-  const notes = String(item.notes || "").trim();
+  const normalized = normalizeS4Item(item);
+  const details = s4DetailLines(normalized);
   return `
-    <article class="print-card print-s4-item status-${safeClassName(item.status)}">
+    <article class="print-card print-s4-item status-${safeClassName(normalized.status)}">
       <div class="print-card-top">
-        <span class="print-badge">${printValue(item.status || "Planned")}</span>
-        <span class="print-time-chip">${printValue(formatSupportDateTime(item.needBy), "TBD")}</span>
+        <span class="print-badge">${printValue(normalized.status || "Planned")}</span>
+        <span class="print-time-chip">${printValue(formatSupportDateTime(s4PrimaryTime(normalized)), "TBD")}</span>
       </div>
-      <strong>${printValue(item.item, "Support item")}</strong>
-      <p>${Number(item.qty || 1)} asset${Number(item.qty || 1) === 1 ? "" : "s"} / Owner: ${printValue(item.owner || "Unassigned")}</p>
-      ${notes ? `<p>${escapeHtml(notes)}</p>` : ""}
+      <strong>${printValue(s4Title(normalized), "Support item")}</strong>
+      <p>${s4Meta(normalized).map(escapeHtml).join(" / ")}</p>
+      ${details.length ? `<p>${details.map(escapeHtml).join(" / ")}</p>` : ""}
     </article>
   `;
 }
@@ -2483,7 +2704,7 @@ function printS4Page() {
       </header>
       <div class="print-s4-grid">
         ${S4_LANES.map((lane) => {
-          const laneItems = state.s4Items.filter((item) => item.type === lane).sort((a, b) => (a.needBy || "9999").localeCompare(b.needBy || "9999"));
+          const laneItems = state.s4Items.filter((item) => normalizeS4Lane(item.type) === lane).sort((a, b) => (s4PrimaryTime(a) || "9999").localeCompare(s4PrimaryTime(b) || "9999"));
           return `
             <section class="print-s4-lane">
               <div class="print-section-head">
