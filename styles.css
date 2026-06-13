@@ -740,6 +740,52 @@ main {
   text-align: center;
 }
 
+.today-weather-strip {
+  display: flex;
+  min-height: 42px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, rgba(50, 116, 168, 0.08), rgba(46, 112, 118, 0.08)), var(--surface);
+  padding: 7px 14px;
+  text-align: center;
+}
+
+.today-weather-label,
+.today-weather-chip {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: 999px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.today-weather-label {
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.today-weather-chip {
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--ink-muted);
+  padding: 3px 8px;
+  font-size: 0.74rem;
+  font-weight: 850;
+}
+
+.today-weather-strip strong.today-weather-chip {
+  border-color: rgba(50, 116, 168, 0.22);
+  background: var(--blue-soft);
+  color: #173a5c;
+}
+
 .calendar-dots,
 .event-dots,
 .day-dots {

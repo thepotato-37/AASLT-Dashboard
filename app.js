@@ -1779,6 +1779,7 @@ function formatWeatherUpdated(value) {
 }
 
 function renderWeather() {
+  renderTodayWeatherStrip();
   const panel = $("#weatherPanel");
   if (!panel) return;
   panel.replaceChildren();
@@ -1823,6 +1824,35 @@ function renderWeather() {
   });
 
   panel.append(header, focus, week);
+}
+
+function renderTodayWeatherStrip() {
+  const strip = $("#todayWeatherStrip");
+  if (!strip) return;
+  strip.replaceChildren();
+  if (state.weather.status === "loading") {
+    strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }), createElement("strong", { className: "today-weather-chip", text: "Loading forecast" }));
+    return;
+  }
+  if (state.weather.status === "error") {
+    strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }), createElement("strong", { className: "today-weather-chip", text: "Weather unavailable" }));
+    return;
+  }
+  const today = (state.weather.days || [])[0];
+  if (!today) {
+    strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }), createElement("strong", { className: "today-weather-chip", text: "No forecast" }));
+    return;
+  }
+  const chips = [
+    today.condition,
+    `${formatTemp(today.high)} / ${formatTemp(today.low)}`,
+    today.heatIndex === undefined ? "HI TBD" : `HI ${formatTemp(today.heatIndex)}`,
+    today.humidity === undefined ? "Humidity TBD" : `Humidity ${today.humidity}%`,
+  ];
+  strip.append(createElement("span", { className: "today-weather-label", text: "Today Weather" }));
+  chips.forEach((chip, index) => {
+    strip.append(createElement(index === 1 ? "strong" : "span", { className: "today-weather-chip", text: chip }));
+  });
 }
 
 function selectDate(iso) {
