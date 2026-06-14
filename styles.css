@@ -158,7 +158,10 @@ i[data-lucide] {
   font-weight: 800;
   letter-spacing: 0.09em;
   line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 h1,
@@ -461,7 +464,8 @@ main {
 .pane-header p,
 .day-heading h2,
 .day-heading p {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .pane-header.compact {
@@ -3319,7 +3323,79 @@ body.drawer-open .next-drawer {
   }
 }
 
-@media (max-width: 1180px) {
+@media (min-width: 1261px) and (max-width: 1500px) {
+  .app-shell {
+    padding: 18px;
+  }
+
+  main,
+  .side-stack {
+    gap: 14px;
+  }
+
+  .command {
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .control-grid {
+    grid-template-columns: minmax(330px, 0.82fr) minmax(520px, 1.4fr) minmax(330px, 0.82fr);
+    gap: 14px;
+  }
+
+  .pane-header {
+    min-height: 62px;
+    padding: 12px;
+  }
+
+  .pane-header.compact,
+  .rfi-pane .pane-header.compact {
+    min-height: 50px;
+    padding-block: 10px;
+  }
+
+  .timeline-tools,
+  .timeline-split,
+  .assignment-tools,
+  .assignment-list {
+    padding-inline: 12px;
+  }
+
+  .timeline-split {
+    gap: 8px;
+  }
+
+  .track-list,
+  .track-column .timeline,
+  .task-list {
+    padding: 8px;
+  }
+
+  .track-column .time-group {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .event-card {
+    padding: 8px;
+  }
+
+  .calendar-grid {
+    padding-inline: 8px;
+  }
+
+  .calendar-day,
+  .day-cell {
+    min-height: 50px;
+    padding: 5px;
+  }
+
+  .weather-panel {
+    padding-inline: 8px;
+  }
+}
+
+@media (max-width: 1260px) {
   .app-shell {
     padding: 18px;
   }
