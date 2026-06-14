@@ -429,6 +429,11 @@ main {
   min-height: 180px;
 }
 
+.left-stack > .pane:last-child {
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
 .right-stack .load-pane {
   flex: 0 0 auto;
   min-height: 620px;
@@ -2922,6 +2927,11 @@ body.drawer-open .next-drawer {
   overflow: hidden;
 }
 
+.rfi-pane {
+  min-height: 0;
+  max-height: clamp(156px, 32vh, 320px);
+}
+
 .mini-form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(112px, 0.58fr) var(--control-h-sm);
@@ -2947,33 +2957,54 @@ body.drawer-open .next-drawer {
 
 .rfi-pane .mini-form {
   grid-template-columns: minmax(0, 1fr) var(--control-h-sm);
+  align-items: center;
+  padding: 7px 8px;
+}
+
+.rfi-pane .pane-header.compact {
+  min-height: 50px;
+  padding: 10px 12px;
 }
 
 .rfi-pane .ops-mini-list {
   gap: 6px;
-  padding: 8px;
+  align-content: start;
+  max-height: 210px;
+  padding: 7px 8px;
 }
 
 .rfi-pane .ops-mini-item {
   grid-template-columns: minmax(0, 1fr) 28px;
+  align-items: start;
   gap: 6px;
+  min-height: 34px;
   padding: 6px;
+}
+
+.rfi-pane .ops-mini-main {
+  align-self: center;
 }
 
 .rfi-pane .ops-mini-title-row {
   grid-template-columns: 16px minmax(0, 1fr);
   gap: 6px;
-}
-
-.rfi-pane .ops-mini-title-row input {
-  width: 14px;
-  height: 14px;
-  margin-top: 1px;
+  align-items: start;
 }
 
 .rfi-pane .ops-mini-title {
   font-size: 0.76rem;
   line-height: 1.15;
+}
+
+.rfi-pane .ops-mini-title-row input {
+  width: 14px;
+  height: 14px;
+  margin-top: 0;
+}
+
+.rfi-pane .ops-mini-actions {
+  align-self: start;
+  justify-content: center;
 }
 
 .rfi-pane .ops-mini-actions .icon-button {
