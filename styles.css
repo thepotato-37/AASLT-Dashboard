@@ -2969,16 +2969,20 @@ body.drawer-open .next-drawer {
 .rfi-pane .ops-mini-list {
   gap: 6px;
   align-content: start;
+  justify-items: start;
   max-height: 210px;
   padding: 7px 8px;
 }
 
 .rfi-pane .ops-mini-item {
+  width: fit-content;
+  max-width: 100%;
   grid-template-columns: minmax(0, 1fr) 28px;
   align-items: start;
-  gap: 6px;
+  justify-self: start;
+  gap: 10px;
   min-height: 34px;
-  padding: 6px;
+  padding: 6px 7px 6px 6px;
 }
 
 .rfi-pane .ops-mini-main {
@@ -3010,6 +3014,7 @@ body.drawer-open .next-drawer {
 .rfi-pane .ops-mini-actions .icon-button {
   width: 28px;
   height: 28px;
+  flex: 0 0 28px;
 }
 
 .ops-mini-list {
@@ -3109,6 +3114,35 @@ body.drawer-open .next-drawer {
 .ops-mini-actions .icon-button {
   width: 30px;
   height: 30px;
+  flex: 0 0 30px;
+}
+
+.persistent-pane .ops-mini-item {
+  align-items: center;
+}
+
+.persistent-pane .ops-mini-main {
+  gap: 3px;
+}
+
+.persistent-pane .ops-mini-title-row {
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+}
+
+.persistent-pane .ops-mini-title-row input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+}
+
+.persistent-pane .ops-mini-meta {
+  padding-left: 23px;
+}
+
+.persistent-pane .ops-mini-actions {
+  align-items: center;
 }
 
 .s4-list {
