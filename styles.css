@@ -429,6 +429,11 @@ main {
   min-height: 180px;
 }
 
+.right-stack .load-pane {
+  flex: 0 0 auto;
+  min-height: 620px;
+}
+
 .day-pane {
   min-height: 620px;
 }
@@ -2940,6 +2945,42 @@ body.drawer-open .next-drawer {
   min-width: var(--control-h-sm);
 }
 
+.rfi-pane .mini-form {
+  grid-template-columns: minmax(0, 1fr) var(--control-h-sm);
+}
+
+.rfi-pane .ops-mini-list {
+  gap: 6px;
+  padding: 8px;
+}
+
+.rfi-pane .ops-mini-item {
+  grid-template-columns: minmax(0, 1fr) 28px;
+  gap: 6px;
+  padding: 6px;
+}
+
+.rfi-pane .ops-mini-title-row {
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 6px;
+}
+
+.rfi-pane .ops-mini-title-row input {
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+}
+
+.rfi-pane .ops-mini-title {
+  font-size: 0.76rem;
+  line-height: 1.15;
+}
+
+.rfi-pane .ops-mini-actions .icon-button {
+  width: 28px;
+  height: 28px;
+}
+
 .ops-mini-list {
   display: grid;
   align-content: start;
@@ -3212,6 +3253,10 @@ body.drawer-open .next-drawer {
 
   .side-stack {
     height: auto;
+  }
+
+  .right-stack .load-pane {
+    min-height: auto;
   }
 
   .day-pane {

@@ -1785,7 +1785,6 @@ function renderStaticControls() {
   const ownerSelect = $("#taskOwners");
   ownerSelect.replaceChildren();
   ASSIGNABLE_PEOPLE.forEach((person) => ownerSelect.append(renderPersonOption(person, false, () => {})));
-  populatePersonSelect($("#rfiOwner"));
   populatePersonSelect($("#persistentTaskOwner"));
   $("#taskDate").value = state.selectedDate;
   configureS4Form();
@@ -2280,14 +2279,12 @@ function addRfiFromForm(event) {
     normalizeRfi({
       id: crypto.randomUUID(),
       text,
-      owner: $("#rfiOwner").value,
       status: "open",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
   );
   $("#rfiText").value = "";
-  $("#rfiOwner").value = "Unassigned";
   saveRfis();
   renderRfis();
   refreshIcons();
@@ -2316,17 +2313,12 @@ function renderRfiItem(item) {
   checkbox.checked = rfi.status === "answered";
   checkbox.addEventListener("change", () => updateRfi(rfi.id, { status: checkbox.checked ? "answered" : "open" }));
   titleRow.append(checkbox, createElement("span", { className: "ops-mini-title", text: rfi.text }));
-  main.append(
-    titleRow,
-    createElement("div", { className: "ops-mini-meta", text: `${rfi.owner} / ${rfi.status === "answered" ? "answered" : "open"}` })
-  );
+  main.append(titleRow);
 
   const actions = createElement("div", { className: "ops-mini-actions" });
-  actions.append(
-    renderOwnerControl(rfi.owner, (owner) => updateRfi(rfi.id, { owner }), `Owner for ${rfi.text}`),
-    createElement("button", { className: "icon-button", html: '<i data-lucide="trash-2"></i>', attrs: { type: "button", title: "Remove RFI", "aria-label": `Remove ${rfi.text}` } })
-  );
-  actions.lastElementChild.addEventListener("click", () => deleteRfi(rfi.id));
+  const remove = createElement("button", { className: "icon-button", html: '<i data-lucide="trash-2"></i>', attrs: { type: "button", title: "Remove RFI", "aria-label": `Remove ${rfi.text}` } });
+  remove.addEventListener("click", () => deleteRfi(rfi.id));
+  actions.append(remove);
   row.append(main, actions);
   return row;
 }
