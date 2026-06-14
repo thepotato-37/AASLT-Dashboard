@@ -2975,11 +2975,12 @@ body.drawer-open .next-drawer {
 
 .rfi-pane .ops-mini-item {
   width: 100%;
-  grid-template-columns: minmax(0, 1fr) 36px;
-  align-items: start;
+  justify-self: stretch;
+  grid-template-columns: minmax(0, 1fr) 34px;
+  align-items: center;
   gap: 8px;
   min-height: 34px;
-  padding: 6px 10px 6px 6px;
+  padding: 6px 8px 6px 6px;
 }
 
 .rfi-pane .ops-mini-main {
@@ -2989,7 +2990,8 @@ body.drawer-open .next-drawer {
 .rfi-pane .ops-mini-title-row {
   grid-template-columns: 16px minmax(0, 1fr);
   gap: 6px;
-  align-items: start;
+  align-items: center;
+  min-height: 28px;
 }
 
 .rfi-pane .ops-mini-title {
@@ -3004,15 +3006,28 @@ body.drawer-open .next-drawer {
 }
 
 .rfi-pane .ops-mini-actions {
-  align-self: start;
-  width: 36px;
-  justify-content: center;
+  display: grid;
+  width: 34px;
+  height: 32px;
+  align-self: center;
+  place-items: center;
 }
 
 .rfi-pane .ops-mini-actions .icon-button {
   width: 28px;
   height: 28px;
+  min-width: 0;
   flex: 0 0 28px;
+  place-items: center;
+  padding: 0;
+  line-height: 0;
+}
+
+.rfi-pane .ops-mini-actions .icon-button svg {
+  width: 16px;
+  height: 16px;
+  justify-self: center;
+  align-self: center;
 }
 
 .ops-mini-list {
