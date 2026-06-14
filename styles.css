@@ -2969,20 +2969,17 @@ body.drawer-open .next-drawer {
 .rfi-pane .ops-mini-list {
   gap: 6px;
   align-content: start;
-  justify-items: start;
   max-height: 210px;
   padding: 7px 8px;
 }
 
 .rfi-pane .ops-mini-item {
-  width: fit-content;
-  max-width: 100%;
-  grid-template-columns: minmax(0, 1fr) 28px;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) 36px;
   align-items: start;
-  justify-self: start;
-  gap: 10px;
+  gap: 8px;
   min-height: 34px;
-  padding: 6px 7px 6px 6px;
+  padding: 6px 10px 6px 6px;
 }
 
 .rfi-pane .ops-mini-main {
@@ -3008,6 +3005,7 @@ body.drawer-open .next-drawer {
 
 .rfi-pane .ops-mini-actions {
   align-self: start;
+  width: 36px;
   justify-content: center;
 }
 
