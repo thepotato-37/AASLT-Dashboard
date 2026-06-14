@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260614-5" />
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="firebase-config.js?v=20260614-5" defer></script>
-    <script src="app.js?v=20260614-5" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260614-6" />
+    <script src="firebase-config.js?v=20260614-6" defer></script>
+    <script src="app.js?v=20260614-6" defer></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
     <div class="app-shell">
@@ -20,6 +20,9 @@
           </div>
         </div>
         <div class="command-actions">
+          <button class="icon-button mobile-menu-toggle" id="mobileMenuButton" type="button" title="Open phone menu" aria-label="Open phone menu" aria-controls="mobileMenu" aria-expanded="false">
+            <i data-lucide="menu"></i>
+          </button>
           <label class="search-box" for="globalSearch">
             <i data-lucide="search"></i>
             <input id="globalSearch" type="search" placeholder="Search task, unit, source, location" />
@@ -37,6 +40,42 @@
       </header>
 
       <main>
+        <div id="mobileMenuBackdrop" class="mobile-menu-backdrop" hidden></div>
+        <aside id="mobileMenu" class="mobile-menu" aria-label="Phone dashboard menu" aria-hidden="true">
+          <div class="mobile-menu-head">
+            <div>
+              <p class="eyebrow">Phone Menu</p>
+              <h2>Dashboard Views</h2>
+            </div>
+            <button class="icon-button" id="mobileMenuClose" type="button" title="Close phone menu" aria-label="Close phone menu">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="mobile-menu-list">
+            <button class="mobile-menu-item is-active" data-mobile-view="ops" type="button">
+              <i data-lucide="activity"></i>
+              <span>
+                <strong>Tracks</strong>
+                <small>Active tracks, weather, calendar</small>
+              </span>
+            </button>
+            <button class="mobile-menu-item" data-mobile-view="tasks" type="button">
+              <i data-lucide="clipboard-list"></i>
+              <span>
+                <strong>Assignments</strong>
+                <small>Cadre tasking and standing work</small>
+              </span>
+            </button>
+            <button class="mobile-menu-item" data-mobile-view="s4" type="button">
+              <i data-lucide="boxes"></i>
+              <span>
+                <strong>S4</strong>
+                <small>Draws, TMRs, water, FLA requests</small>
+              </span>
+            </button>
+          </div>
+        </aside>
+
         <section class="summary-strip" aria-label="Operation summary">
           <div class="summary-card">
             <span class="metric-label">Active Tracks</span>

@@ -119,6 +119,7 @@ const WEATHER_CODE_LABELS = {
   96: "Storms with hail",
   99: "Storms with hail",
 };
+const MOBILE_VIEWS = new Set(["ops", "tasks", "s4"]);
 
 const state = {
   data: null,
@@ -130,6 +131,7 @@ const state = {
   search: "",
   dayView: "tracks",
   assignmentView: "list",
+  mobileView: "ops",
   tasks: [],
   rfis: [],
   persistentTasks: [],
@@ -1282,7 +1284,10 @@ function saveS4() {
 }
 
 function saveSettings() {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify({ selectedDate: state.selectedDate, sourceFilter: state.sourceFilter, dayView: state.dayView, assignmentView: state.assignmentView }));
+  localStorage.setItem(
+    SETTINGS_KEY,
+    JSON.stringify({ selectedDate: state.selectedDate, sourceFilter: state.sourceFilter, dayView: state.dayView, assignmentView: state.assignmentView, mobileView: state.mobileView })
+  );
 }
 
 function peopleRequiredFromTitle(title) {
@@ -1687,6 +1692,7 @@ function initSettings() {
   state.sourceFilter = settings.sourceFilter && (settings.sourceFilter === "all" || sourceNames.has(settings.sourceFilter)) ? settings.sourceFilter : "all";
   state.dayView = settings.dayView || "tracks";
   state.assignmentView = "list";
+  state.mobileView = MOBILE_VIEWS.has(settings.mobileView) ? settings.mobileView : "ops";
 }
 
 function bindEvents() {
@@ -1714,6 +1720,18 @@ function bindEvents() {
     renderAll();
   });
   $$("#openNextPaneButton, #closeNextPaneButton, #drawerBackdrop").forEach((el) => el.addEventListener("click", () => toggleNextDrawer()));
+  $("#mobileMenuButton")?.addEventListener("click", () => toggleMobileMenu(true));
+  $("#mobileMenuClose")?.addEventListener("click", () => toggleMobileMenu(false));
+  $("#mobileMenuBackdrop")?.addEventListener("click", () => toggleMobileMenu(false));
+  $$(".mobile-menu-item[data-mobile-view]").forEach((button) => {
+    button.addEventListener("click", () => setMobileView(button.dataset.mobileView));
+  });
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") toggleMobileMenu(false);
+  });
+  window.addEventListener("resize", () => {
+    if (!window.matchMedia("(max-width: 820px)").matches) toggleMobileMenu(false);
+  });
   $$("#quickTaskButton").forEach((el) => el.addEventListener("click", openNewTaskForm));
   $$(".segment[data-day-view]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1787,6 +1805,7 @@ function renderStaticControls() {
   ASSIGNABLE_PEOPLE.forEach((person) => ownerSelect.append(renderPersonOption(person, false, () => {})));
   populatePersonSelect($("#persistentTaskOwner"));
   $("#taskDate").value = state.selectedDate;
+  applyMobileView();
   configureS4Form();
   renderSourceControls();
 }
@@ -1804,6 +1823,7 @@ function renderAll() {
   renderS4();
   renderReceipts();
   renderNotes();
+  applyMobileView();
   saveSettings();
   refreshIcons();
 }
@@ -2579,6 +2599,38 @@ function toggleNextDrawer(force) {
   drawer.classList.toggle("is-open", open);
   document.body.classList.toggle("drawer-open", open);
   $("#drawerBackdrop").hidden = !open;
+}
+
+function toggleMobileMenu(force) {
+  const menu = $("#mobileMenu");
+  const backdrop = $("#mobileMenuBackdrop");
+  if (!menu || !backdrop) return;
+  const open = typeof force === "boolean" ? force : menu.getAttribute("aria-hidden") === "true";
+  menu.setAttribute("aria-hidden", open ? "false" : "true");
+  document.body.classList.toggle("mobile-menu-open", open);
+  backdrop.hidden = !open;
+  $("#mobileMenuButton")?.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+function setMobileView(view) {
+  if (!MOBILE_VIEWS.has(view)) return;
+  state.mobileView = view;
+  if (view === "s4") selectTab("s4");
+  applyMobileView();
+  saveSettings();
+  toggleMobileMenu(false);
+}
+
+function applyMobileView() {
+  const view = MOBILE_VIEWS.has(state.mobileView) ? state.mobileView : "ops";
+  state.mobileView = view;
+  document.body.dataset.mobileView = view;
+  MOBILE_VIEWS.forEach((name) => document.body.classList.toggle(`mobile-view-${name}`, name === view));
+  $$(".mobile-menu-item[data-mobile-view]").forEach((button) => {
+    const active = button.dataset.mobileView === view;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+  });
 }
 
 function migrateS4(items) {
