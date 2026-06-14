@@ -2976,7 +2976,7 @@ body.drawer-open .next-drawer {
 .rfi-pane .ops-mini-item {
   width: 100%;
   justify-self: stretch;
-  grid-template-columns: minmax(0, 1fr) 34px;
+  grid-template-columns: minmax(0, 1fr) 28px;
   align-items: center;
   gap: 8px;
   min-height: 34px;
@@ -3007,7 +3007,7 @@ body.drawer-open .next-drawer {
 
 .rfi-pane .ops-mini-actions {
   display: grid;
-  width: 34px;
+  width: 28px;
   height: 32px;
   align-self: center;
   place-items: center;
