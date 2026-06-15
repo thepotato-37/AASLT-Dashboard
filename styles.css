@@ -937,6 +937,13 @@ main {
   border-bottom: 1px solid var(--line);
 }
 
+.view-tools {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
 .segmented {
   display: inline-grid;
   grid-auto-flow: column;
@@ -1252,11 +1259,6 @@ textarea {
   max-width: 100%;
   overflow: auto;
   padding: 0;
-}
-
-#dayTableWrap {
-  max-height: 500px;
-  padding: 12px 16px 16px;
 }
 
 .table-wrap.is-hidden,
@@ -2041,6 +2043,13 @@ label {
   font-weight: 850;
 }
 
+.secondary-button.compact {
+  min-height: var(--control-h-sm);
+  padding-inline: 10px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
 .secondary-button:hover {
   border-color: var(--line-strong);
   background: var(--surface);
@@ -2271,6 +2280,247 @@ body.mobile-menu-open .mobile-menu-backdrop {
   opacity: 1;
   pointer-events: auto;
 }
+
+body.week-table-open {
+  overflow: hidden;
+}
+
+.week-table-view[hidden] {
+  display: none !important;
+}
+
+.week-table-view {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  background: rgba(232, 240, 240, 0.96);
+  padding: 16px;
+}
+
+.week-table-shell {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 24px 70px rgba(19, 32, 37, 0.22);
+  overflow: hidden;
+}
+
+.week-table-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-soft);
+  padding: 14px 16px;
+}
+
+.week-table-head h2 {
+  margin-top: 3px;
+  font-size: 1.04rem;
+}
+
+.week-exit-button {
+  flex: 0 0 auto;
+}
+
+.week-table-scroll {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+}
+
+.week-empty {
+  min-height: 220px;
+}
+
+.week-matrix {
+  width: max-content;
+  min-width: calc(92px + 14 * 250px);
+  table-layout: fixed;
+  border-top: 1px solid var(--line-strong);
+  border-left: 1px solid var(--line);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.week-matrix th,
+.week-matrix td {
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 6px;
+  vertical-align: top;
+}
+
+.week-matrix thead th {
+  position: sticky;
+  z-index: 4;
+  background: #edf4f4;
+}
+
+.week-time-head {
+  left: 0;
+  top: 0;
+  z-index: 7 !important;
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
+  color: var(--accent-strong);
+  text-align: center;
+}
+
+.week-day-head {
+  top: 0;
+  height: 42px;
+  color: var(--accent-strong);
+  text-align: left;
+}
+
+.week-day-head strong,
+.week-day-head span {
+  display: block;
+  line-height: 1.15;
+}
+
+.week-day-head strong {
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.week-day-head span {
+  margin-top: 2px;
+  color: var(--ink-muted);
+  font-size: 0.74rem;
+  font-weight: 850;
+}
+
+.week-lane-head {
+  top: 43px;
+  height: 38px;
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.week-time-cell {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
+  background: #f8fbfb;
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-align: center;
+}
+
+.week-event-cell {
+  height: 58px;
+  background: #fbfdfc;
+}
+
+.week-empty-lane {
+  background: #f4f7f7;
+}
+
+.week-event-mini {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 6px 7px;
+  text-align: left;
+}
+
+.week-event-mini + .week-event-mini {
+  margin-top: 5px;
+}
+
+.week-event-mini:hover {
+  border-color: var(--line-strong);
+  background: var(--surface-raised);
+  box-shadow: 0 4px 12px rgba(29, 43, 47, 0.09);
+}
+
+.week-event-mini strong {
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.16;
+}
+
+.week-event-mini small {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+  line-height: 1.22;
+}
+
+.week-event-top {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.week-event-top b,
+.week-event-top em {
+  min-width: 0;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.week-event-top b {
+  background: #e8eff0;
+  color: var(--ink-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.week-event-top em {
+  flex: 0 0 auto;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.week-event-mini.cat-training { border-left-color: #667d34; }
+.week-event-mini.cat-instruction { border-left-color: #386da3; }
+.week-event-mini.cat-medical { border-left-color: #a3483e; }
+.week-event-mini.cat-meals { border-left-color: #a7641b; }
+.week-event-mini.cat-cadre { border-left-color: #6e628f; }
+.week-event-mini.cat-logistics,
+.week-event-mini.cat-operations { border-left-color: #2e7076; }
 
 .day-workspace,
 .day-main,
@@ -3608,6 +3858,15 @@ body.mobile-menu-open .mobile-menu-backdrop {
     flex-direction: column;
   }
 
+  .view-tools {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .secondary-button.compact {
+    width: 100%;
+  }
+
   .segmented,
   #sourceFilter,
   .source-controls select,
@@ -3732,6 +3991,24 @@ body.mobile-menu-open .mobile-menu-backdrop {
   .next-drawer {
     width: min(460px, 100vw);
   }
+
+  .week-table-view {
+    padding: 8px;
+  }
+
+  .week-table-head {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .week-exit-button {
+    width: 100%;
+  }
+
+  .week-table-scroll {
+    padding: 8px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -3791,7 +4068,6 @@ body.mobile-menu-open .mobile-menu-backdrop {
   .pane-header,
   .timeline-tools,
   .timeline,
-  #dayTableWrap,
   .assignment-list,
   .next-list,
   .meal-status,

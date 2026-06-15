@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260614-6" />
-    <script src="firebase-config.js?v=20260614-6" defer></script>
-    <script src="app.js?v=20260614-6" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260614-7" />
+    <script src="firebase-config.js?v=20260614-7" defer></script>
+    <script src="app.js?v=20260614-7" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -202,10 +202,15 @@
               <div><span>Meals</span><strong id="dayMeals">0</strong></div>
             </div>
             <div class="timeline-tools">
-              <div class="segmented" role="tablist" aria-label="Day views">
-                <button class="segment is-active" data-day-view="tracks" type="button">Tracks</button>
-                <button class="segment" data-day-view="all" type="button">All Events</button>
-                <button class="segment" data-day-view="table" type="button">Table</button>
+              <div class="view-tools">
+                <div class="segmented" role="tablist" aria-label="Day views">
+                  <button class="segment is-active" data-day-view="tracks" type="button">Tracks</button>
+                  <button class="segment" data-day-view="all" type="button">All Events</button>
+                </div>
+                <button class="secondary-button compact" id="openWeekTableButton" type="button">
+                  <i data-lucide="table-2"></i>
+                  <span>Table View</span>
+                </button>
               </div>
               <select id="sourceFilter" aria-label="Source filter">
                 <option value="all">All sources</option>
@@ -213,7 +218,6 @@
             </div>
             <div id="trackTimelines" class="timeline-split"></div>
             <div id="dayTimeline" class="timeline is-hidden"></div>
-            <div id="dayTableWrap" class="table-wrap is-hidden"></div>
           </section>
 
           <div class="side-stack right-stack">
@@ -437,6 +441,23 @@
         </section>
       </main>
     </div>
+
+    <section id="weekTableView" class="week-table-view" aria-hidden="true" hidden>
+      <div class="week-table-shell">
+        <header class="week-table-head">
+          <div>
+            <p class="eyebrow">Week Table</p>
+            <h2 id="weekTableTitle">Timeline Matrix</h2>
+            <p id="weekTableSubtitle" class="subtle"></p>
+          </div>
+          <button class="secondary-button week-exit-button" id="closeWeekTableButton" type="button">
+            <i data-lucide="x"></i>
+            <span>Exit View</span>
+          </button>
+        </header>
+        <div id="weekTableGrid" class="week-table-scroll"></div>
+      </div>
+    </section>
 
     <dialog id="eventDialog" class="event-dialog">
       <div class="dialog-head">

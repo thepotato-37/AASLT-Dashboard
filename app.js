@@ -76,6 +76,7 @@ const CATEGORY_CLASS = {
   Logistics: "cat-logistics",
   Operations: "cat-operations",
 };
+const DAY_VIEWS = new Set(["tracks", "all"]);
 
 const MEAL_TIMES = {
   Breakfast: "07:30",
@@ -307,6 +308,17 @@ function formatMonth(date) {
 
 function formatShortWeekday(iso) {
   return parseDate(iso).toLocaleDateString(undefined, { weekday: "short" });
+}
+
+function weekStartIso(iso) {
+  const date = parseDate(iso);
+  date.setDate(date.getDate() - date.getDay());
+  return toIso(date);
+}
+
+function selectedWeekDates() {
+  const start = weekStartIso(state.selectedDate);
+  return Array.from({ length: 7 }, (_, index) => addDays(start, index));
 }
 
 function formatTemp(value) {
@@ -1690,7 +1702,7 @@ function initSettings() {
   state.viewMonth = parseDate(state.selectedDate);
   const sourceNames = new Set((state.data.sources || []).map((source) => source.name));
   state.sourceFilter = settings.sourceFilter && (settings.sourceFilter === "all" || sourceNames.has(settings.sourceFilter)) ? settings.sourceFilter : "all";
-  state.dayView = settings.dayView || "tracks";
+  state.dayView = DAY_VIEWS.has(settings.dayView) ? settings.dayView : "tracks";
   state.assignmentView = "list";
   state.mobileView = MOBILE_VIEWS.has(settings.mobileView) ? settings.mobileView : "ops";
 }
@@ -1715,6 +1727,8 @@ function bindEvents() {
   $("#prevDayButton").addEventListener("click", () => selectDate(addDays(state.selectedDate, -1)));
   $("#nextDayButton").addEventListener("click", () => selectDate(addDays(state.selectedDate, 1)));
   $("#addEventButton").addEventListener("click", openNewEventEditor);
+  $("#openWeekTableButton").addEventListener("click", openWeekTableView);
+  $("#closeWeekTableButton").addEventListener("click", closeWeekTableView);
   $("#sourceFilter").addEventListener("change", (event) => {
     state.sourceFilter = event.target.value;
     renderAll();
@@ -1727,7 +1741,9 @@ function bindEvents() {
     button.addEventListener("click", () => setMobileView(button.dataset.mobileView));
   });
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") toggleMobileMenu(false);
+    if (event.key !== "Escape") return;
+    if (!$("#weekTableView")?.hidden) closeWeekTableView();
+    toggleMobileMenu(false);
   });
   window.addEventListener("resize", () => {
     if (!window.matchMedia("(max-width: 820px)").matches) toggleMobileMenu(false);
@@ -1735,7 +1751,7 @@ function bindEvents() {
   $$("#quickTaskButton").forEach((el) => el.addEventListener("click", openNewTaskForm));
   $$(".segment[data-day-view]").forEach((button) => {
     button.addEventListener("click", () => {
-      state.dayView = button.dataset.dayView;
+      state.dayView = DAY_VIEWS.has(button.dataset.dayView) ? button.dataset.dayView : "tracks";
       renderDay();
       saveSettings();
     });
@@ -1975,10 +1991,9 @@ function renderDay() {
   $$(".segment[data-day-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.dayView === state.dayView));
   $("#trackTimelines").classList.toggle("is-hidden", state.dayView !== "tracks");
   $("#dayTimeline").classList.toggle("is-hidden", state.dayView !== "all");
-  $("#dayTableWrap").classList.toggle("is-hidden", state.dayView !== "table");
   renderTrackTimelines(byTrack);
   renderTimeline(dayEvents, $("#dayTimeline"));
-  renderDayTable(dayEvents);
+  if (!$("#weekTableView")?.hidden) renderWeekTable();
 }
 
 function activeTracksForDate(iso) {
@@ -1987,8 +2002,12 @@ function activeTracksForDate(iso) {
 }
 
 function eventsByTrack(dayEvents) {
-  const tracks = activeTracksForDate(state.selectedDate);
-  const byTrack = tracks.map((track) => ({ track, dayLabel: classDayLabelForTrack(state.selectedDate, track), events: dayEvents.filter((event) => event.classKey === track) }));
+  return eventsByTrackForDate(state.selectedDate, dayEvents);
+}
+
+function eventsByTrackForDate(iso, dayEvents) {
+  const tracks = activeTracksForDate(iso);
+  const byTrack = tracks.map((track) => ({ track, dayLabel: classDayLabelForTrack(iso, track), events: dayEvents.filter((event) => event.classKey === track) }));
   const shared = dayEvents.filter((event) => !event.classKey || !tracks.includes(event.classKey));
   return { tracks, 0: byTrack[0], 1: byTrack[1], shared };
 }
@@ -2052,17 +2071,113 @@ function renderEventCard(event) {
   return card;
 }
 
-function renderDayTable(events) {
-  const wrap = $("#dayTableWrap");
-  wrap.replaceChildren();
-  const table = createElement("table");
-  table.append(row(["Time", "Track", "Category", "Task", "Location", "Source"], "th"));
-  const body = createElement("tbody");
-  events.forEach((event) => {
-    body.append(row([event.start || "", event.classKey || "Shared", event.category, event.title, event.location || "", sourceSummary(event)]));
+function weekLaneLabel(iso, track, index) {
+  if (!track) return `Track ${index + 1}`;
+  const shortTrack = track.replace("Air Assault ", "AA");
+  return [shortTrack, classDayLabelForTrack(iso, track)].filter(Boolean).join(" - ");
+}
+
+function weekTrackLanesForDate(iso, filtered) {
+  const dayEvents = eventsForDate(iso, filtered).sort(eventSort);
+  const tracks = activeTracksForDate(iso);
+  return [0, 1].map((index) => {
+    const track = tracks[index] || "";
+    return {
+      date: iso,
+      track,
+      label: weekLaneLabel(iso, track, index),
+      events: track ? dayEvents.filter((event) => event.classKey === track).sort(eventSort) : [],
+    };
   });
-  table.append(body);
+}
+
+function renderWeekEventMini(event) {
+  const card = createElement("button", {
+    className: `week-event-mini ${CATEGORY_CLASS[event.category] || "cat-operations"}${event.isEdited ? " is-edited" : ""}`,
+    attrs: { type: "button", "aria-label": `Open ${event.title}` },
+  });
+  const top = createElement("span", { className: "week-event-top" });
+  top.append(createElement("b", { text: event.category }));
+  if (event.end) top.append(createElement("em", { text: event.end }));
+  card.append(top, createElement("strong", { text: event.title }));
+  const meta = [event.location, event.notes].filter(Boolean).join(" / ");
+  if (meta) card.append(createElement("small", { text: meta }));
+  card.addEventListener("click", () => openEvent(event));
+  return card;
+}
+
+function renderWeekTable() {
+  const wrap = $("#weekTableGrid");
+  if (!wrap) return;
+  wrap.replaceChildren();
+  const dates = selectedWeekDates();
+  const filtered = filteredEvents();
+  const dayData = dates.map((iso) => ({ iso, lanes: weekTrackLanesForDate(iso, filtered) }));
+  const laneEvents = dayData.flatMap((day) => day.lanes.flatMap((lane) => lane.events));
+  $("#weekTableTitle").textContent = `Week of ${formatFullDate(dates[0])}`;
+  $("#weekTableSubtitle").textContent = `${formatCompactDate(dates[0])} through ${formatCompactDate(dates[6])} / ${state.sourceFilter === "all" ? "all sources" : state.sourceFilter}`;
+  if (!laneEvents.length) {
+    wrap.append(createElement("div", { className: "empty week-empty", text: "No track timeline items found for this week." }));
+    return;
+  }
+
+  const times = Array.from(new Set(laneEvents.map((event) => event.start || "Unscheduled"))).sort((a, b) =>
+    (a === "Unscheduled" ? "99:99" : a).localeCompare(b === "Unscheduled" ? "99:99" : b)
+  );
+  const table = createElement("table", { className: "week-matrix" });
+  const head = createElement("thead");
+  const dayRow = createElement("tr");
+  dayRow.append(createElement("th", { className: "week-time-head", text: "Time", attrs: { scope: "col", rowspan: "2" } }));
+  dayData.forEach((day) => {
+    const th = createElement("th", { className: "week-day-head", attrs: { scope: "colgroup", colspan: "2" } });
+    th.append(createElement("strong", { text: formatShortWeekday(day.iso) }), createElement("span", { text: formatCompactDate(day.iso) }));
+    dayRow.append(th);
+  });
+
+  const laneRow = createElement("tr");
+  dayData.forEach((day) => {
+    day.lanes.forEach((lane) => {
+      laneRow.append(createElement("th", { className: "week-lane-head", text: lane.label, attrs: { scope: "col" } }));
+    });
+  });
+  head.append(dayRow, laneRow);
+
+  const body = createElement("tbody");
+  times.forEach((time) => {
+    const tr = createElement("tr");
+    tr.append(createElement("th", { className: "week-time-cell", text: time, attrs: { scope: "row" } }));
+    dayData.forEach((day) => {
+      day.lanes.forEach((lane) => {
+        const td = createElement("td", { className: lane.track ? "week-event-cell" : "week-event-cell week-empty-lane" });
+        const items = lane.events.filter((event) => (event.start || "Unscheduled") === time).sort(eventSort);
+        items.forEach((event) => td.append(renderWeekEventMini(event)));
+        tr.append(td);
+      });
+    });
+    body.append(tr);
+  });
+
+  table.append(head, body);
   wrap.append(table);
+}
+
+function openWeekTableView() {
+  renderWeekTable();
+  const view = $("#weekTableView");
+  view.hidden = false;
+  view.setAttribute("aria-hidden", "false");
+  document.body.classList.add("week-table-open");
+  toggleMobileMenu(false);
+  toggleNextDrawer(false);
+  refreshIcons();
+}
+
+function closeWeekTableView() {
+  const view = $("#weekTableView");
+  if (!view) return;
+  view.hidden = true;
+  view.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("week-table-open");
 }
 
 function row(values, cellTag = "td") {
