@@ -2294,6 +2294,7 @@ body.week-table-open {
   inset: 0;
   z-index: 95;
   display: grid;
+  --week-zoom: 1;
   min-width: 0;
   min-height: 0;
   background: rgba(232, 240, 240, 0.96);
@@ -2328,6 +2329,42 @@ body.week-table-open {
   font-size: 1.04rem;
 }
 
+.week-table-actions,
+.week-zoom-controls {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.week-table-actions {
+  flex: 0 0 auto;
+}
+
+.week-zoom-controls {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 3px;
+}
+
+.week-zoom-controls .icon-button {
+  width: var(--control-h-sm);
+  height: var(--control-h-sm);
+  flex-basis: var(--control-h-sm);
+}
+
+.week-zoom-controls .icon-button:disabled,
+.week-zoom-reset:disabled {
+  cursor: default;
+  opacity: 0.48;
+  transform: none;
+}
+
+.week-zoom-reset {
+  min-width: 58px;
+}
+
 .week-exit-button {
   flex: 0 0 auto;
 }
@@ -2351,6 +2388,7 @@ body.week-table-open {
   border-left: 1px solid var(--line);
   border-collapse: separate;
   border-spacing: 0;
+  zoom: var(--week-zoom);
 }
 
 .week-matrix th,
@@ -4000,6 +4038,15 @@ body.week-table-open {
     align-items: stretch;
     flex-direction: column;
     padding: 12px;
+  }
+
+  .week-table-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .week-zoom-controls {
+    justify-content: center;
   }
 
   .week-exit-button {

@@ -2,6 +2,9 @@ const DATA_URL = "data/aaslt-db.json";
 const WEATHER_LOCATION = "West Point, NY";
 const WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=41.3915&longitude=-73.9559&current=temperature_2m,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,relative_humidity_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=16";
+const WEEK_ZOOM_MIN = 0.6;
+const WEEK_ZOOM_MAX = 1.6;
+const WEEK_ZOOM_STEP = 0.1;
 const TASKS_KEY = "aaslt.tasks.v1";
 const RFI_KEY = "aaslt.rfis.v1";
 const PERSISTENT_TASKS_KEY = "aaslt.persistentTasks.v1";
@@ -133,6 +136,7 @@ const state = {
   dayView: "tracks",
   assignmentView: "list",
   mobileView: "ops",
+  weekZoom: 1,
   tasks: [],
   rfis: [],
   persistentTasks: [],
@@ -319,6 +323,16 @@ function weekStartIso(iso) {
 function selectedWeekDates() {
   const start = weekStartIso(state.selectedDate);
   return Array.from({ length: 7 }, (_, index) => addDays(start, index));
+}
+
+function clampWeekZoom(value) {
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return 1;
+  return Math.min(WEEK_ZOOM_MAX, Math.max(WEEK_ZOOM_MIN, Math.round(numeric * 10) / 10));
+}
+
+function formatZoom(value) {
+  return `${Math.round(clampWeekZoom(value) * 100)}%`;
 }
 
 function formatTemp(value) {
@@ -1298,7 +1312,14 @@ function saveS4() {
 function saveSettings() {
   localStorage.setItem(
     SETTINGS_KEY,
-    JSON.stringify({ selectedDate: state.selectedDate, sourceFilter: state.sourceFilter, dayView: state.dayView, assignmentView: state.assignmentView, mobileView: state.mobileView })
+    JSON.stringify({
+      selectedDate: state.selectedDate,
+      sourceFilter: state.sourceFilter,
+      dayView: state.dayView,
+      assignmentView: state.assignmentView,
+      mobileView: state.mobileView,
+      weekZoom: state.weekZoom,
+    })
   );
 }
 
@@ -1705,6 +1726,7 @@ function initSettings() {
   state.dayView = DAY_VIEWS.has(settings.dayView) ? settings.dayView : "tracks";
   state.assignmentView = "list";
   state.mobileView = MOBILE_VIEWS.has(settings.mobileView) ? settings.mobileView : "ops";
+  state.weekZoom = clampWeekZoom(settings.weekZoom);
 }
 
 function bindEvents() {
@@ -1729,6 +1751,9 @@ function bindEvents() {
   $("#addEventButton").addEventListener("click", openNewEventEditor);
   $("#openWeekTableButton").addEventListener("click", openWeekTableView);
   $("#closeWeekTableButton").addEventListener("click", closeWeekTableView);
+  $("#weekZoomOutButton").addEventListener("click", () => setWeekZoom(state.weekZoom - WEEK_ZOOM_STEP));
+  $("#weekZoomResetButton").addEventListener("click", () => setWeekZoom(1));
+  $("#weekZoomInButton").addEventListener("click", () => setWeekZoom(state.weekZoom + WEEK_ZOOM_STEP));
   $("#sourceFilter").addEventListener("change", (event) => {
     state.sourceFilter = event.target.value;
     renderAll();
@@ -1840,6 +1865,7 @@ function renderAll() {
   renderReceipts();
   renderNotes();
   applyMobileView();
+  applyWeekZoom();
   saveSettings();
   refreshIcons();
 }
@@ -2109,6 +2135,7 @@ function renderWeekEventMini(event) {
 function renderWeekTable() {
   const wrap = $("#weekTableGrid");
   if (!wrap) return;
+  applyWeekZoom();
   wrap.replaceChildren();
   const dates = selectedWeekDates();
   const filtered = filteredEvents();
@@ -2159,6 +2186,7 @@ function renderWeekTable() {
 
   table.append(head, body);
   wrap.append(table);
+  applyWeekZoom();
 }
 
 function openWeekTableView() {
@@ -2169,6 +2197,7 @@ function openWeekTableView() {
   document.body.classList.add("week-table-open");
   toggleMobileMenu(false);
   toggleNextDrawer(false);
+  applyWeekZoom();
   refreshIcons();
 }
 
@@ -2178,6 +2207,25 @@ function closeWeekTableView() {
   view.hidden = true;
   view.setAttribute("aria-hidden", "true");
   document.body.classList.remove("week-table-open");
+}
+
+function setWeekZoom(value) {
+  state.weekZoom = clampWeekZoom(value);
+  applyWeekZoom();
+  saveSettings();
+}
+
+function applyWeekZoom() {
+  const zoom = clampWeekZoom(state.weekZoom);
+  state.weekZoom = zoom;
+  const view = $("#weekTableView");
+  view?.style.setProperty("--week-zoom", zoom.toFixed(2));
+  const label = $("#weekZoomLabel");
+  if (label) label.textContent = formatZoom(zoom);
+  const out = $("#weekZoomOutButton");
+  const inButton = $("#weekZoomInButton");
+  if (out) out.disabled = zoom <= WEEK_ZOOM_MIN;
+  if (inButton) inButton.disabled = zoom >= WEEK_ZOOM_MAX;
 }
 
 function row(values, cellTag = "td") {

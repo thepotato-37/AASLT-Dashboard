@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260614-7" />
-    <script src="firebase-config.js?v=20260614-7" defer></script>
-    <script src="app.js?v=20260614-7" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260615-1" />
+    <script src="firebase-config.js?v=20260615-1" defer></script>
+    <script src="app.js?v=20260615-1" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -450,10 +450,23 @@
             <h2 id="weekTableTitle">Timeline Matrix</h2>
             <p id="weekTableSubtitle" class="subtle"></p>
           </div>
-          <button class="secondary-button week-exit-button" id="closeWeekTableButton" type="button">
-            <i data-lucide="x"></i>
-            <span>Exit View</span>
-          </button>
+          <div class="week-table-actions">
+            <div class="week-zoom-controls" aria-label="Week table zoom">
+              <button class="icon-button" id="weekZoomOutButton" type="button" title="Zoom out" aria-label="Zoom out">
+                <i data-lucide="minus"></i>
+              </button>
+              <button class="secondary-button compact week-zoom-reset" id="weekZoomResetButton" type="button" title="Reset zoom" aria-label="Reset zoom">
+                <span id="weekZoomLabel">100%</span>
+              </button>
+              <button class="icon-button" id="weekZoomInButton" type="button" title="Zoom in" aria-label="Zoom in">
+                <i data-lucide="plus"></i>
+              </button>
+            </div>
+            <button class="secondary-button week-exit-button" id="closeWeekTableButton" type="button">
+              <i data-lucide="x"></i>
+              <span>Exit View</span>
+            </button>
+          </div>
         </header>
         <div id="weekTableGrid" class="week-table-scroll"></div>
       </div>
