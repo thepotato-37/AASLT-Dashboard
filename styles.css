@@ -2374,6 +2374,7 @@ body.week-table-open {
   min-height: 0;
   overflow: auto;
   padding: 12px;
+  touch-action: pan-x pan-y;
 }
 
 .week-empty {

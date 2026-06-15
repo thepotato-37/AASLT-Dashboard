@@ -5,6 +5,9 @@ const WEATHER_URL =
 const WEEK_ZOOM_MIN = 0.6;
 const WEEK_ZOOM_MAX = 1.6;
 const WEEK_ZOOM_STEP = 0.1;
+const WEEK_ZOOM_PRECISION = 100;
+const WEEK_WHEEL_ZOOM_SENSITIVITY = 0.0025;
+const WEEK_ZOOM_SAVE_DELAY = 250;
 const TASKS_KEY = "aaslt.tasks.v1";
 const RFI_KEY = "aaslt.rfis.v1";
 const PERSISTENT_TASKS_KEY = "aaslt.persistentTasks.v1";
@@ -176,6 +179,12 @@ const state = {
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+const weekPinch = {
+  active: false,
+  saveTimer: null,
+  startDistance: 0,
+  startZoom: 1,
+};
 
 function createElement(tag, options = {}) {
   const el = document.createElement(tag);
@@ -328,11 +337,18 @@ function selectedWeekDates() {
 function clampWeekZoom(value) {
   const numeric = Number(value);
   if (Number.isNaN(numeric)) return 1;
-  return Math.min(WEEK_ZOOM_MAX, Math.max(WEEK_ZOOM_MIN, Math.round(numeric * 10) / 10));
+  return Math.min(WEEK_ZOOM_MAX, Math.max(WEEK_ZOOM_MIN, Math.round(numeric * WEEK_ZOOM_PRECISION) / WEEK_ZOOM_PRECISION));
 }
 
 function formatZoom(value) {
   return `${Math.round(clampWeekZoom(value) * 100)}%`;
+}
+
+function touchDistance(touches) {
+  if (touches.length < 2) return 0;
+  const a = touches[0];
+  const b = touches[1];
+  return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
 }
 
 function formatTemp(value) {
@@ -1754,6 +1770,14 @@ function bindEvents() {
   $("#weekZoomOutButton").addEventListener("click", () => setWeekZoom(state.weekZoom - WEEK_ZOOM_STEP));
   $("#weekZoomResetButton").addEventListener("click", () => setWeekZoom(1));
   $("#weekZoomInButton").addEventListener("click", () => setWeekZoom(state.weekZoom + WEEK_ZOOM_STEP));
+  $("#weekTableView").addEventListener("wheel", handleWeekZoomWheel, { passive: false });
+  $("#weekTableView").addEventListener("touchstart", handleWeekZoomTouchStart, { passive: false });
+  $("#weekTableView").addEventListener("touchmove", handleWeekZoomTouchMove, { passive: false });
+  $("#weekTableView").addEventListener("touchend", handleWeekZoomTouchEnd, { passive: false });
+  $("#weekTableView").addEventListener("touchcancel", handleWeekZoomTouchEnd, { passive: false });
+  $("#weekTableView").addEventListener("gesturestart", handleWeekZoomGestureStart, { passive: false });
+  $("#weekTableView").addEventListener("gesturechange", handleWeekZoomGestureChange, { passive: false });
+  $("#weekTableView").addEventListener("gestureend", handleWeekZoomGestureEnd, { passive: false });
   $("#sourceFilter").addEventListener("change", (event) => {
     state.sourceFilter = event.target.value;
     renderAll();
@@ -2209,10 +2233,11 @@ function closeWeekTableView() {
   document.body.classList.remove("week-table-open");
 }
 
-function setWeekZoom(value) {
+function setWeekZoom(value, options = {}) {
+  const { persist = true } = options;
   state.weekZoom = clampWeekZoom(value);
   applyWeekZoom();
-  saveSettings();
+  if (persist) saveSettings();
 }
 
 function applyWeekZoom() {
@@ -2226,6 +2251,60 @@ function applyWeekZoom() {
   const inButton = $("#weekZoomInButton");
   if (out) out.disabled = zoom <= WEEK_ZOOM_MIN;
   if (inButton) inButton.disabled = zoom >= WEEK_ZOOM_MAX;
+}
+
+function scheduleWeekZoomSave() {
+  clearTimeout(weekPinch.saveTimer);
+  weekPinch.saveTimer = setTimeout(saveSettings, WEEK_ZOOM_SAVE_DELAY);
+}
+
+function handleWeekZoomWheel(event) {
+  if ($("#weekTableView")?.hidden || (!event.ctrlKey && !event.metaKey)) return;
+  event.preventDefault();
+  setWeekZoom(state.weekZoom - (event.deltaY || 0) * WEEK_WHEEL_ZOOM_SENSITIVITY, { persist: false });
+  scheduleWeekZoomSave();
+}
+
+function handleWeekZoomTouchStart(event) {
+  if ($("#weekTableView")?.hidden || event.touches?.length !== 2) return;
+  event.preventDefault();
+  weekPinch.active = true;
+  weekPinch.startDistance = touchDistance(event.touches);
+  weekPinch.startZoom = state.weekZoom;
+}
+
+function handleWeekZoomTouchMove(event) {
+  if (!weekPinch.active || event.touches?.length !== 2 || !weekPinch.startDistance) return;
+  event.preventDefault();
+  setWeekZoom(weekPinch.startZoom * (touchDistance(event.touches) / weekPinch.startDistance), { persist: false });
+}
+
+function handleWeekZoomTouchEnd(event) {
+  if (!weekPinch.active || event.touches?.length >= 2) return;
+  weekPinch.active = false;
+  weekPinch.startDistance = 0;
+  scheduleWeekZoomSave();
+}
+
+function handleWeekZoomGestureStart(event) {
+  if ($("#weekTableView")?.hidden) return;
+  event.preventDefault();
+  weekPinch.active = true;
+  weekPinch.startDistance = 0;
+  weekPinch.startZoom = state.weekZoom;
+}
+
+function handleWeekZoomGestureChange(event) {
+  if (!weekPinch.active) return;
+  event.preventDefault();
+  setWeekZoom(weekPinch.startZoom * (Number(event.scale) || 1), { persist: false });
+}
+
+function handleWeekZoomGestureEnd(event) {
+  if (!weekPinch.active) return;
+  event.preventDefault();
+  weekPinch.active = false;
+  scheduleWeekZoomSave();
 }
 
 function row(values, cellTag = "td") {
