@@ -2057,8 +2057,7 @@ function renderEventCard(event, options = {}) {
   const chips = createElement("span", { className: "event-chips" });
   if (event.isEdited) chips.append(createElement("span", { className: "source-chip edited-chip", text: "Edited" }));
   if (event.classKey && !options.hideTrackChip) chips.append(createElement("span", { className: "source-chip", text: event.classKey.replace("Air Assault ", "AA") }));
-  const cadreLabel = eventCadreLabel(event);
-  if (cadreLabel) chips.append(createElement("span", { className: "source-chip owner-chip", text: cadreLabel }));
+  eventCadreOwners(event).forEach((owner) => chips.append(createElement("span", { className: "source-chip owner-chip", text: owner })));
   if (chips.children.length) top.append(chips);
   card.append(top);
   card.append(createElement("strong", { text: event.title }));
@@ -2097,8 +2096,7 @@ function renderWeekEventMini(event) {
   if (event.isEdited) top.append(createElement("em", { text: "Edited" }));
   const metaRow = createElement("span", { className: "week-event-meta" });
   if (event.end) metaRow.append(createElement("em", { text: `Ends ${event.end}` }));
-  const cadreLabel = eventCadreLabel(event);
-  if (cadreLabel) metaRow.append(createElement("em", { text: cadreLabel }));
+  eventCadreOwners(event).forEach((owner) => metaRow.append(createElement("em", { text: owner })));
   if (top.children.length) card.append(top);
   card.append(createElement("strong", { text: event.title }));
   const meta = [event.location, event.notes].filter(Boolean).join(" / ");

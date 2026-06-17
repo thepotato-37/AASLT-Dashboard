@@ -1161,6 +1161,8 @@ textarea {
 .event-chips {
   display: inline-flex;
   min-width: 0;
+  max-width: 100%;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
@@ -1203,10 +1205,12 @@ textarea {
 }
 
 .owner-chip {
+  min-width: 0;
   max-width: 100%;
   border-color: rgba(50, 116, 168, 0.28);
   background: var(--blue-soft);
   color: #173a5c;
+  overflow-wrap: anywhere;
   overflow: visible;
   text-overflow: clip;
   text-transform: none;
@@ -1220,6 +1224,7 @@ textarea {
 }
 
 .people-row span {
+  min-width: 0;
   max-width: 100%;
   border-radius: 999px;
   background: #e8eff0;
@@ -1228,6 +1233,8 @@ textarea {
   font-size: 0.72rem;
   font-weight: 750;
   line-height: 1.15;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .timeline-item:hover,
@@ -2571,9 +2578,12 @@ body.week-table-open {
 
 .week-event-top em,
 .week-event-meta em {
-  flex: 0 0 auto;
+  max-width: 100%;
+  flex: 1 1 auto;
   background: var(--accent-soft);
   color: var(--accent-strong);
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .week-event-meta {
@@ -2830,6 +2840,7 @@ body.week-table-open {
 .people-row span {
   display: inline-flex;
   align-items: center;
+  min-width: 0;
   max-width: 100%;
   min-height: 22px;
   border: 1px solid #d2dddf;
@@ -2840,6 +2851,8 @@ body.week-table-open {
   font-size: 0.72rem;
   font-weight: 800;
   line-height: 1.1;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .person-chip.is-selected,
