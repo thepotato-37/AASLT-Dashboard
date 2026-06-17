@@ -2015,6 +2015,21 @@ label {
   text-transform: uppercase;
 }
 
+.event-owner-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--ink-muted);
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.event-owner-field .person-picker {
+  text-transform: none;
+}
+
 .event-edit-grid .wide {
   grid-column: 1 / -1;
 }
@@ -2622,7 +2637,7 @@ body.week-table-open {
 .week-event-top em,
 .week-event-meta em {
   max-width: 100%;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   background: var(--accent-soft);
   color: var(--accent-strong);
   overflow-wrap: anywhere;

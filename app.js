@@ -939,7 +939,9 @@ function manualEventFromOverride(id, override = {}) {
     category: override.category || "Operations",
     group: override.category || "Operations",
     location: override.location || "",
-    people: [],
+    people: Array.isArray(override.owners) ? override.owners : [],
+    owners: Array.isArray(override.owners) ? override.owners : [],
+    ownersOverride: Boolean(override.ownersOverride),
     notes: override.notes || "",
     classKey: override.classKey || "",
     sourceKind: "manual-event",
@@ -1813,6 +1815,9 @@ function renderStaticControls() {
   const ownerSelect = $("#taskOwners");
   ownerSelect.replaceChildren();
   ASSIGNABLE_PEOPLE.forEach((person) => ownerSelect.append(renderPersonOption(person, false, () => {})));
+  const eventOwnerSelect = $("#eventEditOwners");
+  eventOwnerSelect.replaceChildren();
+  ASSIGNABLE_PEOPLE.forEach((person) => eventOwnerSelect.append(renderPersonOption(person, false, () => {})));
   populatePersonSelect($("#persistentTaskOwner"));
   $("#taskDate").value = state.selectedDate;
   applyMobileView();
@@ -2311,9 +2316,11 @@ function eventWorkLabel(event) {
 }
 
 function eventCadreOwners(event) {
+  const eventOwners = Array.isArray(event.owners) ? event.owners : Array.isArray(event.people) ? event.people : [];
+  if (event.ownersOverride) return Array.from(new Set(eventOwners.filter((owner) => ASSIGNABLE_PEOPLE.includes(owner))));
   const linkedOwners = tasksForEvent(event).flatMap(taskOwners);
   const inferredOwners = cadreOwnersFromText(event.title, event.notes, event.group, event.location);
-  return Array.from(new Set([...linkedOwners, ...inferredOwners].filter((owner) => ASSIGNABLE_PEOPLE.includes(owner))));
+  return Array.from(new Set([...eventOwners, ...linkedOwners, ...inferredOwners].filter((owner) => ASSIGNABLE_PEOPLE.includes(owner))));
 }
 
 function eventCadreLabel(event) {
@@ -2440,6 +2447,7 @@ function openEventEditor(event) {
   $("#eventEditCategory").value = event.category || "Operations";
   $("#eventEditLocation").value = event.location || "";
   $("#eventEditNotes").value = event.notes || "";
+  setSelectedOwners($("#eventEditOwners"), eventCadreOwners(event));
   $("#resetEventEdit").hidden = !state.eventOverrides[event.id];
   $("#resetEventEdit").textContent = event.isManual ? "Delete Event" : "Reset Source";
   $("#eventEditSubmitLabel").textContent = "Save Event";
@@ -2463,6 +2471,7 @@ function openNewEventEditor(defaults = {}) {
   $("#eventEditCategory").value = defaults.category || "Training";
   $("#eventEditLocation").value = defaults.location || "";
   $("#eventEditNotes").value = defaults.notes || "";
+  setSelectedOwners($("#eventEditOwners"), defaults.owners || []);
   $("#resetEventEdit").hidden = true;
   $("#resetEventEdit").textContent = "Reset Source";
   $("#eventEditSubmitLabel").textContent = "Add Event";
@@ -2485,6 +2494,8 @@ function saveEventEdit(event) {
     category: $("#eventEditCategory").value,
     location: $("#eventEditLocation").value.trim(),
     notes: $("#eventEditNotes").value.trim(),
+    owners: selectedOwnersFromPicker($("#eventEditOwners")),
+    ownersOverride: true,
     updatedAt: new Date().toISOString(),
   };
   if (isManual) {
