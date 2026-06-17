@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-16T21:17:08",
+  "generatedAt": "2026-06-16T21:31:34",
   "operation": {
     "name": "West Point Air Assault",
     "dashboardTitle": "AASLT Control Dashboard",
@@ -10,7 +10,7 @@
       "2026-06-08",
       "2026-07-18"
     ],
-    "eventCount": 755,
+    "eventCount": 691,
     "sourceCount": 2,
     "peopleCount": 0,
     "eventsByDate": {
@@ -19,26 +19,26 @@
       "2026-06-10": 3,
       "2026-06-11": 3,
       "2026-06-12": 3,
-      "2026-06-13": 27,
-      "2026-06-14": 37,
-      "2026-06-15": 47,
-      "2026-06-16": 44,
-      "2026-06-17": 53,
-      "2026-06-18": 35,
-      "2026-06-19": 45,
-      "2026-06-20": 42,
-      "2026-06-21": 28,
-      "2026-06-22": 34,
-      "2026-06-23": 20,
-      "2026-06-24": 30,
-      "2026-06-25": 29,
+      "2026-06-13": 23,
+      "2026-06-14": 33,
+      "2026-06-15": 44,
+      "2026-06-16": 43,
+      "2026-06-17": 48,
+      "2026-06-18": 33,
+      "2026-06-19": 40,
+      "2026-06-20": 36,
+      "2026-06-21": 24,
+      "2026-06-22": 31,
+      "2026-06-23": 19,
+      "2026-06-24": 25,
+      "2026-06-25": 26,
       "2026-06-26": 28,
-      "2026-06-27": 29,
-      "2026-06-28": 30,
-      "2026-06-29": 34,
-      "2026-06-30": 20,
-      "2026-07-01": 30,
-      "2026-07-02": 29,
+      "2026-06-27": 26,
+      "2026-06-28": 26,
+      "2026-06-29": 31,
+      "2026-06-30": 19,
+      "2026-07-01": 25,
+      "2026-07-02": 27,
       "2026-07-03": 6,
       "2026-07-04": 4,
       "2026-07-05": 6,
@@ -61,7 +61,7 @@
       "Instruction": 9,
       "Logistics": 72,
       "Meals": 270,
-      "Medical": 67,
+      "Medical": 3,
       "Operations": 39,
       "Training": 150
     },
@@ -514,38 +514,6 @@
     {
       "id": "evt-00020",
       "date": "2026-06-13",
-      "start": "05:30",
-      "end": "08:45",
-      "title": "0530-0845 1x FLA Bartlett 1x FLA Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week1",
-        "cell": "D14",
-        "row": 14,
-        "col": 4,
-        "lane": "Medics",
-        "dateHeader": "JUN 13: DAY 3",
-        "dayNumber": 3,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF000000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 13: DAY 3",
-      "fontColor": "FF000000",
-      "dayNumber": 3
-    },
-    {
-      "id": "evt-00021",
-      "date": "2026-06-13",
       "start": "05:55",
       "end": null,
       "title": "0555 2x MRE DISTRO (Passing) S4",
@@ -576,7 +544,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00022",
+      "id": "evt-00021",
       "date": "2026-06-13",
       "start": "06:30",
       "end": null,
@@ -608,7 +576,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00023",
+      "id": "evt-00022",
       "date": "2026-06-13",
       "start": "07:55",
       "end": null,
@@ -640,7 +608,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00024",
+      "id": "evt-00023",
       "date": "2026-06-13",
       "start": "08:00",
       "end": null,
@@ -672,7 +640,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00025",
+      "id": "evt-00024",
       "date": "2026-06-13",
       "start": "08:15",
       "end": null,
@@ -704,7 +672,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00026",
+      "id": "evt-00025",
       "date": "2026-06-13",
       "start": "08:40",
       "end": null,
@@ -736,7 +704,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00027",
+      "id": "evt-00026",
       "date": "2026-06-13",
       "start": "09:00",
       "end": null,
@@ -768,7 +736,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00028",
+      "id": "evt-00027",
       "date": "2026-06-13",
       "start": "09:00",
       "end": "11:00",
@@ -800,39 +768,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00029",
-      "date": "2026-06-13",
-      "start": "09:00",
-      "end": null,
-      "title": "0900-UTC 1x FLA Bartlett Hall",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week1",
-        "cell": "D21",
-        "row": 21,
-        "col": 4,
-        "lane": "Medics",
-        "dateHeader": "JUN 13: DAY 3",
-        "dayNumber": 3,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF000000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 13: DAY 3",
-      "fontColor": "FF000000",
-      "dayNumber": 3
-    },
-    {
-      "id": "evt-00030",
+      "id": "evt-00028",
       "date": "2026-06-13",
       "start": "10:40",
       "end": null,
@@ -864,39 +800,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00031",
-      "date": "2026-06-13",
-      "start": "11:00",
-      "end": null,
-      "title": "1100 1x FLA Davis SHelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week1",
-        "cell": "D25",
-        "row": 25,
-        "col": 4,
-        "lane": "Medics",
-        "dateHeader": "JUN 13: DAY 3",
-        "dayNumber": 3,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF000000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 13: DAY 3",
-      "fontColor": "FF000000",
-      "dayNumber": 3
-    },
-    {
-      "id": "evt-00032",
+      "id": "evt-00029",
       "date": "2026-06-13",
       "start": "11:00",
       "end": "13:00",
@@ -927,7 +831,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00033",
+      "id": "evt-00030",
       "date": "2026-06-13",
       "start": "13:00",
       "end": null,
@@ -959,7 +863,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00034",
+      "id": "evt-00031",
       "date": "2026-06-13",
       "start": "13:00",
       "end": null,
@@ -991,39 +895,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00035",
-      "date": "2026-06-13",
-      "start": "13:00",
-      "end": null,
-      "title": "1300-UTC 2x FLA South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week1",
-        "cell": "D29",
-        "row": 29,
-        "col": 4,
-        "lane": "Medics",
-        "dateHeader": "JUN 13: DAY 3",
-        "dayNumber": 3,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF000000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 13: DAY 3",
-      "fontColor": "FF000000",
-      "dayNumber": 3
-    },
-    {
-      "id": "evt-00036",
+      "id": "evt-00032",
       "date": "2026-06-13",
       "start": "13:00",
       "end": null,
@@ -1055,7 +927,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00037",
+      "id": "evt-00033",
       "date": "2026-06-13",
       "start": "17:55",
       "end": null,
@@ -1087,7 +959,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00038",
+      "id": "evt-00034",
       "date": "2026-06-13",
       "start": null,
       "end": null,
@@ -1119,7 +991,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00039",
+      "id": "evt-00035",
       "date": "2026-06-13",
       "start": null,
       "end": null,
@@ -1151,7 +1023,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00040",
+      "id": "evt-00036",
       "date": "2026-06-13",
       "start": null,
       "end": null,
@@ -1172,7 +1044,7 @@
       }
     },
     {
-      "id": "evt-00041",
+      "id": "evt-00037",
       "date": "2026-06-13",
       "start": null,
       "end": null,
@@ -1193,7 +1065,7 @@
       }
     },
     {
-      "id": "evt-00042",
+      "id": "evt-00038",
       "date": "2026-06-13",
       "start": null,
       "end": null,
@@ -1214,7 +1086,7 @@
       }
     },
     {
-      "id": "evt-00043",
+      "id": "evt-00039",
       "date": "2026-06-14",
       "start": "04:20",
       "end": null,
@@ -1246,7 +1118,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00044",
+      "id": "evt-00040",
       "date": "2026-06-14",
       "start": "04:35",
       "end": null,
@@ -1278,7 +1150,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00045",
+      "id": "evt-00041",
       "date": "2026-06-14",
       "start": "04:40",
       "end": null,
@@ -1310,7 +1182,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00046",
+      "id": "evt-00042",
       "date": "2026-06-14",
       "start": "05:00",
       "end": "07:00",
@@ -1342,7 +1214,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00047",
+      "id": "evt-00043",
       "date": "2026-06-14",
       "start": "05:00",
       "end": null,
@@ -1374,71 +1246,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00048",
-      "date": "2026-06-14",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "F12",
-        "row": 12,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 14: DAY 4 DAY-3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 14: DAY 4 DAY-3",
-      "fontColor": "FFFF0000",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00049",
-      "date": "2026-06-14",
-      "start": "07:00",
-      "end": null,
-      "title": "0700 1x FLA on Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "F16",
-        "row": 16,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 14: DAY 4 DAY-3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 14: DAY 4 DAY-3",
-      "fontColor": "FFFF0000",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00050",
+      "id": "evt-00044",
       "date": "2026-06-14",
       "start": "07:00",
       "end": null,
@@ -1470,7 +1278,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00051",
+      "id": "evt-00045",
       "date": "2026-06-14",
       "start": "07:25",
       "end": null,
@@ -1502,7 +1310,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00052",
+      "id": "evt-00046",
       "date": "2026-06-14",
       "start": "08:00",
       "end": null,
@@ -1534,7 +1342,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00053",
+      "id": "evt-00047",
       "date": "2026-06-14",
       "start": "08:15",
       "end": null,
@@ -1566,7 +1374,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00054",
+      "id": "evt-00048",
       "date": "2026-06-14",
       "start": "09:00",
       "end": "11:00",
@@ -1598,7 +1406,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00055",
+      "id": "evt-00049",
       "date": "2026-06-14",
       "start": "09:00",
       "end": null,
@@ -1630,39 +1438,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00056",
-      "date": "2026-06-14",
-      "start": "09:00",
-      "end": null,
-      "title": "0900 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "F20",
-        "row": 20,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 14: DAY 4 DAY-3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 14: DAY 4 DAY-3",
-      "fontColor": "FFFF0000",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00057",
+      "id": "evt-00050",
       "date": "2026-06-14",
       "start": "11:00",
       "end": null,
@@ -1694,7 +1470,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00058",
+      "id": "evt-00051",
       "date": "2026-06-14",
       "start": "11:00",
       "end": null,
@@ -1726,7 +1502,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00059",
+      "id": "evt-00052",
       "date": "2026-06-14",
       "start": "11:00",
       "end": null,
@@ -1758,7 +1534,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00060",
+      "id": "evt-00053",
       "date": "2026-06-14",
       "start": "11:00",
       "end": null,
@@ -1790,7 +1566,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00061",
+      "id": "evt-00054",
       "date": "2026-06-14",
       "start": "11:00",
       "end": "13:00",
@@ -1822,7 +1598,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00062",
+      "id": "evt-00055",
       "date": "2026-06-14",
       "start": "11:25",
       "end": null,
@@ -1854,7 +1630,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00063",
+      "id": "evt-00056",
       "date": "2026-06-14",
       "start": "12:30",
       "end": null,
@@ -1886,7 +1662,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00064",
+      "id": "evt-00057",
       "date": "2026-06-14",
       "start": "13:00",
       "end": null,
@@ -1918,39 +1694,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00065",
-      "date": "2026-06-14",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "F28",
-        "row": 28,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 14: DAY 4 DAY-3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 14: DAY 4 DAY-3",
-      "fontColor": "FFFF0000",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00066",
+      "id": "evt-00058",
       "date": "2026-06-14",
       "start": "13:00",
       "end": "16:00",
@@ -1982,7 +1726,7 @@
       "dayNumber": -3
     },
     {
-      "id": "evt-00067",
+      "id": "evt-00059",
       "date": "2026-06-14",
       "start": "13:00",
       "end": null,
@@ -2014,7 +1758,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00068",
+      "id": "evt-00060",
       "date": "2026-06-14",
       "start": "13:30",
       "end": null,
@@ -2046,7 +1790,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00069",
+      "id": "evt-00061",
       "date": "2026-06-14",
       "start": "14:00",
       "end": "15:00",
@@ -2078,7 +1822,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00070",
+      "id": "evt-00062",
       "date": "2026-06-14",
       "start": "17:55",
       "end": null,
@@ -2110,7 +1854,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00071",
+      "id": "evt-00063",
       "date": "2026-06-14",
       "start": "17:55",
       "end": null,
@@ -2142,7 +1886,7 @@
       "dayNumber": -3
     },
     {
-      "id": "evt-00072",
+      "id": "evt-00064",
       "date": "2026-06-14",
       "start": "22:30",
       "end": null,
@@ -2174,7 +1918,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00073",
+      "id": "evt-00065",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2234,7 +1978,7 @@
       ]
     },
     {
-      "id": "evt-00074",
+      "id": "evt-00066",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2266,7 +2010,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00075",
+      "id": "evt-00067",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2298,7 +2042,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00076",
+      "id": "evt-00068",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2319,7 +2063,7 @@
       }
     },
     {
-      "id": "evt-00077",
+      "id": "evt-00069",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2340,7 +2084,7 @@
       }
     },
     {
-      "id": "evt-00078",
+      "id": "evt-00070",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2361,7 +2105,7 @@
       }
     },
     {
-      "id": "evt-00079",
+      "id": "evt-00071",
       "date": "2026-06-14",
       "start": null,
       "end": null,
@@ -2382,7 +2126,7 @@
       }
     },
     {
-      "id": "evt-00080",
+      "id": "evt-00072",
       "date": "2026-06-15",
       "start": "04:25",
       "end": null,
@@ -2414,7 +2158,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00081",
+      "id": "evt-00073",
       "date": "2026-06-15",
       "start": "04:45",
       "end": null,
@@ -2446,7 +2190,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00082",
+      "id": "evt-00074",
       "date": "2026-06-15",
       "start": "04:55",
       "end": null,
@@ -2478,7 +2222,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00083",
+      "id": "evt-00075",
       "date": "2026-06-15",
       "start": "05:10",
       "end": null,
@@ -2510,7 +2254,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00084",
+      "id": "evt-00076",
       "date": "2026-06-15",
       "start": "05:25",
       "end": null,
@@ -2542,7 +2286,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00085",
+      "id": "evt-00077",
       "date": "2026-06-15",
       "start": "05:30",
       "end": "07:00",
@@ -2574,39 +2318,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00086",
-      "date": "2026-06-15",
-      "start": "07:00",
-      "end": null,
-      "title": "0700 1x FLA @ Marne 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "L16",
-        "row": 16,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 15: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 15: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00087",
+      "id": "evt-00078",
       "date": "2026-06-15",
       "start": "07:00",
       "end": null,
@@ -2638,7 +2350,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00088",
+      "id": "evt-00079",
       "date": "2026-06-15",
       "start": "07:00",
       "end": "13:00",
@@ -2670,7 +2382,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00089",
+      "id": "evt-00080",
       "date": "2026-06-15",
       "start": "07:25",
       "end": null,
@@ -2702,7 +2414,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00090",
+      "id": "evt-00081",
       "date": "2026-06-15",
       "start": "08:00",
       "end": null,
@@ -2734,7 +2446,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00091",
+      "id": "evt-00082",
       "date": "2026-06-15",
       "start": "08:00",
       "end": null,
@@ -2766,7 +2478,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00092",
+      "id": "evt-00083",
       "date": "2026-06-15",
       "start": "08:00",
       "end": null,
@@ -2798,7 +2510,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00093",
+      "id": "evt-00084",
       "date": "2026-06-15",
       "start": "08:00",
       "end": "11:00",
@@ -2830,7 +2542,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00094",
+      "id": "evt-00085",
       "date": "2026-06-15",
       "start": "09:00",
       "end": null,
@@ -2862,7 +2574,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00095",
+      "id": "evt-00086",
       "date": "2026-06-15",
       "start": "11:00",
       "end": "12:00",
@@ -2894,7 +2606,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00096",
+      "id": "evt-00087",
       "date": "2026-06-15",
       "start": "11:55",
       "end": null,
@@ -2926,7 +2638,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00097",
+      "id": "evt-00088",
       "date": "2026-06-15",
       "start": "12:00",
       "end": "14:00",
@@ -2958,7 +2670,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00098",
+      "id": "evt-00089",
       "date": "2026-06-15",
       "start": "12:45",
       "end": null,
@@ -2990,7 +2702,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00099",
+      "id": "evt-00090",
       "date": "2026-06-15",
       "start": "13:00",
       "end": null,
@@ -3022,39 +2734,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00100",
-      "date": "2026-06-15",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "L28",
-        "row": 28,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 15: DAY 5 DAY -2",
-        "dayNumber": -2,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 15: DAY 5 DAY -2",
-      "fontColor": "FFFF0000",
-      "dayNumber": -2
-    },
-    {
-      "id": "evt-00101",
+      "id": "evt-00091",
       "date": "2026-06-15",
       "start": "13:00",
       "end": null,
@@ -3086,7 +2766,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00102",
+      "id": "evt-00092",
       "date": "2026-06-15",
       "start": "13:00",
       "end": null,
@@ -3118,7 +2798,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00103",
+      "id": "evt-00093",
       "date": "2026-06-15",
       "start": "15:00",
       "end": null,
@@ -3150,7 +2830,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00104",
+      "id": "evt-00094",
       "date": "2026-06-15",
       "start": "15:30",
       "end": null,
@@ -3182,7 +2862,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00105",
+      "id": "evt-00095",
       "date": "2026-06-15",
       "start": "17:55",
       "end": null,
@@ -3214,7 +2894,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00106",
+      "id": "evt-00096",
       "date": "2026-06-15",
       "start": "22:30",
       "end": null,
@@ -3246,39 +2926,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00107",
-      "date": "2026-06-15",
-      "start": null,
-      "end": null,
-      "title": "1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "L13",
-        "row": 13,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 15: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 15: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00108",
+      "id": "evt-00097",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3310,7 +2958,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00109",
+      "id": "evt-00098",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3342,7 +2990,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00110",
+      "id": "evt-00099",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3374,7 +3022,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00111",
+      "id": "evt-00100",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3406,7 +3054,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00112",
+      "id": "evt-00101",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3438,7 +3086,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00113",
+      "id": "evt-00102",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3470,7 +3118,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00114",
+      "id": "evt-00103",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3491,7 +3139,7 @@
       }
     },
     {
-      "id": "evt-00115",
+      "id": "evt-00104",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3512,7 +3160,7 @@
       }
     },
     {
-      "id": "evt-00116",
+      "id": "evt-00105",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3533,7 +3181,7 @@
       }
     },
     {
-      "id": "evt-00117",
+      "id": "evt-00106",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3554,7 +3202,7 @@
       }
     },
     {
-      "id": "evt-00118",
+      "id": "evt-00107",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3575,7 +3223,7 @@
       }
     },
     {
-      "id": "evt-00119",
+      "id": "evt-00108",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3596,7 +3244,7 @@
       }
     },
     {
-      "id": "evt-00120",
+      "id": "evt-00109",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3628,7 +3276,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00121",
+      "id": "evt-00110",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3660,7 +3308,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00122",
+      "id": "evt-00111",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3692,7 +3340,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00123",
+      "id": "evt-00112",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3724,7 +3372,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00124",
+      "id": "evt-00113",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3756,7 +3404,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00125",
+      "id": "evt-00114",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3788,7 +3436,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00126",
+      "id": "evt-00115",
       "date": "2026-06-15",
       "start": null,
       "end": null,
@@ -3820,7 +3468,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00127",
+      "id": "evt-00116",
       "date": "2026-06-16",
       "start": "04:00",
       "end": null,
@@ -3852,7 +3500,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00128",
+      "id": "evt-00117",
       "date": "2026-06-16",
       "start": "04:30",
       "end": null,
@@ -3884,7 +3532,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00129",
+      "id": "evt-00118",
       "date": "2026-06-16",
       "start": "04:35",
       "end": null,
@@ -3916,7 +3564,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00130",
+      "id": "evt-00119",
       "date": "2026-06-16",
       "start": "04:35",
       "end": null,
@@ -3948,7 +3596,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00131",
+      "id": "evt-00120",
       "date": "2026-06-16",
       "start": "04:50",
       "end": null,
@@ -3980,7 +3628,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00132",
+      "id": "evt-00121",
       "date": "2026-06-16",
       "start": "04:50",
       "end": null,
@@ -4012,7 +3660,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00133",
+      "id": "evt-00122",
       "date": "2026-06-16",
       "start": "05:00",
       "end": null,
@@ -4044,39 +3692,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00134",
-      "date": "2026-06-16",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA @ South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "R12",
-        "row": 12,
-        "col": 18,
-        "lane": "Medics",
-        "dateHeader": "JUN 16: DAY 6 DAY -1",
-        "dayNumber": -1,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 16: DAY 6 DAY -1",
-      "fontColor": "FFFF0000",
-      "dayNumber": -1
-    },
-    {
-      "id": "evt-00135",
+      "id": "evt-00123",
       "date": "2026-06-16",
       "start": "07:00",
       "end": null,
@@ -4108,7 +3724,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00136",
+      "id": "evt-00124",
       "date": "2026-06-16",
       "start": "07:25",
       "end": null,
@@ -4140,7 +3756,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00137",
+      "id": "evt-00125",
       "date": "2026-06-16",
       "start": "08:00",
       "end": null,
@@ -4172,7 +3788,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00138",
+      "id": "evt-00126",
       "date": "2026-06-16",
       "start": "08:00",
       "end": null,
@@ -4204,7 +3820,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00139",
+      "id": "evt-00127",
       "date": "2026-06-16",
       "start": "08:00",
       "end": null,
@@ -4236,7 +3852,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00140",
+      "id": "evt-00128",
       "date": "2026-06-16",
       "start": "09:00",
       "end": "11:00",
@@ -4268,7 +3884,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00141",
+      "id": "evt-00129",
       "date": "2026-06-16",
       "start": "10:00",
       "end": null,
@@ -4300,7 +3916,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00142",
+      "id": "evt-00130",
       "date": "2026-06-16",
       "start": "11:00",
       "end": "13:00",
@@ -4332,7 +3948,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00143",
+      "id": "evt-00131",
       "date": "2026-06-16",
       "start": "11:55",
       "end": null,
@@ -4364,7 +3980,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00144",
+      "id": "evt-00132",
       "date": "2026-06-16",
       "start": "13:00",
       "end": null,
@@ -4396,7 +4012,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00145",
+      "id": "evt-00133",
       "date": "2026-06-16",
       "start": "13:00",
       "end": "13:30",
@@ -4428,7 +4044,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00146",
+      "id": "evt-00134",
       "date": "2026-06-16",
       "start": "14:00",
       "end": null,
@@ -4460,7 +4076,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00147",
+      "id": "evt-00135",
       "date": "2026-06-16",
       "start": "14:00",
       "end": "15:00",
@@ -4492,7 +4108,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00148",
+      "id": "evt-00136",
       "date": "2026-06-16",
       "start": "15:00",
       "end": "16:00",
@@ -4524,7 +4140,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00149",
+      "id": "evt-00137",
       "date": "2026-06-16",
       "start": "17:00",
       "end": null,
@@ -4556,7 +4172,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00150",
+      "id": "evt-00138",
       "date": "2026-06-16",
       "start": "17:00",
       "end": null,
@@ -4588,7 +4204,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00151",
+      "id": "evt-00139",
       "date": "2026-06-16",
       "start": "17:55",
       "end": null,
@@ -4620,7 +4236,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00152",
+      "id": "evt-00140",
       "date": "2026-06-16",
       "start": "17:55",
       "end": null,
@@ -4652,7 +4268,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00153",
+      "id": "evt-00141",
       "date": "2026-06-16",
       "start": "18:00",
       "end": null,
@@ -4684,7 +4300,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00154",
+      "id": "evt-00142",
       "date": "2026-06-16",
       "start": "19:00",
       "end": null,
@@ -4716,7 +4332,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00155",
+      "id": "evt-00143",
       "date": "2026-06-16",
       "start": "19:00",
       "end": null,
@@ -4748,7 +4364,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00156",
+      "id": "evt-00144",
       "date": "2026-06-16",
       "start": "22:30",
       "end": null,
@@ -4780,7 +4396,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00157",
+      "id": "evt-00145",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4812,7 +4428,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00158",
+      "id": "evt-00146",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4844,7 +4460,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00159",
+      "id": "evt-00147",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4876,7 +4492,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00160",
+      "id": "evt-00148",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4897,7 +4513,7 @@
       }
     },
     {
-      "id": "evt-00161",
+      "id": "evt-00149",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4918,7 +4534,7 @@
       }
     },
     {
-      "id": "evt-00162",
+      "id": "evt-00150",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4939,7 +4555,7 @@
       }
     },
     {
-      "id": "evt-00163",
+      "id": "evt-00151",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4960,7 +4576,7 @@
       }
     },
     {
-      "id": "evt-00164",
+      "id": "evt-00152",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -4981,7 +4597,7 @@
       }
     },
     {
-      "id": "evt-00165",
+      "id": "evt-00153",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -5002,7 +4618,7 @@
       }
     },
     {
-      "id": "evt-00166",
+      "id": "evt-00154",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -5034,7 +4650,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00167",
+      "id": "evt-00155",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -5066,7 +4682,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00168",
+      "id": "evt-00156",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -5098,7 +4714,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00169",
+      "id": "evt-00157",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -5130,7 +4746,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00170",
+      "id": "evt-00158",
       "date": "2026-06-16",
       "start": null,
       "end": null,
@@ -5162,7 +4778,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00171",
+      "id": "evt-00159",
       "date": "2026-06-17",
       "start": "00:00",
       "end": null,
@@ -5194,71 +4810,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00172",
-      "date": "2026-06-17",
-      "start": "00:00",
-      "end": null,
-      "title": "0000 FLAG: NEED 2x FLA Request for today",
-      "category": "Medical",
-      "group": "Cadre",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "U3",
-        "row": 3,
-        "col": 21,
-        "lane": "Cadre",
-        "dateHeader": "JUN 17: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "CADRE",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Cadre",
-      "role": "CADRE",
-      "dateHeader": "JUN 17: DAY 7 DAY 0",
-      "fontColor": "theme:1",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00173",
-      "date": "2026-06-17",
-      "start": "03:00",
-      "end": null,
-      "title": "0300 1x FLA at Marne",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "Y9",
-        "row": 9,
-        "col": 25,
-        "lane": "Medics",
-        "dateHeader": "JUN 17: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF4472C4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 17: DAY 7 DAY 0",
-      "fontColor": "FF4472C4",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00174",
+      "id": "evt-00160",
       "date": "2026-06-17",
       "start": "04:25",
       "end": null,
@@ -5290,7 +4842,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00175",
+      "id": "evt-00161",
       "date": "2026-06-17",
       "start": "05:00",
       "end": null,
@@ -5322,7 +4874,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00176",
+      "id": "evt-00162",
       "date": "2026-06-17",
       "start": "05:20",
       "end": null,
@@ -5354,7 +4906,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00177",
+      "id": "evt-00163",
       "date": "2026-06-17",
       "start": "05:45",
       "end": null,
@@ -5386,7 +4938,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00178",
+      "id": "evt-00164",
       "date": "2026-06-17",
       "start": "05:50",
       "end": null,
@@ -5418,7 +4970,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00179",
+      "id": "evt-00165",
       "date": "2026-06-17",
       "start": "06:00",
       "end": null,
@@ -5450,7 +5002,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00180",
+      "id": "evt-00166",
       "date": "2026-06-17",
       "start": "06:00",
       "end": null,
@@ -5482,7 +5034,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00181",
+      "id": "evt-00167",
       "date": "2026-06-17",
       "start": "06:00",
       "end": null,
@@ -5514,7 +5066,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00182",
+      "id": "evt-00168",
       "date": "2026-06-17",
       "start": "06:00",
       "end": "07:30",
@@ -5546,39 +5098,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00183",
-      "date": "2026-06-17",
-      "start": "06:00",
-      "end": "07:30",
-      "title": "1x FLA for the Run (0600-0730)",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "Y14",
-        "row": 14,
-        "col": 25,
-        "lane": "Medics",
-        "dateHeader": "JUN 17: DAY 7 DAY 0",
-        "dayNumber": 0,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 17: DAY 7 DAY 0",
-      "fontColor": "FFFF0000",
-      "dayNumber": 0
-    },
-    {
-      "id": "evt-00184",
+      "id": "evt-00169",
       "date": "2026-06-17",
       "start": "06:05",
       "end": null,
@@ -5610,7 +5130,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00185",
+      "id": "evt-00170",
       "date": "2026-06-17",
       "start": "07:00",
       "end": null,
@@ -5642,7 +5162,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00186",
+      "id": "evt-00171",
       "date": "2026-06-17",
       "start": "07:00",
       "end": null,
@@ -5674,7 +5194,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00187",
+      "id": "evt-00172",
       "date": "2026-06-17",
       "start": "07:25",
       "end": null,
@@ -5706,7 +5226,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00188",
+      "id": "evt-00173",
       "date": "2026-06-17",
       "start": "08:00",
       "end": null,
@@ -5738,7 +5258,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00189",
+      "id": "evt-00174",
       "date": "2026-06-17",
       "start": "08:00",
       "end": null,
@@ -5770,7 +5290,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00190",
+      "id": "evt-00175",
       "date": "2026-06-17",
       "start": "08:05",
       "end": null,
@@ -5802,7 +5322,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00191",
+      "id": "evt-00176",
       "date": "2026-06-17",
       "start": "08:05",
       "end": null,
@@ -5834,7 +5354,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00192",
+      "id": "evt-00177",
       "date": "2026-06-17",
       "start": "08:30",
       "end": null,
@@ -5866,39 +5386,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00193",
-      "date": "2026-06-17",
-      "start": "08:30",
-      "end": null,
-      "title": "1x FLA at South Dock (0830-UTC)",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "Y19",
-        "row": 19,
-        "col": 25,
-        "lane": "Medics",
-        "dateHeader": "JUN 17: DAY 7 DAY 0",
-        "dayNumber": 0,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 17: DAY 7 DAY 0",
-      "fontColor": "FFFF0000",
-      "dayNumber": 0
-    },
-    {
-      "id": "evt-00194",
+      "id": "evt-00178",
       "date": "2026-06-17",
       "start": "11:00",
       "end": "13:00",
@@ -5930,7 +5418,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00195",
+      "id": "evt-00179",
       "date": "2026-06-17",
       "start": "14:00",
       "end": "15:00",
@@ -5962,39 +5450,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00196",
-      "date": "2026-06-17",
-      "start": "15:00",
-      "end": null,
-      "title": "1500 1x FLA on Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "Y32",
-        "row": 32,
-        "col": 25,
-        "lane": "Medics",
-        "dateHeader": "JUN 17: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 17: DAY 7 DAY 0",
-      "fontColor": "FF0070C0",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00197",
+      "id": "evt-00180",
       "date": "2026-06-17",
       "start": "15:00",
       "end": null,
@@ -6026,7 +5482,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00198",
+      "id": "evt-00181",
       "date": "2026-06-17",
       "start": "15:00",
       "end": "16:00",
@@ -6058,7 +5514,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00199",
+      "id": "evt-00182",
       "date": "2026-06-17",
       "start": "15:30",
       "end": null,
@@ -6090,7 +5546,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00200",
+      "id": "evt-00183",
       "date": "2026-06-17",
       "start": "16:30",
       "end": null,
@@ -6122,7 +5578,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00201",
+      "id": "evt-00184",
       "date": "2026-06-17",
       "start": "17:55",
       "end": null,
@@ -6154,7 +5610,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00202",
+      "id": "evt-00185",
       "date": "2026-06-17",
       "start": "17:55",
       "end": null,
@@ -6186,7 +5642,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00203",
+      "id": "evt-00186",
       "date": "2026-06-17",
       "start": "18:00",
       "end": null,
@@ -6218,7 +5674,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00204",
+      "id": "evt-00187",
       "date": "2026-06-17",
       "start": "22:30",
       "end": null,
@@ -6250,7 +5706,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00205",
+      "id": "evt-00188",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6282,7 +5738,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00206",
+      "id": "evt-00189",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6314,7 +5770,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00207",
+      "id": "evt-00190",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6346,7 +5802,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00208",
+      "id": "evt-00191",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6378,7 +5834,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00209",
+      "id": "evt-00192",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6399,7 +5855,7 @@
       }
     },
     {
-      "id": "evt-00210",
+      "id": "evt-00193",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6420,7 +5876,7 @@
       }
     },
     {
-      "id": "evt-00211",
+      "id": "evt-00194",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6441,7 +5897,7 @@
       }
     },
     {
-      "id": "evt-00212",
+      "id": "evt-00195",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6462,7 +5918,7 @@
       }
     },
     {
-      "id": "evt-00213",
+      "id": "evt-00196",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6483,7 +5939,7 @@
       }
     },
     {
-      "id": "evt-00214",
+      "id": "evt-00197",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6504,7 +5960,7 @@
       }
     },
     {
-      "id": "evt-00215",
+      "id": "evt-00198",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6536,7 +5992,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00216",
+      "id": "evt-00199",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6568,7 +6024,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00217",
+      "id": "evt-00200",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6600,7 +6056,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00218",
+      "id": "evt-00201",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6632,7 +6088,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00219",
+      "id": "evt-00202",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6664,7 +6120,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00220",
+      "id": "evt-00203",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6696,7 +6152,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00221",
+      "id": "evt-00204",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6728,7 +6184,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00222",
+      "id": "evt-00205",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6760,7 +6216,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00223",
+      "id": "evt-00206",
       "date": "2026-06-17",
       "start": null,
       "end": null,
@@ -6792,7 +6248,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00224",
+      "id": "evt-00207",
       "date": "2026-06-18",
       "start": "00:00",
       "end": null,
@@ -6824,7 +6280,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00225",
+      "id": "evt-00208",
       "date": "2026-06-18",
       "start": "07:00",
       "end": null,
@@ -6856,7 +6312,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00226",
+      "id": "evt-00209",
       "date": "2026-06-18",
       "start": "07:05",
       "end": null,
@@ -6888,7 +6344,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00227",
+      "id": "evt-00210",
       "date": "2026-06-18",
       "start": "07:10",
       "end": null,
@@ -6920,7 +6376,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00228",
+      "id": "evt-00211",
       "date": "2026-06-18",
       "start": "07:25",
       "end": null,
@@ -6952,7 +6408,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00229",
+      "id": "evt-00212",
       "date": "2026-06-18",
       "start": "07:35",
       "end": null,
@@ -6984,7 +6440,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00230",
+      "id": "evt-00213",
       "date": "2026-06-18",
       "start": "08:00",
       "end": null,
@@ -7016,39 +6472,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00231",
-      "date": "2026-06-18",
-      "start": "08:00",
-      "end": null,
-      "title": "0800 1x FLA Staged at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AE18",
-        "row": 18,
-        "col": 31,
-        "lane": "Medics",
-        "dateHeader": "18 JUN: DAY 8 DAY 1",
-        "dayNumber": 1,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "18 JUN: DAY 8 DAY 1",
-      "fontColor": "FFFF0000",
-      "dayNumber": 1
-    },
-    {
-      "id": "evt-00232",
+      "id": "evt-00214",
       "date": "2026-06-18",
       "start": "08:00",
       "end": null,
@@ -7080,7 +6504,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00233",
+      "id": "evt-00215",
       "date": "2026-06-18",
       "start": "08:00",
       "end": null,
@@ -7112,7 +6536,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00234",
+      "id": "evt-00216",
       "date": "2026-06-18",
       "start": "08:00",
       "end": null,
@@ -7144,7 +6568,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00235",
+      "id": "evt-00217",
       "date": "2026-06-18",
       "start": "08:40",
       "end": null,
@@ -7176,7 +6600,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00236",
+      "id": "evt-00218",
       "date": "2026-06-18",
       "start": "09:00",
       "end": null,
@@ -7208,7 +6632,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00237",
+      "id": "evt-00219",
       "date": "2026-06-18",
       "start": "10:00",
       "end": null,
@@ -7240,7 +6664,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00238",
+      "id": "evt-00220",
       "date": "2026-06-18",
       "start": "11:00",
       "end": "13:00",
@@ -7272,7 +6696,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00239",
+      "id": "evt-00221",
       "date": "2026-06-18",
       "start": "11:55",
       "end": null,
@@ -7304,7 +6728,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00240",
+      "id": "evt-00222",
       "date": "2026-06-18",
       "start": "12:40",
       "end": null,
@@ -7336,7 +6760,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00241",
+      "id": "evt-00223",
       "date": "2026-06-18",
       "start": "13:00",
       "end": null,
@@ -7368,7 +6792,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00242",
+      "id": "evt-00224",
       "date": "2026-06-18",
       "start": "13:00",
       "end": null,
@@ -7400,7 +6824,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00243",
+      "id": "evt-00225",
       "date": "2026-06-18",
       "start": "14:00",
       "end": "15:00",
@@ -7432,7 +6856,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00244",
+      "id": "evt-00226",
       "date": "2026-06-18",
       "start": "16:10",
       "end": null,
@@ -7464,7 +6888,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00245",
+      "id": "evt-00227",
       "date": "2026-06-18",
       "start": "16:30",
       "end": null,
@@ -7496,7 +6920,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00246",
+      "id": "evt-00228",
       "date": "2026-06-18",
       "start": "17:00",
       "end": null,
@@ -7528,7 +6952,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00247",
+      "id": "evt-00229",
       "date": "2026-06-18",
       "start": "17:55",
       "end": null,
@@ -7560,7 +6984,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00248",
+      "id": "evt-00230",
       "date": "2026-06-18",
       "start": "17:55",
       "end": null,
@@ -7592,7 +7016,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00249",
+      "id": "evt-00231",
       "date": "2026-06-18",
       "start": "22:30",
       "end": null,
@@ -7624,39 +7048,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00250",
-      "date": "2026-06-18",
-      "start": null,
-      "end": null,
-      "title": "1x FLA Staged at Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AE17",
-        "row": 17,
-        "col": 31,
-        "lane": "Medics",
-        "dateHeader": "18 JUN: DAY 8 DAY 1",
-        "dayNumber": 8,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF4472C4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "18 JUN: DAY 8 DAY 1",
-      "fontColor": "FF4472C4",
-      "dayNumber": 8
-    },
-    {
-      "id": "evt-00251",
+      "id": "evt-00232",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7729,7 +7121,7 @@
       ]
     },
     {
-      "id": "evt-00252",
+      "id": "evt-00233",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7761,7 +7153,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00253",
+      "id": "evt-00234",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7782,7 +7174,7 @@
       }
     },
     {
-      "id": "evt-00254",
+      "id": "evt-00235",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7803,7 +7195,7 @@
       }
     },
     {
-      "id": "evt-00255",
+      "id": "evt-00236",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7824,7 +7216,7 @@
       }
     },
     {
-      "id": "evt-00256",
+      "id": "evt-00237",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7845,7 +7237,7 @@
       }
     },
     {
-      "id": "evt-00257",
+      "id": "evt-00238",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7866,7 +7258,7 @@
       }
     },
     {
-      "id": "evt-00258",
+      "id": "evt-00239",
       "date": "2026-06-18",
       "start": null,
       "end": null,
@@ -7887,39 +7279,7 @@
       }
     },
     {
-      "id": "evt-00259",
-      "date": "2026-06-19",
-      "start": "00:00",
-      "end": null,
-      "title": "0000 FLAG: NEED 1x FLA Request for today",
-      "category": "Medical",
-      "group": "Cadre",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AG3",
-        "row": 3,
-        "col": 33,
-        "lane": "Cadre",
-        "dateHeader": "19 JUN: DAY 9 DAY 2",
-        "dayNumber": 9,
-        "role": "CADRE",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Cadre",
-      "role": "CADRE",
-      "dateHeader": "19 JUN: DAY 9 DAY 2",
-      "fontColor": "theme:1",
-      "dayNumber": 9
-    },
-    {
-      "id": "evt-00260",
+      "id": "evt-00240",
       "date": "2026-06-19",
       "start": "03:20",
       "end": null,
@@ -7951,7 +7311,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00261",
+      "id": "evt-00241",
       "date": "2026-06-19",
       "start": "03:45",
       "end": null,
@@ -7983,7 +7343,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00262",
+      "id": "evt-00242",
       "date": "2026-06-19",
       "start": "04:00",
       "end": null,
@@ -8015,7 +7375,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00263",
+      "id": "evt-00243",
       "date": "2026-06-19",
       "start": "04:25",
       "end": null,
@@ -8047,7 +7407,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00264",
+      "id": "evt-00244",
       "date": "2026-06-19",
       "start": "04:40",
       "end": null,
@@ -8079,7 +7439,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00265",
+      "id": "evt-00245",
       "date": "2026-06-19",
       "start": "05:00",
       "end": null,
@@ -8111,7 +7471,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00266",
+      "id": "evt-00246",
       "date": "2026-06-19",
       "start": "05:00",
       "end": null,
@@ -8143,7 +7503,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00267",
+      "id": "evt-00247",
       "date": "2026-06-19",
       "start": "06:30",
       "end": null,
@@ -8175,7 +7535,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00268",
+      "id": "evt-00248",
       "date": "2026-06-19",
       "start": "06:30",
       "end": null,
@@ -8207,7 +7567,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00269",
+      "id": "evt-00249",
       "date": "2026-06-19",
       "start": "07:00",
       "end": null,
@@ -8239,7 +7599,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00270",
+      "id": "evt-00250",
       "date": "2026-06-19",
       "start": "07:25",
       "end": null,
@@ -8271,7 +7631,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00271",
+      "id": "evt-00251",
       "date": "2026-06-19",
       "start": "07:25",
       "end": null,
@@ -8303,7 +7663,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00272",
+      "id": "evt-00252",
       "date": "2026-06-19",
       "start": "08:00",
       "end": null,
@@ -8335,7 +7695,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00273",
+      "id": "evt-00253",
       "date": "2026-06-19",
       "start": "08:00",
       "end": null,
@@ -8367,7 +7727,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00274",
+      "id": "evt-00254",
       "date": "2026-06-19",
       "start": "08:00",
       "end": null,
@@ -8399,7 +7759,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00275",
+      "id": "evt-00255",
       "date": "2026-06-19",
       "start": "08:30",
       "end": null,
@@ -8431,7 +7791,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00276",
+      "id": "evt-00256",
       "date": "2026-06-19",
       "start": "08:35",
       "end": null,
@@ -8463,7 +7823,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00277",
+      "id": "evt-00257",
       "date": "2026-06-19",
       "start": "08:40",
       "end": null,
@@ -8495,7 +7855,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00278",
+      "id": "evt-00258",
       "date": "2026-06-19",
       "start": "09:00",
       "end": null,
@@ -8527,39 +7887,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00279",
-      "date": "2026-06-19",
-      "start": "09:00",
-      "end": null,
-      "title": "0900 1x FLA South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AK20",
-        "row": 20,
-        "col": 37,
-        "lane": "Medics",
-        "dateHeader": "19 JUN: DAY 9 DAY 2",
-        "dayNumber": 2,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "19 JUN: DAY 9 DAY 2",
-      "fontColor": "FFFF0000",
-      "dayNumber": 2
-    },
-    {
-      "id": "evt-00280",
+      "id": "evt-00259",
       "date": "2026-06-19",
       "start": "09:00",
       "end": null,
@@ -8591,7 +7919,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00281",
+      "id": "evt-00260",
       "date": "2026-06-19",
       "start": "09:00",
       "end": "09:30",
@@ -8623,7 +7951,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00282",
+      "id": "evt-00261",
       "date": "2026-06-19",
       "start": "10:00",
       "end": null,
@@ -8655,7 +7983,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00283",
+      "id": "evt-00262",
       "date": "2026-06-19",
       "start": "11:00",
       "end": "13:00",
@@ -8687,7 +8015,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00284",
+      "id": "evt-00263",
       "date": "2026-06-19",
       "start": "11:55",
       "end": null,
@@ -8719,7 +8047,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00285",
+      "id": "evt-00264",
       "date": "2026-06-19",
       "start": "12:45",
       "end": null,
@@ -8751,39 +8079,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00286",
-      "date": "2026-06-19",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AK28",
-        "row": 28,
-        "col": 37,
-        "lane": "Medics",
-        "dateHeader": "19 JUN: DAY 9 DAY 2",
-        "dayNumber": 9,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "19 JUN: DAY 9 DAY 2",
-      "fontColor": "theme:4",
-      "dayNumber": 9
-    },
-    {
-      "id": "evt-00287",
+      "id": "evt-00265",
       "date": "2026-06-19",
       "start": "14:00",
       "end": "15:00",
@@ -8815,7 +8111,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00288",
+      "id": "evt-00266",
       "date": "2026-06-19",
       "start": "16:30",
       "end": null,
@@ -8847,7 +8143,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00289",
+      "id": "evt-00267",
       "date": "2026-06-19",
       "start": "17:55",
       "end": null,
@@ -8879,7 +8175,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00290",
+      "id": "evt-00268",
       "date": "2026-06-19",
       "start": "17:55",
       "end": null,
@@ -8911,7 +8207,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00291",
+      "id": "evt-00269",
       "date": "2026-06-19",
       "start": "22:30",
       "end": null,
@@ -8943,7 +8239,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00292",
+      "id": "evt-00270",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -8975,71 +8271,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00293",
-      "date": "2026-06-19",
-      "start": null,
-      "end": null,
-      "title": "1x FLA Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AK21",
-        "row": 21,
-        "col": 37,
-        "lane": "Medics",
-        "dateHeader": "19 JUN: DAY 9 DAY 2",
-        "dayNumber": 9,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "19 JUN: DAY 9 DAY 2",
-      "fontColor": "theme:4",
-      "dayNumber": 9
-    },
-    {
-      "id": "evt-00294",
-      "date": "2026-06-19",
-      "start": null,
-      "end": null,
-      "title": "1x FLA South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AK27",
-        "row": 27,
-        "col": 37,
-        "lane": "Medics",
-        "dateHeader": "19 JUN: DAY 9 DAY 2",
-        "dayNumber": 2,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "19 JUN: DAY 9 DAY 2",
-      "fontColor": "FFFF0000",
-      "dayNumber": 2
-    },
-    {
-      "id": "evt-00295",
+      "id": "evt-00271",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9099,7 +8331,7 @@
       ]
     },
     {
-      "id": "evt-00296",
+      "id": "evt-00272",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9131,7 +8363,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00297",
+      "id": "evt-00273",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9163,7 +8395,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00298",
+      "id": "evt-00274",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9184,7 +8416,7 @@
       }
     },
     {
-      "id": "evt-00299",
+      "id": "evt-00275",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9205,7 +8437,7 @@
       }
     },
     {
-      "id": "evt-00300",
+      "id": "evt-00276",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9226,7 +8458,7 @@
       }
     },
     {
-      "id": "evt-00301",
+      "id": "evt-00277",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9247,7 +8479,7 @@
       }
     },
     {
-      "id": "evt-00302",
+      "id": "evt-00278",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9268,7 +8500,7 @@
       }
     },
     {
-      "id": "evt-00303",
+      "id": "evt-00279",
       "date": "2026-06-19",
       "start": null,
       "end": null,
@@ -9289,39 +8521,7 @@
       }
     },
     {
-      "id": "evt-00304",
-      "date": "2026-06-20",
-      "start": "00:00",
-      "end": null,
-      "title": "0000 FLAG: NEED 2x FLA Request for today",
-      "category": "Medical",
-      "group": "Cadre",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AM3",
-        "row": 3,
-        "col": 39,
-        "lane": "Cadre",
-        "dateHeader": "20 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "CADRE",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Cadre",
-      "role": "CADRE",
-      "dateHeader": "20 JUN: DAY 10 DAY 3",
-      "fontColor": "theme:1",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00305",
+      "id": "evt-00280",
       "date": "2026-06-20",
       "start": "01:50",
       "end": null,
@@ -9353,7 +8553,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00306",
+      "id": "evt-00281",
       "date": "2026-06-20",
       "start": "02:00",
       "end": null,
@@ -9385,7 +8585,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00307",
+      "id": "evt-00282",
       "date": "2026-06-20",
       "start": "03:10",
       "end": null,
@@ -9417,7 +8617,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00308",
+      "id": "evt-00283",
       "date": "2026-06-20",
       "start": "04:00",
       "end": null,
@@ -9449,39 +8649,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00309",
-      "date": "2026-06-20",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AQ12",
-        "row": 12,
-        "col": 43,
-        "lane": "Medics",
-        "dateHeader": "20 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF4472C4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "20 JUN: DAY 10 DAY 3",
-      "fontColor": "FF4472C4",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00310",
+      "id": "evt-00284",
       "date": "2026-06-20",
       "start": "05:00",
       "end": null,
@@ -9513,7 +8681,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00311",
+      "id": "evt-00285",
       "date": "2026-06-20",
       "start": "05:00",
       "end": null,
@@ -9545,7 +8713,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00312",
+      "id": "evt-00286",
       "date": "2026-06-20",
       "start": "05:30",
       "end": "08:45",
@@ -9577,7 +8745,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00313",
+      "id": "evt-00287",
       "date": "2026-06-20",
       "start": "06:00",
       "end": null,
@@ -9609,7 +8777,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00314",
+      "id": "evt-00288",
       "date": "2026-06-20",
       "start": "06:45",
       "end": "07:15",
@@ -9641,7 +8809,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00315",
+      "id": "evt-00289",
       "date": "2026-06-20",
       "start": "08:00",
       "end": null,
@@ -9673,7 +8841,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00316",
+      "id": "evt-00290",
       "date": "2026-06-20",
       "start": "08:40",
       "end": null,
@@ -9705,7 +8873,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00317",
+      "id": "evt-00291",
       "date": "2026-06-20",
       "start": "09:00",
       "end": null,
@@ -9737,39 +8905,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00318",
-      "date": "2026-06-20",
-      "start": "09:00",
-      "end": null,
-      "title": "0900 Move 1x FLA Plain",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AQ20",
-        "row": 20,
-        "col": 43,
-        "lane": "Medics",
-        "dateHeader": "20 JUN: DAY 10 DAY 3",
-        "dayNumber": 3,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "20 JUN: DAY 10 DAY 3",
-      "fontColor": "FFFF0000",
-      "dayNumber": 3
-    },
-    {
-      "id": "evt-00319",
+      "id": "evt-00292",
       "date": "2026-06-20",
       "start": "09:00",
       "end": "11:00",
@@ -9801,7 +8937,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00320",
+      "id": "evt-00293",
       "date": "2026-06-20",
       "start": "09:00",
       "end": null,
@@ -9833,7 +8969,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00321",
+      "id": "evt-00294",
       "date": "2026-06-20",
       "start": "11:00",
       "end": "13:00",
@@ -9865,7 +9001,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00322",
+      "id": "evt-00295",
       "date": "2026-06-20",
       "start": "11:55",
       "end": null,
@@ -9897,7 +9033,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00323",
+      "id": "evt-00296",
       "date": "2026-06-20",
       "start": "12:00",
       "end": null,
@@ -9929,7 +9065,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00324",
+      "id": "evt-00297",
       "date": "2026-06-20",
       "start": "12:30",
       "end": null,
@@ -9961,7 +9097,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00325",
+      "id": "evt-00298",
       "date": "2026-06-20",
       "start": "12:35",
       "end": null,
@@ -9993,7 +9129,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00326",
+      "id": "evt-00299",
       "date": "2026-06-20",
       "start": "13:00",
       "end": null,
@@ -10025,39 +9161,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00327",
-      "date": "2026-06-20",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AQ28",
-        "row": 28,
-        "col": 43,
-        "lane": "Medics",
-        "dateHeader": "20 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "20 JUN: DAY 10 DAY 3",
-      "fontColor": "theme:4",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00328",
+      "id": "evt-00300",
       "date": "2026-06-20",
       "start": "13:00",
       "end": null,
@@ -10089,7 +9193,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00329",
+      "id": "evt-00301",
       "date": "2026-06-20",
       "start": "17:55",
       "end": null,
@@ -10121,7 +9225,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00330",
+      "id": "evt-00302",
       "date": "2026-06-20",
       "start": "22:30",
       "end": null,
@@ -10153,7 +9257,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00331",
+      "id": "evt-00303",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10185,39 +9289,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00332",
-      "date": "2026-06-20",
-      "start": null,
-      "end": null,
-      "title": "1x FLA Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 1",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AQ21",
-        "row": 21,
-        "col": 43,
-        "lane": "Medics",
-        "dateHeader": "20 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:4"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "20 JUN: DAY 10 DAY 3",
-      "fontColor": "theme:4",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00333",
+      "id": "evt-00304",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10249,7 +9321,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00334",
+      "id": "evt-00305",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10309,7 +9381,7 @@
       ]
     },
     {
-      "id": "evt-00335",
+      "id": "evt-00306",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10369,7 +9441,7 @@
       ]
     },
     {
-      "id": "evt-00336",
+      "id": "evt-00307",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10401,7 +9473,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00337",
+      "id": "evt-00308",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10422,7 +9494,7 @@
       }
     },
     {
-      "id": "evt-00338",
+      "id": "evt-00309",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10443,7 +9515,7 @@
       }
     },
     {
-      "id": "evt-00339",
+      "id": "evt-00310",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10464,7 +9536,7 @@
       }
     },
     {
-      "id": "evt-00340",
+      "id": "evt-00311",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10485,7 +9557,7 @@
       }
     },
     {
-      "id": "evt-00341",
+      "id": "evt-00312",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10517,7 +9589,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00342",
+      "id": "evt-00313",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10549,39 +9621,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00343",
-      "date": "2026-06-20",
-      "start": null,
-      "end": null,
-      "title": "Move 1x FLA to Davis Shelf, release 2x FLA",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AQ15",
-        "row": 15,
-        "col": 43,
-        "lane": "Medics",
-        "dateHeader": "20 JUN: DAY 10 DAY 3",
-        "dayNumber": 3,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FFFF0000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "20 JUN: DAY 10 DAY 3",
-      "fontColor": "FFFF0000",
-      "dayNumber": 3
-    },
-    {
-      "id": "evt-00344",
+      "id": "evt-00314",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10613,7 +9653,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00345",
+      "id": "evt-00315",
       "date": "2026-06-20",
       "start": null,
       "end": null,
@@ -10645,7 +9685,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00346",
+      "id": "evt-00316",
       "date": "2026-06-21",
       "start": "04:40",
       "end": null,
@@ -10677,7 +9717,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00347",
+      "id": "evt-00317",
       "date": "2026-06-21",
       "start": "05:00",
       "end": "07:00",
@@ -10709,7 +9749,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00348",
+      "id": "evt-00318",
       "date": "2026-06-21",
       "start": "05:00",
       "end": null,
@@ -10741,71 +9781,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00349",
-      "date": "2026-06-21",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "F12",
-        "row": 12,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 21: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 21: DAY 4 DAY -3",
-      "fontColor": "theme:1",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00350",
-      "date": "2026-06-21",
-      "start": "07:00",
-      "end": null,
-      "title": "0700 1x FLA on Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "F16",
-        "row": 16,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 21: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF000000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 21: DAY 4 DAY -3",
-      "fontColor": "FF000000",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00351",
+      "id": "evt-00319",
       "date": "2026-06-21",
       "start": "07:25",
       "end": null,
@@ -10837,7 +9813,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00352",
+      "id": "evt-00320",
       "date": "2026-06-21",
       "start": "08:00",
       "end": null,
@@ -10869,7 +9845,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00353",
+      "id": "evt-00321",
       "date": "2026-06-21",
       "start": "08:55",
       "end": null,
@@ -10901,7 +9877,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00354",
+      "id": "evt-00322",
       "date": "2026-06-21",
       "start": "09:00",
       "end": "11:00",
@@ -10933,7 +9909,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00355",
+      "id": "evt-00323",
       "date": "2026-06-21",
       "start": "09:00",
       "end": null,
@@ -10965,39 +9941,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00356",
-      "date": "2026-06-21",
-      "start": "09:00",
-      "end": null,
-      "title": "0900 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "F20",
-        "row": 20,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 21: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 21: DAY 4 DAY -3",
-      "fontColor": "theme:1",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00357",
+      "id": "evt-00324",
       "date": "2026-06-21",
       "start": "11:00",
       "end": "13:00",
@@ -11029,7 +9973,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00358",
+      "id": "evt-00325",
       "date": "2026-06-21",
       "start": "11:25",
       "end": null,
@@ -11061,7 +10005,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00359",
+      "id": "evt-00326",
       "date": "2026-06-21",
       "start": "12:40",
       "end": null,
@@ -11093,7 +10037,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00360",
+      "id": "evt-00327",
       "date": "2026-06-21",
       "start": "13:00",
       "end": null,
@@ -11125,39 +10069,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00361",
-      "date": "2026-06-21",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "F28",
-        "row": 28,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 21: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 21: DAY 4 DAY -3",
-      "fontColor": "theme:1",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00362",
+      "id": "evt-00328",
       "date": "2026-06-21",
       "start": "13:00",
       "end": "16:00",
@@ -11189,7 +10101,7 @@
       "dayNumber": -3
     },
     {
-      "id": "evt-00363",
+      "id": "evt-00329",
       "date": "2026-06-21",
       "start": "13:00",
       "end": null,
@@ -11221,7 +10133,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00364",
+      "id": "evt-00330",
       "date": "2026-06-21",
       "start": "17:55",
       "end": null,
@@ -11253,7 +10165,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00365",
+      "id": "evt-00331",
       "date": "2026-06-21",
       "start": "17:55",
       "end": null,
@@ -11285,7 +10197,7 @@
       "dayNumber": -3
     },
     {
-      "id": "evt-00366",
+      "id": "evt-00332",
       "date": "2026-06-21",
       "start": "22:30",
       "end": null,
@@ -11317,7 +10229,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00367",
+      "id": "evt-00333",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11390,7 +10302,7 @@
       ]
     },
     {
-      "id": "evt-00368",
+      "id": "evt-00334",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11422,7 +10334,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00369",
+      "id": "evt-00335",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11454,7 +10366,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00370",
+      "id": "evt-00336",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11475,7 +10387,7 @@
       }
     },
     {
-      "id": "evt-00371",
+      "id": "evt-00337",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11496,7 +10408,7 @@
       }
     },
     {
-      "id": "evt-00372",
+      "id": "evt-00338",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11517,7 +10429,7 @@
       }
     },
     {
-      "id": "evt-00373",
+      "id": "evt-00339",
       "date": "2026-06-21",
       "start": null,
       "end": null,
@@ -11538,7 +10450,7 @@
       }
     },
     {
-      "id": "evt-00374",
+      "id": "evt-00340",
       "date": "2026-06-22",
       "start": "04:40",
       "end": null,
@@ -11569,7 +10481,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00375",
+      "id": "evt-00341",
       "date": "2026-06-22",
       "start": "04:45",
       "end": null,
@@ -11601,7 +10513,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00376",
+      "id": "evt-00342",
       "date": "2026-06-22",
       "start": "05:00",
       "end": null,
@@ -11632,7 +10544,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00377",
+      "id": "evt-00343",
       "date": "2026-06-22",
       "start": "05:25",
       "end": null,
@@ -11664,7 +10576,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00378",
+      "id": "evt-00344",
       "date": "2026-06-22",
       "start": "05:30",
       "end": "07:00",
@@ -11696,7 +10608,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00379",
+      "id": "evt-00345",
       "date": "2026-06-22",
       "start": "06:55",
       "end": null,
@@ -11728,39 +10640,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00380",
-      "date": "2026-06-22",
-      "start": "07:00",
-      "end": null,
-      "title": "0700 1x FLA at the Marne 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "L16",
-        "row": 16,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 22: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 22: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00381",
+      "id": "evt-00346",
       "date": "2026-06-22",
       "start": "07:00",
       "end": "13:00",
@@ -11792,7 +10672,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00382",
+      "id": "evt-00347",
       "date": "2026-06-22",
       "start": "07:25",
       "end": null,
@@ -11824,7 +10704,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00383",
+      "id": "evt-00348",
       "date": "2026-06-22",
       "start": "08:00",
       "end": null,
@@ -11856,7 +10736,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00384",
+      "id": "evt-00349",
       "date": "2026-06-22",
       "start": "08:00",
       "end": "11:00",
@@ -11888,7 +10768,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00385",
+      "id": "evt-00350",
       "date": "2026-06-22",
       "start": "09:00",
       "end": null,
@@ -11920,7 +10800,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00386",
+      "id": "evt-00351",
       "date": "2026-06-22",
       "start": "11:00",
       "end": "13:00",
@@ -11952,7 +10832,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00387",
+      "id": "evt-00352",
       "date": "2026-06-22",
       "start": "11:55",
       "end": null,
@@ -11984,7 +10864,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00388",
+      "id": "evt-00353",
       "date": "2026-06-22",
       "start": "12:45",
       "end": null,
@@ -12016,7 +10896,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00389",
+      "id": "evt-00354",
       "date": "2026-06-22",
       "start": "12:55",
       "end": null,
@@ -12048,7 +10928,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00390",
+      "id": "evt-00355",
       "date": "2026-06-22",
       "start": "13:00",
       "end": null,
@@ -12080,39 +10960,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00391",
-      "date": "2026-06-22",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "L28",
-        "row": 28,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 22: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 22: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00392",
+      "id": "evt-00356",
       "date": "2026-06-22",
       "start": "13:00",
       "end": null,
@@ -12144,7 +10992,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00393",
+      "id": "evt-00357",
       "date": "2026-06-22",
       "start": "13:00",
       "end": null,
@@ -12176,7 +11024,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00394",
+      "id": "evt-00358",
       "date": "2026-06-22",
       "start": "17:55",
       "end": null,
@@ -12208,7 +11056,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00395",
+      "id": "evt-00359",
       "date": "2026-06-22",
       "start": "17:55",
       "end": null,
@@ -12240,7 +11088,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00396",
+      "id": "evt-00360",
       "date": "2026-06-22",
       "start": "22:30",
       "end": null,
@@ -12272,39 +11120,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00397",
-      "date": "2026-06-22",
-      "start": null,
-      "end": null,
-      "title": "1x FLA at Marne 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "L13",
-        "row": 13,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 22: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 22: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00398",
+      "id": "evt-00361",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12364,7 +11180,7 @@
       ]
     },
     {
-      "id": "evt-00399",
+      "id": "evt-00362",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12437,7 +11253,7 @@
       ]
     },
     {
-      "id": "evt-00400",
+      "id": "evt-00363",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12469,7 +11285,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00401",
+      "id": "evt-00364",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12501,7 +11317,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00402",
+      "id": "evt-00365",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12522,7 +11338,7 @@
       }
     },
     {
-      "id": "evt-00403",
+      "id": "evt-00366",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12543,7 +11359,7 @@
       }
     },
     {
-      "id": "evt-00404",
+      "id": "evt-00367",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12564,7 +11380,7 @@
       }
     },
     {
-      "id": "evt-00405",
+      "id": "evt-00368",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12585,7 +11401,7 @@
       }
     },
     {
-      "id": "evt-00406",
+      "id": "evt-00369",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12606,7 +11422,7 @@
       }
     },
     {
-      "id": "evt-00407",
+      "id": "evt-00370",
       "date": "2026-06-22",
       "start": null,
       "end": null,
@@ -12627,7 +11443,7 @@
       }
     },
     {
-      "id": "evt-00408",
+      "id": "evt-00371",
       "date": "2026-06-23",
       "start": "04:20",
       "end": null,
@@ -12659,7 +11475,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00409",
+      "id": "evt-00372",
       "date": "2026-06-23",
       "start": "05:00",
       "end": null,
@@ -12691,39 +11507,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00410",
-      "date": "2026-06-23",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA @ South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "R12",
-        "row": 12,
-        "col": 18,
-        "lane": "Medics",
-        "dateHeader": "23 JUN: DAY 6 DAY -1",
-        "dayNumber": 6,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "23 JUN: DAY 6 DAY -1",
-      "fontColor": "theme:1",
-      "dayNumber": 6
-    },
-    {
-      "id": "evt-00411",
+      "id": "evt-00373",
       "date": "2026-06-23",
       "start": "07:25",
       "end": null,
@@ -12755,7 +11539,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00412",
+      "id": "evt-00374",
       "date": "2026-06-23",
       "start": "08:00",
       "end": null,
@@ -12787,7 +11571,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00413",
+      "id": "evt-00375",
       "date": "2026-06-23",
       "start": "10:00",
       "end": null,
@@ -12819,7 +11603,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00414",
+      "id": "evt-00376",
       "date": "2026-06-23",
       "start": "11:00",
       "end": "13:00",
@@ -12851,7 +11635,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00415",
+      "id": "evt-00377",
       "date": "2026-06-23",
       "start": "11:55",
       "end": null,
@@ -12883,7 +11667,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00416",
+      "id": "evt-00378",
       "date": "2026-06-23",
       "start": "14:00",
       "end": "15:00",
@@ -12915,7 +11699,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00417",
+      "id": "evt-00379",
       "date": "2026-06-23",
       "start": "17:55",
       "end": null,
@@ -12947,7 +11731,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00418",
+      "id": "evt-00380",
       "date": "2026-06-23",
       "start": "17:55",
       "end": null,
@@ -12979,7 +11763,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00419",
+      "id": "evt-00381",
       "date": "2026-06-23",
       "start": "22:30",
       "end": null,
@@ -13011,7 +11795,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00420",
+      "id": "evt-00382",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13084,7 +11868,7 @@
       ]
     },
     {
-      "id": "evt-00421",
+      "id": "evt-00383",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13116,7 +11900,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00422",
+      "id": "evt-00384",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13137,7 +11921,7 @@
       }
     },
     {
-      "id": "evt-00423",
+      "id": "evt-00385",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13158,7 +11942,7 @@
       }
     },
     {
-      "id": "evt-00424",
+      "id": "evt-00386",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13179,7 +11963,7 @@
       }
     },
     {
-      "id": "evt-00425",
+      "id": "evt-00387",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13200,7 +11984,7 @@
       }
     },
     {
-      "id": "evt-00426",
+      "id": "evt-00388",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13221,7 +12005,7 @@
       }
     },
     {
-      "id": "evt-00427",
+      "id": "evt-00389",
       "date": "2026-06-23",
       "start": null,
       "end": null,
@@ -13242,71 +12026,7 @@
       }
     },
     {
-      "id": "evt-00428",
-      "date": "2026-06-24",
-      "start": "00:00",
-      "end": null,
-      "title": "0000 FLAG: NEED FLA Request for today",
-      "category": "Medical",
-      "group": "Cadre",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "T3",
-        "row": 3,
-        "col": 20,
-        "lane": "Cadre",
-        "dateHeader": "24 JUN: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "CADRE",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Cadre",
-      "role": "CADRE",
-      "dateHeader": "24 JUN: DAY 7 DAY 0",
-      "fontColor": "theme:1",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00429",
-      "date": "2026-06-24",
-      "start": "03:00",
-      "end": null,
-      "title": "0300 1x FLA Needed at Marne",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "X9",
-        "row": 9,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "24 JUN: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "24 JUN: DAY 7 DAY 0",
-      "fontColor": "FF00B050",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00430",
+      "id": "evt-00390",
       "date": "2026-06-24",
       "start": "04:40",
       "end": null,
@@ -13338,7 +12058,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00431",
+      "id": "evt-00391",
       "date": "2026-06-24",
       "start": "05:00",
       "end": null,
@@ -13370,7 +12090,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00432",
+      "id": "evt-00392",
       "date": "2026-06-24",
       "start": "06:00",
       "end": null,
@@ -13402,7 +12122,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00433",
+      "id": "evt-00393",
       "date": "2026-06-24",
       "start": "06:00",
       "end": "07:30",
@@ -13434,39 +12154,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00434",
-      "date": "2026-06-24",
-      "start": "06:00",
-      "end": "07:30",
-      "title": "1x FLA for the Run (0600-0730)",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "X14",
-        "row": 14,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "24 JUN: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "24 JUN: DAY 7 DAY 0",
-      "fontColor": "FF0070C0",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00435",
+      "id": "evt-00394",
       "date": "2026-06-24",
       "start": "07:00",
       "end": null,
@@ -13498,7 +12186,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00436",
+      "id": "evt-00395",
       "date": "2026-06-24",
       "start": "07:25",
       "end": null,
@@ -13530,7 +12218,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00437",
+      "id": "evt-00396",
       "date": "2026-06-24",
       "start": "08:00",
       "end": null,
@@ -13562,7 +12250,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00438",
+      "id": "evt-00397",
       "date": "2026-06-24",
       "start": "08:00",
       "end": null,
@@ -13594,7 +12282,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00439",
+      "id": "evt-00398",
       "date": "2026-06-24",
       "start": "08:10",
       "end": null,
@@ -13626,7 +12314,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00440",
+      "id": "evt-00399",
       "date": "2026-06-24",
       "start": "08:30",
       "end": null,
@@ -13658,39 +12346,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00441",
-      "date": "2026-06-24",
-      "start": "08:30",
-      "end": null,
-      "title": "1x FLA at South Dock (0830-UTC)",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "X19",
-        "row": 19,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "24 JUN: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "24 JUN: DAY 7 DAY 0",
-      "fontColor": "FF0070C0",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00442",
+      "id": "evt-00400",
       "date": "2026-06-24",
       "start": "11:00",
       "end": "13:00",
@@ -13722,39 +12378,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00443",
-      "date": "2026-06-24",
-      "start": "15:00",
-      "end": null,
-      "title": "1500 1x FLA on Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "X32",
-        "row": 32,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "24 JUN: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "24 JUN: DAY 7 DAY 0",
-      "fontColor": "FF00B050",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00444",
+      "id": "evt-00401",
       "date": "2026-06-24",
       "start": "15:30",
       "end": null,
@@ -13786,7 +12410,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00445",
+      "id": "evt-00402",
       "date": "2026-06-24",
       "start": "17:55",
       "end": null,
@@ -13818,7 +12442,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00446",
+      "id": "evt-00403",
       "date": "2026-06-24",
       "start": "17:55",
       "end": null,
@@ -13850,7 +12474,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00447",
+      "id": "evt-00404",
       "date": "2026-06-24",
       "start": "18:00",
       "end": null,
@@ -13882,7 +12506,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00448",
+      "id": "evt-00405",
       "date": "2026-06-24",
       "start": "22:30",
       "end": null,
@@ -13914,7 +12538,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00449",
+      "id": "evt-00406",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -13946,7 +12570,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00450",
+      "id": "evt-00407",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -13978,7 +12602,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00451",
+      "id": "evt-00408",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -13999,7 +12623,7 @@
       }
     },
     {
-      "id": "evt-00452",
+      "id": "evt-00409",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -14020,7 +12644,7 @@
       }
     },
     {
-      "id": "evt-00453",
+      "id": "evt-00410",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -14041,7 +12665,7 @@
       }
     },
     {
-      "id": "evt-00454",
+      "id": "evt-00411",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -14062,7 +12686,7 @@
       }
     },
     {
-      "id": "evt-00455",
+      "id": "evt-00412",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -14083,7 +12707,7 @@
       }
     },
     {
-      "id": "evt-00456",
+      "id": "evt-00413",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -14104,7 +12728,7 @@
       }
     },
     {
-      "id": "evt-00457",
+      "id": "evt-00414",
       "date": "2026-06-24",
       "start": null,
       "end": null,
@@ -14136,7 +12760,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00458",
+      "id": "evt-00415",
       "date": "2026-06-25",
       "start": "07:00",
       "end": null,
@@ -14168,7 +12792,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00459",
+      "id": "evt-00416",
       "date": "2026-06-25",
       "start": "07:00",
       "end": null,
@@ -14200,7 +12824,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00460",
+      "id": "evt-00417",
       "date": "2026-06-25",
       "start": "07:25",
       "end": null,
@@ -14232,7 +12856,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00461",
+      "id": "evt-00418",
       "date": "2026-06-25",
       "start": "08:00",
       "end": null,
@@ -14264,39 +12888,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00462",
-      "date": "2026-06-25",
-      "start": "08:00",
-      "end": null,
-      "title": "0800 1x FLA Staged at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "AD18",
-        "row": 18,
-        "col": 30,
-        "lane": "Medics",
-        "dateHeader": "25 JUN: DAY 8 DAY 1",
-        "dayNumber": 8,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "25 JUN: DAY 8 DAY 1",
-      "fontColor": "FF0070C0",
-      "dayNumber": 8
-    },
-    {
-      "id": "evt-00463",
+      "id": "evt-00419",
       "date": "2026-06-25",
       "start": "08:00",
       "end": null,
@@ -14328,7 +12920,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00464",
+      "id": "evt-00420",
       "date": "2026-06-25",
       "start": "08:00",
       "end": null,
@@ -14360,7 +12952,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00465",
+      "id": "evt-00421",
       "date": "2026-06-25",
       "start": "08:20",
       "end": null,
@@ -14392,7 +12984,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00466",
+      "id": "evt-00422",
       "date": "2026-06-25",
       "start": "09:00",
       "end": "11:00",
@@ -14424,7 +13016,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00467",
+      "id": "evt-00423",
       "date": "2026-06-25",
       "start": "10:00",
       "end": null,
@@ -14456,7 +13048,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00468",
+      "id": "evt-00424",
       "date": "2026-06-25",
       "start": "11:00",
       "end": "13:00",
@@ -14488,7 +13080,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00469",
+      "id": "evt-00425",
       "date": "2026-06-25",
       "start": "11:55",
       "end": null,
@@ -14520,7 +13112,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00470",
+      "id": "evt-00426",
       "date": "2026-06-25",
       "start": "12:35",
       "end": null,
@@ -14552,7 +13144,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00471",
+      "id": "evt-00427",
       "date": "2026-06-25",
       "start": "13:00",
       "end": null,
@@ -14584,7 +13176,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00472",
+      "id": "evt-00428",
       "date": "2026-06-25",
       "start": "13:00",
       "end": null,
@@ -14616,7 +13208,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00473",
+      "id": "evt-00429",
       "date": "2026-06-25",
       "start": "16:30",
       "end": null,
@@ -14648,39 +13240,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00474",
-      "date": "2026-06-25",
-      "start": "16:30",
-      "end": null,
-      "title": "FLAG: 1630 MAJ L 12-mi Brief",
-      "category": "Medical",
-      "group": "Cadre",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "Z3",
-        "row": 3,
-        "col": 26,
-        "lane": "Cadre",
-        "dateHeader": "25 JUN: DAY 8 DAY 1",
-        "dayNumber": 8,
-        "role": "CADRE",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Cadre",
-      "role": "CADRE",
-      "dateHeader": "25 JUN: DAY 8 DAY 1",
-      "fontColor": "theme:1",
-      "dayNumber": 8
-    },
-    {
-      "id": "evt-00475",
+      "id": "evt-00430",
       "date": "2026-06-25",
       "start": "17:55",
       "end": null,
@@ -14712,7 +13272,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00476",
+      "id": "evt-00431",
       "date": "2026-06-25",
       "start": "17:55",
       "end": null,
@@ -14744,7 +13304,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00477",
+      "id": "evt-00432",
       "date": "2026-06-25",
       "start": "22:30",
       "end": null,
@@ -14776,39 +13336,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00478",
-      "date": "2026-06-25",
-      "start": null,
-      "end": null,
-      "title": "1x FLA Staged at Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "AD17",
-        "row": 17,
-        "col": 30,
-        "lane": "Medics",
-        "dateHeader": "25 JUN: DAY 8 DAY 1",
-        "dayNumber": 8,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "25 JUN: DAY 8 DAY 1",
-      "fontColor": "FF00B050",
-      "dayNumber": 8
-    },
-    {
-      "id": "evt-00479",
+      "id": "evt-00433",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -14881,7 +13409,7 @@
       ]
     },
     {
-      "id": "evt-00480",
+      "id": "evt-00434",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -14913,7 +13441,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00481",
+      "id": "evt-00435",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -14934,7 +13462,7 @@
       }
     },
     {
-      "id": "evt-00482",
+      "id": "evt-00436",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -14955,7 +13483,7 @@
       }
     },
     {
-      "id": "evt-00483",
+      "id": "evt-00437",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -14976,7 +13504,7 @@
       }
     },
     {
-      "id": "evt-00484",
+      "id": "evt-00438",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -14997,7 +13525,7 @@
       }
     },
     {
-      "id": "evt-00485",
+      "id": "evt-00439",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -15018,7 +13546,7 @@
       }
     },
     {
-      "id": "evt-00486",
+      "id": "evt-00440",
       "date": "2026-06-25",
       "start": null,
       "end": null,
@@ -15039,7 +13567,7 @@
       }
     },
     {
-      "id": "evt-00487",
+      "id": "evt-00441",
       "date": "2026-06-26",
       "start": "04:00",
       "end": null,
@@ -15071,7 +13599,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00488",
+      "id": "evt-00442",
       "date": "2026-06-26",
       "start": "04:25",
       "end": null,
@@ -15103,7 +13631,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00489",
+      "id": "evt-00443",
       "date": "2026-06-26",
       "start": "06:30",
       "end": null,
@@ -15135,7 +13663,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00490",
+      "id": "evt-00444",
       "date": "2026-06-26",
       "start": "07:00",
       "end": null,
@@ -15167,7 +13695,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00491",
+      "id": "evt-00445",
       "date": "2026-06-26",
       "start": "07:25",
       "end": null,
@@ -15199,7 +13727,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00492",
+      "id": "evt-00446",
       "date": "2026-06-26",
       "start": "07:25",
       "end": null,
@@ -15231,7 +13759,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00493",
+      "id": "evt-00447",
       "date": "2026-06-26",
       "start": "08:00",
       "end": null,
@@ -15263,7 +13791,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00494",
+      "id": "evt-00448",
       "date": "2026-06-26",
       "start": "08:30",
       "end": null,
@@ -15295,7 +13823,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00495",
+      "id": "evt-00449",
       "date": "2026-06-26",
       "start": "09:00",
       "end": null,
@@ -15327,7 +13855,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00496",
+      "id": "evt-00450",
       "date": "2026-06-26",
       "start": "09:00",
       "end": "09:30",
@@ -15359,7 +13887,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00497",
+      "id": "evt-00451",
       "date": "2026-06-26",
       "start": "10:00",
       "end": null,
@@ -15391,7 +13919,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00498",
+      "id": "evt-00452",
       "date": "2026-06-26",
       "start": "10:00",
       "end": null,
@@ -15423,7 +13951,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00499",
+      "id": "evt-00453",
       "date": "2026-06-26",
       "start": "11:00",
       "end": "13:00",
@@ -15455,7 +13983,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00500",
+      "id": "evt-00454",
       "date": "2026-06-26",
       "start": "11:55",
       "end": null,
@@ -15487,7 +14015,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00501",
+      "id": "evt-00455",
       "date": "2026-06-26",
       "start": "12:45",
       "end": null,
@@ -15519,7 +14047,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00502",
+      "id": "evt-00456",
       "date": "2026-06-26",
       "start": "16:30",
       "end": null,
@@ -15551,7 +14079,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00503",
+      "id": "evt-00457",
       "date": "2026-06-26",
       "start": "17:55",
       "end": null,
@@ -15583,7 +14111,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00504",
+      "id": "evt-00458",
       "date": "2026-06-26",
       "start": "17:55",
       "end": null,
@@ -15615,7 +14143,7 @@
       "dayNumber": 2
     },
     {
-      "id": "evt-00505",
+      "id": "evt-00459",
       "date": "2026-06-26",
       "start": "22:30",
       "end": null,
@@ -15647,7 +14175,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00506",
+      "id": "evt-00460",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15679,7 +14207,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00507",
+      "id": "evt-00461",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15752,7 +14280,7 @@
       ]
     },
     {
-      "id": "evt-00508",
+      "id": "evt-00462",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15784,7 +14312,7 @@
       "dayNumber": 9
     },
     {
-      "id": "evt-00509",
+      "id": "evt-00463",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15805,7 +14333,7 @@
       }
     },
     {
-      "id": "evt-00510",
+      "id": "evt-00464",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15826,7 +14354,7 @@
       }
     },
     {
-      "id": "evt-00511",
+      "id": "evt-00465",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15847,7 +14375,7 @@
       }
     },
     {
-      "id": "evt-00512",
+      "id": "evt-00466",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15868,7 +14396,7 @@
       }
     },
     {
-      "id": "evt-00513",
+      "id": "evt-00467",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15889,7 +14417,7 @@
       }
     },
     {
-      "id": "evt-00514",
+      "id": "evt-00468",
       "date": "2026-06-26",
       "start": null,
       "end": null,
@@ -15910,7 +14438,7 @@
       }
     },
     {
-      "id": "evt-00515",
+      "id": "evt-00469",
       "date": "2026-06-27",
       "start": "02:40",
       "end": null,
@@ -15942,7 +14470,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00516",
+      "id": "evt-00470",
       "date": "2026-06-27",
       "start": "03:00",
       "end": null,
@@ -15974,7 +14502,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00517",
+      "id": "evt-00471",
       "date": "2026-06-27",
       "start": "04:00",
       "end": null,
@@ -16006,7 +14534,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00518",
+      "id": "evt-00472",
       "date": "2026-06-27",
       "start": "04:00",
       "end": null,
@@ -16038,39 +14566,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00519",
-      "date": "2026-06-27",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "AP12",
-        "row": 12,
-        "col": 42,
-        "lane": "Medics",
-        "dateHeader": "27 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "27 JUN: DAY 10 DAY 3",
-      "fontColor": "FF00B050",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00520",
+      "id": "evt-00473",
       "date": "2026-06-27",
       "start": "05:00",
       "end": null,
@@ -16102,7 +14598,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00521",
+      "id": "evt-00474",
       "date": "2026-06-27",
       "start": "05:00",
       "end": null,
@@ -16134,7 +14630,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00522",
+      "id": "evt-00475",
       "date": "2026-06-27",
       "start": "05:30",
       "end": "08:45",
@@ -16166,7 +14662,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00523",
+      "id": "evt-00476",
       "date": "2026-06-27",
       "start": "06:45",
       "end": "07:15",
@@ -16198,7 +14694,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00524",
+      "id": "evt-00477",
       "date": "2026-06-27",
       "start": "08:00",
       "end": null,
@@ -16230,7 +14726,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00525",
+      "id": "evt-00478",
       "date": "2026-06-27",
       "start": "09:00",
       "end": null,
@@ -16262,39 +14758,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00526",
-      "date": "2026-06-27",
-      "start": "09:00",
-      "end": null,
-      "title": "0900 Move 1x FLA Plain",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "AP20",
-        "row": 20,
-        "col": 42,
-        "lane": "Medics",
-        "dateHeader": "27 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "27 JUN: DAY 10 DAY 3",
-      "fontColor": "FF0070C0",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00527",
+      "id": "evt-00479",
       "date": "2026-06-27",
       "start": "09:00",
       "end": "11:00",
@@ -16326,7 +14790,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00528",
+      "id": "evt-00480",
       "date": "2026-06-27",
       "start": "09:00",
       "end": null,
@@ -16358,7 +14822,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00529",
+      "id": "evt-00481",
       "date": "2026-06-27",
       "start": "11:00",
       "end": "13:00",
@@ -16390,7 +14854,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00530",
+      "id": "evt-00482",
       "date": "2026-06-27",
       "start": "11:55",
       "end": null,
@@ -16422,7 +14886,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00531",
+      "id": "evt-00483",
       "date": "2026-06-27",
       "start": "12:30",
       "end": null,
@@ -16454,7 +14918,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00532",
+      "id": "evt-00484",
       "date": "2026-06-27",
       "start": "13:00",
       "end": null,
@@ -16486,7 +14950,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00533",
+      "id": "evt-00485",
       "date": "2026-06-27",
       "start": "13:00",
       "end": null,
@@ -16518,7 +14982,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00534",
+      "id": "evt-00486",
       "date": "2026-06-27",
       "start": "17:55",
       "end": null,
@@ -16550,7 +15014,7 @@
       "dayNumber": 3
     },
     {
-      "id": "evt-00535",
+      "id": "evt-00487",
       "date": "2026-06-27",
       "start": "22:30",
       "end": null,
@@ -16582,7 +15046,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00536",
+      "id": "evt-00488",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16614,7 +15078,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00537",
+      "id": "evt-00489",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16646,7 +15110,7 @@
       "dayNumber": 10
     },
     {
-      "id": "evt-00538",
+      "id": "evt-00490",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16706,7 +15170,7 @@
       ]
     },
     {
-      "id": "evt-00539",
+      "id": "evt-00491",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16727,7 +15191,7 @@
       }
     },
     {
-      "id": "evt-00540",
+      "id": "evt-00492",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16748,7 +15212,7 @@
       }
     },
     {
-      "id": "evt-00541",
+      "id": "evt-00493",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16769,7 +15233,7 @@
       }
     },
     {
-      "id": "evt-00542",
+      "id": "evt-00494",
       "date": "2026-06-27",
       "start": null,
       "end": null,
@@ -16790,39 +15254,7 @@
       }
     },
     {
-      "id": "evt-00543",
-      "date": "2026-06-27",
-      "start": null,
-      "end": null,
-      "title": "Move 1x FLA to Shelf, release 2x",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 2",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "AP15",
-        "row": 15,
-        "col": 42,
-        "lane": "Medics",
-        "dateHeader": "27 JUN: DAY 10 DAY 3",
-        "dayNumber": 10,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "27 JUN: DAY 10 DAY 3",
-      "fontColor": "FF0070C0",
-      "dayNumber": 10
-    },
-    {
-      "id": "evt-00544",
+      "id": "evt-00495",
       "date": "2026-06-28",
       "start": "04:40",
       "end": null,
@@ -16854,7 +15286,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00545",
+      "id": "evt-00496",
       "date": "2026-06-28",
       "start": "05:00",
       "end": "07:00",
@@ -16886,7 +15318,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00546",
+      "id": "evt-00497",
       "date": "2026-06-28",
       "start": "05:00",
       "end": null,
@@ -16918,39 +15350,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00547",
-      "date": "2026-06-28",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "F12",
-        "row": 12,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 28: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 28: DAY 4 DAY -3",
-      "fontColor": "theme:1",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00548",
+      "id": "evt-00498",
       "date": "2026-06-28",
       "start": "07:25",
       "end": null,
@@ -16982,7 +15382,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00549",
+      "id": "evt-00499",
       "date": "2026-06-28",
       "start": "08:00",
       "end": null,
@@ -17014,7 +15414,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00550",
+      "id": "evt-00500",
       "date": "2026-06-28",
       "start": "08:55",
       "end": null,
@@ -17046,7 +15446,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00551",
+      "id": "evt-00501",
       "date": "2026-06-28",
       "start": "09:00",
       "end": "11:00",
@@ -17078,7 +15478,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00552",
+      "id": "evt-00502",
       "date": "2026-06-28",
       "start": "09:00",
       "end": null,
@@ -17110,39 +15510,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00553",
-      "date": "2026-06-28",
-      "start": "09:00",
-      "end": null,
-      "title": "0900 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "F20",
-        "row": 20,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 28: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 28: DAY 4 DAY -3",
-      "fontColor": "theme:1",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00554",
+      "id": "evt-00503",
       "date": "2026-06-28",
       "start": "11:00",
       "end": "13:00",
@@ -17174,7 +15542,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00555",
+      "id": "evt-00504",
       "date": "2026-06-28",
       "start": "11:25",
       "end": null,
@@ -17206,7 +15574,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00556",
+      "id": "evt-00505",
       "date": "2026-06-28",
       "start": "12:40",
       "end": null,
@@ -17238,7 +15606,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00557",
+      "id": "evt-00506",
       "date": "2026-06-28",
       "start": "13:00",
       "end": null,
@@ -17270,39 +15638,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00558",
-      "date": "2026-06-28",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "F28",
-        "row": 28,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 28: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 28: DAY 4 DAY -3",
-      "fontColor": "theme:1",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00559",
+      "id": "evt-00507",
       "date": "2026-06-28",
       "start": "13:00",
       "end": "16:00",
@@ -17334,7 +15670,7 @@
       "dayNumber": -3
     },
     {
-      "id": "evt-00560",
+      "id": "evt-00508",
       "date": "2026-06-28",
       "start": "13:00",
       "end": null,
@@ -17366,7 +15702,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00561",
+      "id": "evt-00509",
       "date": "2026-06-28",
       "start": "17:55",
       "end": null,
@@ -17398,7 +15734,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00562",
+      "id": "evt-00510",
       "date": "2026-06-28",
       "start": "17:55",
       "end": null,
@@ -17430,7 +15766,7 @@
       "dayNumber": -3
     },
     {
-      "id": "evt-00563",
+      "id": "evt-00511",
       "date": "2026-06-28",
       "start": "22:30",
       "end": null,
@@ -17462,39 +15798,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00564",
-      "date": "2026-06-28",
-      "start": null,
-      "end": null,
-      "title": "1x FLA on Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "F17",
-        "row": 17,
-        "col": 6,
-        "lane": "Medics",
-        "dateHeader": "JUN 28: DAY 4 DAY -3",
-        "dayNumber": 4,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF000000"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 28: DAY 4 DAY -3",
-      "fontColor": "FF000000",
-      "dayNumber": 4
-    },
-    {
-      "id": "evt-00565",
+      "id": "evt-00512",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17567,7 +15871,7 @@
       ]
     },
     {
-      "id": "evt-00566",
+      "id": "evt-00513",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17599,7 +15903,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00567",
+      "id": "evt-00514",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17631,7 +15935,7 @@
       "dayNumber": 4
     },
     {
-      "id": "evt-00568",
+      "id": "evt-00515",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17652,7 +15956,7 @@
       }
     },
     {
-      "id": "evt-00569",
+      "id": "evt-00516",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17673,7 +15977,7 @@
       }
     },
     {
-      "id": "evt-00570",
+      "id": "evt-00517",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17694,7 +15998,7 @@
       }
     },
     {
-      "id": "evt-00571",
+      "id": "evt-00518",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17715,7 +16019,7 @@
       }
     },
     {
-      "id": "evt-00572",
+      "id": "evt-00519",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17736,7 +16040,7 @@
       }
     },
     {
-      "id": "evt-00573",
+      "id": "evt-00520",
       "date": "2026-06-28",
       "start": null,
       "end": null,
@@ -17757,7 +16061,7 @@
       }
     },
     {
-      "id": "evt-00574",
+      "id": "evt-00521",
       "date": "2026-06-29",
       "start": "04:40",
       "end": null,
@@ -17788,7 +16092,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00575",
+      "id": "evt-00522",
       "date": "2026-06-29",
       "start": "04:45",
       "end": null,
@@ -17820,7 +16124,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00576",
+      "id": "evt-00523",
       "date": "2026-06-29",
       "start": "05:00",
       "end": null,
@@ -17851,7 +16155,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00577",
+      "id": "evt-00524",
       "date": "2026-06-29",
       "start": "05:25",
       "end": null,
@@ -17883,7 +16187,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00578",
+      "id": "evt-00525",
       "date": "2026-06-29",
       "start": "05:30",
       "end": "07:00",
@@ -17915,7 +16219,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00579",
+      "id": "evt-00526",
       "date": "2026-06-29",
       "start": "06:55",
       "end": null,
@@ -17947,39 +16251,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00580",
-      "date": "2026-06-29",
-      "start": "07:00",
-      "end": null,
-      "title": "0700 1x FLA at the Marne 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "L16",
-        "row": 16,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 29: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 29: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00581",
+      "id": "evt-00527",
       "date": "2026-06-29",
       "start": "07:00",
       "end": "13:00",
@@ -18011,7 +16283,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00582",
+      "id": "evt-00528",
       "date": "2026-06-29",
       "start": "07:25",
       "end": null,
@@ -18043,7 +16315,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00583",
+      "id": "evt-00529",
       "date": "2026-06-29",
       "start": "08:00",
       "end": null,
@@ -18075,7 +16347,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00584",
+      "id": "evt-00530",
       "date": "2026-06-29",
       "start": "08:00",
       "end": "11:00",
@@ -18107,7 +16379,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00585",
+      "id": "evt-00531",
       "date": "2026-06-29",
       "start": "09:00",
       "end": null,
@@ -18139,7 +16411,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00586",
+      "id": "evt-00532",
       "date": "2026-06-29",
       "start": "11:00",
       "end": "13:00",
@@ -18171,7 +16443,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00587",
+      "id": "evt-00533",
       "date": "2026-06-29",
       "start": "11:55",
       "end": null,
@@ -18203,7 +16475,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00588",
+      "id": "evt-00534",
       "date": "2026-06-29",
       "start": "12:45",
       "end": null,
@@ -18235,7 +16507,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00589",
+      "id": "evt-00535",
       "date": "2026-06-29",
       "start": "12:55",
       "end": null,
@@ -18267,7 +16539,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00590",
+      "id": "evt-00536",
       "date": "2026-06-29",
       "start": "13:00",
       "end": null,
@@ -18299,39 +16571,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00591",
-      "date": "2026-06-29",
-      "start": "13:00",
-      "end": null,
-      "title": "1300 1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "L28",
-        "row": 28,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 29: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 29: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00592",
+      "id": "evt-00537",
       "date": "2026-06-29",
       "start": "13:00",
       "end": null,
@@ -18363,7 +16603,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00593",
+      "id": "evt-00538",
       "date": "2026-06-29",
       "start": "13:00",
       "end": null,
@@ -18395,7 +16635,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00594",
+      "id": "evt-00539",
       "date": "2026-06-29",
       "start": "17:55",
       "end": null,
@@ -18427,7 +16667,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00595",
+      "id": "evt-00540",
       "date": "2026-06-29",
       "start": "17:55",
       "end": null,
@@ -18459,7 +16699,7 @@
       "dayNumber": -2
     },
     {
-      "id": "evt-00596",
+      "id": "evt-00541",
       "date": "2026-06-29",
       "start": "22:30",
       "end": null,
@@ -18491,39 +16731,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00597",
-      "date": "2026-06-29",
-      "start": null,
-      "end": null,
-      "title": "1x FLA at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "L13",
-        "row": 13,
-        "col": 12,
-        "lane": "Medics",
-        "dateHeader": "JUN 29: DAY 5 DAY -2",
-        "dayNumber": 5,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 29: DAY 5 DAY -2",
-      "fontColor": "theme:1",
-      "dayNumber": 5
-    },
-    {
-      "id": "evt-00598",
+      "id": "evt-00542",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18583,7 +16791,7 @@
       ]
     },
     {
-      "id": "evt-00599",
+      "id": "evt-00543",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18656,7 +16864,7 @@
       ]
     },
     {
-      "id": "evt-00600",
+      "id": "evt-00544",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18688,7 +16896,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00601",
+      "id": "evt-00545",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18720,7 +16928,7 @@
       "dayNumber": 5
     },
     {
-      "id": "evt-00602",
+      "id": "evt-00546",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18741,7 +16949,7 @@
       }
     },
     {
-      "id": "evt-00603",
+      "id": "evt-00547",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18762,7 +16970,7 @@
       }
     },
     {
-      "id": "evt-00604",
+      "id": "evt-00548",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18783,7 +16991,7 @@
       }
     },
     {
-      "id": "evt-00605",
+      "id": "evt-00549",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18804,7 +17012,7 @@
       }
     },
     {
-      "id": "evt-00606",
+      "id": "evt-00550",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18825,7 +17033,7 @@
       }
     },
     {
-      "id": "evt-00607",
+      "id": "evt-00551",
       "date": "2026-06-29",
       "start": null,
       "end": null,
@@ -18846,7 +17054,7 @@
       }
     },
     {
-      "id": "evt-00608",
+      "id": "evt-00552",
       "date": "2026-06-30",
       "start": "04:20",
       "end": null,
@@ -18878,7 +17086,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00609",
+      "id": "evt-00553",
       "date": "2026-06-30",
       "start": "05:00",
       "end": null,
@@ -18910,39 +17118,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00610",
-      "date": "2026-06-30",
-      "start": "05:00",
-      "end": null,
-      "title": "0500 1x FLA @ South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "R12",
-        "row": 12,
-        "col": 18,
-        "lane": "Medics",
-        "dateHeader": "JUN 30: DAY 6 DAY -1",
-        "dayNumber": 6,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "JUN 30: DAY 6 DAY -1",
-      "fontColor": "theme:1",
-      "dayNumber": 6
-    },
-    {
-      "id": "evt-00611",
+      "id": "evt-00554",
       "date": "2026-06-30",
       "start": "07:00",
       "end": null,
@@ -18974,7 +17150,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00612",
+      "id": "evt-00555",
       "date": "2026-06-30",
       "start": "07:25",
       "end": null,
@@ -19006,7 +17182,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00613",
+      "id": "evt-00556",
       "date": "2026-06-30",
       "start": "08:00",
       "end": null,
@@ -19038,7 +17214,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00614",
+      "id": "evt-00557",
       "date": "2026-06-30",
       "start": "10:00",
       "end": null,
@@ -19070,7 +17246,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00615",
+      "id": "evt-00558",
       "date": "2026-06-30",
       "start": "11:00",
       "end": "13:00",
@@ -19102,7 +17278,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00616",
+      "id": "evt-00559",
       "date": "2026-06-30",
       "start": "11:55",
       "end": null,
@@ -19134,7 +17310,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00617",
+      "id": "evt-00560",
       "date": "2026-06-30",
       "start": "17:55",
       "end": null,
@@ -19166,7 +17342,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00618",
+      "id": "evt-00561",
       "date": "2026-06-30",
       "start": "17:55",
       "end": null,
@@ -19198,7 +17374,7 @@
       "dayNumber": -1
     },
     {
-      "id": "evt-00619",
+      "id": "evt-00562",
       "date": "2026-06-30",
       "start": "22:30",
       "end": null,
@@ -19230,7 +17406,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00620",
+      "id": "evt-00563",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19290,7 +17466,7 @@
       ]
     },
     {
-      "id": "evt-00621",
+      "id": "evt-00564",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19322,7 +17498,7 @@
       "dayNumber": 6
     },
     {
-      "id": "evt-00622",
+      "id": "evt-00565",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19343,7 +17519,7 @@
       }
     },
     {
-      "id": "evt-00623",
+      "id": "evt-00566",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19364,7 +17540,7 @@
       }
     },
     {
-      "id": "evt-00624",
+      "id": "evt-00567",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19385,7 +17561,7 @@
       }
     },
     {
-      "id": "evt-00625",
+      "id": "evt-00568",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19406,7 +17582,7 @@
       }
     },
     {
-      "id": "evt-00626",
+      "id": "evt-00569",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19427,7 +17603,7 @@
       }
     },
     {
-      "id": "evt-00627",
+      "id": "evt-00570",
       "date": "2026-06-30",
       "start": null,
       "end": null,
@@ -19448,71 +17624,7 @@
       }
     },
     {
-      "id": "evt-00628",
-      "date": "2026-07-01",
-      "start": "00:00",
-      "end": null,
-      "title": "0000 FLAG: NEED FLA Request for today SUPT's BBQ",
-      "category": "Medical",
-      "group": "Cadre",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "T3",
-        "row": 3,
-        "col": 20,
-        "lane": "Cadre",
-        "dateHeader": "01 JUL: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "CADRE",
-        "entryIndex": 1,
-        "fontColor": "theme:1"
-      },
-      "lane": "Cadre",
-      "role": "CADRE",
-      "dateHeader": "01 JUL: DAY 7 DAY 0",
-      "fontColor": "theme:1",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00629",
-      "date": "2026-07-01",
-      "start": "03:00",
-      "end": null,
-      "title": "0300 1x FLA Needed at Marne",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "X9",
-        "row": 9,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "01 JUL: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF7030A0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "01 JUL: DAY 7 DAY 0",
-      "fontColor": "FF7030A0",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00630",
+      "id": "evt-00571",
       "date": "2026-07-01",
       "start": "04:40",
       "end": null,
@@ -19544,7 +17656,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00631",
+      "id": "evt-00572",
       "date": "2026-07-01",
       "start": "05:00",
       "end": null,
@@ -19576,7 +17688,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00632",
+      "id": "evt-00573",
       "date": "2026-07-01",
       "start": "06:00",
       "end": null,
@@ -19608,7 +17720,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00633",
+      "id": "evt-00574",
       "date": "2026-07-01",
       "start": "06:00",
       "end": "07:30",
@@ -19640,39 +17752,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00634",
-      "date": "2026-07-01",
-      "start": "06:00",
-      "end": "07:30",
-      "title": "1x FLA for the Run (0600-0730)",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "X14",
-        "row": 14,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "01 JUL: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "01 JUL: DAY 7 DAY 0",
-      "fontColor": "FF00B050",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00635",
+      "id": "evt-00575",
       "date": "2026-07-01",
       "start": "07:00",
       "end": null,
@@ -19704,7 +17784,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00636",
+      "id": "evt-00576",
       "date": "2026-07-01",
       "start": "07:25",
       "end": null,
@@ -19736,7 +17816,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00637",
+      "id": "evt-00577",
       "date": "2026-07-01",
       "start": "08:00",
       "end": null,
@@ -19768,7 +17848,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00638",
+      "id": "evt-00578",
       "date": "2026-07-01",
       "start": "08:00",
       "end": null,
@@ -19800,7 +17880,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00639",
+      "id": "evt-00579",
       "date": "2026-07-01",
       "start": "08:10",
       "end": null,
@@ -19832,7 +17912,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00640",
+      "id": "evt-00580",
       "date": "2026-07-01",
       "start": "08:30",
       "end": null,
@@ -19864,39 +17944,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00641",
-      "date": "2026-07-01",
-      "start": "08:30",
-      "end": null,
-      "title": "1x FLA at South Dock (0830-UTC)",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "X19",
-        "row": 19,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "01 JUL: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "01 JUL: DAY 7 DAY 0",
-      "fontColor": "FF00B050",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00642",
+      "id": "evt-00581",
       "date": "2026-07-01",
       "start": "11:00",
       "end": "13:00",
@@ -19928,39 +17976,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00643",
-      "date": "2026-07-01",
-      "start": "15:00",
-      "end": null,
-      "title": "1500 1x FLA on Davis Shelf",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Davis Shelf",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "X32",
-        "row": 32,
-        "col": 24,
-        "lane": "Medics",
-        "dateHeader": "01 JUL: DAY 7 DAY 0",
-        "dayNumber": 7,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF0070C0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "01 JUL: DAY 7 DAY 0",
-      "fontColor": "FF0070C0",
-      "dayNumber": 7
-    },
-    {
-      "id": "evt-00644",
+      "id": "evt-00582",
       "date": "2026-07-01",
       "start": "15:30",
       "end": null,
@@ -19992,7 +18008,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00645",
+      "id": "evt-00583",
       "date": "2026-07-01",
       "start": "17:55",
       "end": null,
@@ -20024,7 +18040,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00646",
+      "id": "evt-00584",
       "date": "2026-07-01",
       "start": "17:55",
       "end": null,
@@ -20056,7 +18072,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00647",
+      "id": "evt-00585",
       "date": "2026-07-01",
       "start": "18:00",
       "end": null,
@@ -20088,7 +18104,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00648",
+      "id": "evt-00586",
       "date": "2026-07-01",
       "start": "22:30",
       "end": null,
@@ -20120,7 +18136,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00649",
+      "id": "evt-00587",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20152,7 +18168,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00650",
+      "id": "evt-00588",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20184,7 +18200,7 @@
       "dayNumber": 7
     },
     {
-      "id": "evt-00651",
+      "id": "evt-00589",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20205,7 +18221,7 @@
       }
     },
     {
-      "id": "evt-00652",
+      "id": "evt-00590",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20226,7 +18242,7 @@
       }
     },
     {
-      "id": "evt-00653",
+      "id": "evt-00591",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20247,7 +18263,7 @@
       }
     },
     {
-      "id": "evt-00654",
+      "id": "evt-00592",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20268,7 +18284,7 @@
       }
     },
     {
-      "id": "evt-00655",
+      "id": "evt-00593",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20289,7 +18305,7 @@
       }
     },
     {
-      "id": "evt-00656",
+      "id": "evt-00594",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20310,7 +18326,7 @@
       }
     },
     {
-      "id": "evt-00657",
+      "id": "evt-00595",
       "date": "2026-07-01",
       "start": null,
       "end": null,
@@ -20342,7 +18358,7 @@
       "dayNumber": 0
     },
     {
-      "id": "evt-00658",
+      "id": "evt-00596",
       "date": "2026-07-02",
       "start": "07:00",
       "end": null,
@@ -20374,7 +18390,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00659",
+      "id": "evt-00597",
       "date": "2026-07-02",
       "start": "07:00",
       "end": null,
@@ -20406,7 +18422,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00660",
+      "id": "evt-00598",
       "date": "2026-07-02",
       "start": "07:25",
       "end": null,
@@ -20438,7 +18454,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00661",
+      "id": "evt-00599",
       "date": "2026-07-02",
       "start": "08:00",
       "end": null,
@@ -20470,39 +18486,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00662",
-      "date": "2026-07-02",
-      "start": "08:00",
-      "end": null,
-      "title": "0800 1x FLA Staged at South Dock",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "South Dock",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "AD18",
-        "row": 18,
-        "col": 30,
-        "lane": "Medics",
-        "dateHeader": "02 JUL DAY 8 DAY 1",
-        "dayNumber": 8,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF00B050"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "02 JUL DAY 8 DAY 1",
-      "fontColor": "FF00B050",
-      "dayNumber": 8
-    },
-    {
-      "id": "evt-00663",
+      "id": "evt-00600",
       "date": "2026-07-02",
       "start": "08:00",
       "end": null,
@@ -20534,7 +18518,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00664",
+      "id": "evt-00601",
       "date": "2026-07-02",
       "start": "08:00",
       "end": null,
@@ -20566,7 +18550,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00665",
+      "id": "evt-00602",
       "date": "2026-07-02",
       "start": "08:20",
       "end": null,
@@ -20598,7 +18582,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00666",
+      "id": "evt-00603",
       "date": "2026-07-02",
       "start": "10:00",
       "end": null,
@@ -20630,7 +18614,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00667",
+      "id": "evt-00604",
       "date": "2026-07-02",
       "start": "10:00",
       "end": null,
@@ -20662,7 +18646,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00668",
+      "id": "evt-00605",
       "date": "2026-07-02",
       "start": "11:00",
       "end": "13:00",
@@ -20694,7 +18678,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00669",
+      "id": "evt-00606",
       "date": "2026-07-02",
       "start": "11:55",
       "end": null,
@@ -20726,7 +18710,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00670",
+      "id": "evt-00607",
       "date": "2026-07-02",
       "start": "12:35",
       "end": null,
@@ -20758,7 +18742,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00671",
+      "id": "evt-00608",
       "date": "2026-07-02",
       "start": "13:00",
       "end": null,
@@ -20790,7 +18774,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00672",
+      "id": "evt-00609",
       "date": "2026-07-02",
       "start": "13:00",
       "end": null,
@@ -20822,7 +18806,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00673",
+      "id": "evt-00610",
       "date": "2026-07-02",
       "start": "13:00",
       "end": null,
@@ -20853,7 +18837,7 @@
       "fontColor": "theme:1"
     },
     {
-      "id": "evt-00674",
+      "id": "evt-00611",
       "date": "2026-07-02",
       "start": "16:30",
       "end": null,
@@ -20885,7 +18869,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00675",
+      "id": "evt-00612",
       "date": "2026-07-02",
       "start": "17:55",
       "end": null,
@@ -20917,7 +18901,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00676",
+      "id": "evt-00613",
       "date": "2026-07-02",
       "start": "17:55",
       "end": null,
@@ -20949,7 +18933,7 @@
       "dayNumber": 1
     },
     {
-      "id": "evt-00677",
+      "id": "evt-00614",
       "date": "2026-07-02",
       "start": "22:30",
       "end": null,
@@ -20981,39 +18965,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00678",
-      "date": "2026-07-02",
-      "start": null,
-      "end": null,
-      "title": "1x FLA Staged at Bartlett",
-      "category": "Medical",
-      "group": "Medics",
-      "location": "Bartlett",
-      "people": [],
-      "notes": "",
-      "classKey": "Air Assault 3",
-      "sourceKind": "lrtc",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "AD17",
-        "row": 17,
-        "col": 30,
-        "lane": "Medics",
-        "dateHeader": "02 JUL DAY 8 DAY 1",
-        "dayNumber": 8,
-        "role": "MEDICS",
-        "entryIndex": 1,
-        "fontColor": "FF7030A0"
-      },
-      "lane": "Medics",
-      "role": "MEDICS",
-      "dateHeader": "02 JUL DAY 8 DAY 1",
-      "fontColor": "FF7030A0",
-      "dayNumber": 8
-    },
-    {
-      "id": "evt-00679",
+      "id": "evt-00615",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21086,7 +19038,7 @@
       ]
     },
     {
-      "id": "evt-00680",
+      "id": "evt-00616",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21118,7 +19070,7 @@
       "dayNumber": 8
     },
     {
-      "id": "evt-00681",
+      "id": "evt-00617",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21139,7 +19091,7 @@
       }
     },
     {
-      "id": "evt-00682",
+      "id": "evt-00618",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21160,7 +19112,7 @@
       }
     },
     {
-      "id": "evt-00683",
+      "id": "evt-00619",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21181,7 +19133,7 @@
       }
     },
     {
-      "id": "evt-00684",
+      "id": "evt-00620",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21202,7 +19154,7 @@
       }
     },
     {
-      "id": "evt-00685",
+      "id": "evt-00621",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21223,7 +19175,7 @@
       }
     },
     {
-      "id": "evt-00686",
+      "id": "evt-00622",
       "date": "2026-07-02",
       "start": null,
       "end": null,
@@ -21244,7 +19196,7 @@
       }
     },
     {
-      "id": "evt-00687",
+      "id": "evt-00623",
       "date": "2026-07-03",
       "start": null,
       "end": null,
@@ -21265,7 +19217,7 @@
       }
     },
     {
-      "id": "evt-00688",
+      "id": "evt-00624",
       "date": "2026-07-03",
       "start": null,
       "end": null,
@@ -21286,7 +19238,7 @@
       }
     },
     {
-      "id": "evt-00689",
+      "id": "evt-00625",
       "date": "2026-07-03",
       "start": null,
       "end": null,
@@ -21307,7 +19259,7 @@
       }
     },
     {
-      "id": "evt-00690",
+      "id": "evt-00626",
       "date": "2026-07-03",
       "start": null,
       "end": null,
@@ -21328,7 +19280,7 @@
       }
     },
     {
-      "id": "evt-00691",
+      "id": "evt-00627",
       "date": "2026-07-03",
       "start": null,
       "end": null,
@@ -21349,7 +19301,7 @@
       }
     },
     {
-      "id": "evt-00692",
+      "id": "evt-00628",
       "date": "2026-07-03",
       "start": null,
       "end": null,
@@ -21370,7 +19322,7 @@
       }
     },
     {
-      "id": "evt-00693",
+      "id": "evt-00629",
       "date": "2026-07-04",
       "start": null,
       "end": null,
@@ -21391,7 +19343,7 @@
       }
     },
     {
-      "id": "evt-00694",
+      "id": "evt-00630",
       "date": "2026-07-04",
       "start": null,
       "end": null,
@@ -21412,7 +19364,7 @@
       }
     },
     {
-      "id": "evt-00695",
+      "id": "evt-00631",
       "date": "2026-07-04",
       "start": null,
       "end": null,
@@ -21433,7 +19385,7 @@
       }
     },
     {
-      "id": "evt-00696",
+      "id": "evt-00632",
       "date": "2026-07-04",
       "start": null,
       "end": null,
@@ -21454,7 +19406,7 @@
       }
     },
     {
-      "id": "evt-00697",
+      "id": "evt-00633",
       "date": "2026-07-05",
       "start": null,
       "end": null,
@@ -21475,7 +19427,7 @@
       }
     },
     {
-      "id": "evt-00698",
+      "id": "evt-00634",
       "date": "2026-07-05",
       "start": null,
       "end": null,
@@ -21496,7 +19448,7 @@
       }
     },
     {
-      "id": "evt-00699",
+      "id": "evt-00635",
       "date": "2026-07-05",
       "start": null,
       "end": null,
@@ -21517,7 +19469,7 @@
       }
     },
     {
-      "id": "evt-00700",
+      "id": "evt-00636",
       "date": "2026-07-05",
       "start": null,
       "end": null,
@@ -21538,7 +19490,7 @@
       }
     },
     {
-      "id": "evt-00701",
+      "id": "evt-00637",
       "date": "2026-07-05",
       "start": null,
       "end": null,
@@ -21559,7 +19511,7 @@
       }
     },
     {
-      "id": "evt-00702",
+      "id": "evt-00638",
       "date": "2026-07-05",
       "start": null,
       "end": null,
@@ -21580,7 +19532,7 @@
       }
     },
     {
-      "id": "evt-00703",
+      "id": "evt-00639",
       "date": "2026-07-06",
       "start": null,
       "end": null,
@@ -21601,7 +19553,7 @@
       }
     },
     {
-      "id": "evt-00704",
+      "id": "evt-00640",
       "date": "2026-07-06",
       "start": null,
       "end": null,
@@ -21622,7 +19574,7 @@
       }
     },
     {
-      "id": "evt-00705",
+      "id": "evt-00641",
       "date": "2026-07-06",
       "start": null,
       "end": null,
@@ -21643,7 +19595,7 @@
       }
     },
     {
-      "id": "evt-00706",
+      "id": "evt-00642",
       "date": "2026-07-06",
       "start": null,
       "end": null,
@@ -21664,7 +19616,7 @@
       }
     },
     {
-      "id": "evt-00707",
+      "id": "evt-00643",
       "date": "2026-07-06",
       "start": null,
       "end": null,
@@ -21685,7 +19637,7 @@
       }
     },
     {
-      "id": "evt-00708",
+      "id": "evt-00644",
       "date": "2026-07-06",
       "start": null,
       "end": null,
@@ -21706,7 +19658,7 @@
       }
     },
     {
-      "id": "evt-00709",
+      "id": "evt-00645",
       "date": "2026-07-07",
       "start": null,
       "end": null,
@@ -21727,7 +19679,7 @@
       }
     },
     {
-      "id": "evt-00710",
+      "id": "evt-00646",
       "date": "2026-07-07",
       "start": null,
       "end": null,
@@ -21748,7 +19700,7 @@
       }
     },
     {
-      "id": "evt-00711",
+      "id": "evt-00647",
       "date": "2026-07-07",
       "start": null,
       "end": null,
@@ -21769,7 +19721,7 @@
       }
     },
     {
-      "id": "evt-00712",
+      "id": "evt-00648",
       "date": "2026-07-07",
       "start": null,
       "end": null,
@@ -21790,7 +19742,7 @@
       }
     },
     {
-      "id": "evt-00713",
+      "id": "evt-00649",
       "date": "2026-07-07",
       "start": null,
       "end": null,
@@ -21811,7 +19763,7 @@
       }
     },
     {
-      "id": "evt-00714",
+      "id": "evt-00650",
       "date": "2026-07-07",
       "start": null,
       "end": null,
@@ -21832,7 +19784,7 @@
       }
     },
     {
-      "id": "evt-00715",
+      "id": "evt-00651",
       "date": "2026-07-08",
       "start": null,
       "end": null,
@@ -21853,7 +19805,7 @@
       }
     },
     {
-      "id": "evt-00716",
+      "id": "evt-00652",
       "date": "2026-07-08",
       "start": null,
       "end": null,
@@ -21874,7 +19826,7 @@
       }
     },
     {
-      "id": "evt-00717",
+      "id": "evt-00653",
       "date": "2026-07-08",
       "start": null,
       "end": null,
@@ -21895,7 +19847,7 @@
       }
     },
     {
-      "id": "evt-00718",
+      "id": "evt-00654",
       "date": "2026-07-08",
       "start": null,
       "end": null,
@@ -21916,7 +19868,7 @@
       }
     },
     {
-      "id": "evt-00719",
+      "id": "evt-00655",
       "date": "2026-07-08",
       "start": null,
       "end": null,
@@ -21937,7 +19889,7 @@
       }
     },
     {
-      "id": "evt-00720",
+      "id": "evt-00656",
       "date": "2026-07-08",
       "start": null,
       "end": null,
@@ -21958,7 +19910,7 @@
       }
     },
     {
-      "id": "evt-00721",
+      "id": "evt-00657",
       "date": "2026-07-09",
       "start": null,
       "end": null,
@@ -21979,7 +19931,7 @@
       }
     },
     {
-      "id": "evt-00722",
+      "id": "evt-00658",
       "date": "2026-07-09",
       "start": null,
       "end": null,
@@ -22000,7 +19952,7 @@
       }
     },
     {
-      "id": "evt-00723",
+      "id": "evt-00659",
       "date": "2026-07-09",
       "start": null,
       "end": null,
@@ -22021,7 +19973,7 @@
       }
     },
     {
-      "id": "evt-00724",
+      "id": "evt-00660",
       "date": "2026-07-09",
       "start": null,
       "end": null,
@@ -22042,7 +19994,7 @@
       }
     },
     {
-      "id": "evt-00725",
+      "id": "evt-00661",
       "date": "2026-07-09",
       "start": null,
       "end": null,
@@ -22063,7 +20015,7 @@
       }
     },
     {
-      "id": "evt-00726",
+      "id": "evt-00662",
       "date": "2026-07-09",
       "start": null,
       "end": null,
@@ -22084,7 +20036,7 @@
       }
     },
     {
-      "id": "evt-00727",
+      "id": "evt-00663",
       "date": "2026-07-10",
       "start": null,
       "end": null,
@@ -22105,7 +20057,7 @@
       }
     },
     {
-      "id": "evt-00728",
+      "id": "evt-00664",
       "date": "2026-07-10",
       "start": null,
       "end": null,
@@ -22126,7 +20078,7 @@
       }
     },
     {
-      "id": "evt-00729",
+      "id": "evt-00665",
       "date": "2026-07-10",
       "start": null,
       "end": null,
@@ -22147,7 +20099,7 @@
       }
     },
     {
-      "id": "evt-00730",
+      "id": "evt-00666",
       "date": "2026-07-10",
       "start": null,
       "end": null,
@@ -22168,7 +20120,7 @@
       }
     },
     {
-      "id": "evt-00731",
+      "id": "evt-00667",
       "date": "2026-07-10",
       "start": null,
       "end": null,
@@ -22189,7 +20141,7 @@
       }
     },
     {
-      "id": "evt-00732",
+      "id": "evt-00668",
       "date": "2026-07-10",
       "start": null,
       "end": null,
@@ -22210,7 +20162,7 @@
       }
     },
     {
-      "id": "evt-00733",
+      "id": "evt-00669",
       "date": "2026-07-11",
       "start": null,
       "end": null,
@@ -22231,7 +20183,7 @@
       }
     },
     {
-      "id": "evt-00734",
+      "id": "evt-00670",
       "date": "2026-07-11",
       "start": null,
       "end": null,
@@ -22252,7 +20204,7 @@
       }
     },
     {
-      "id": "evt-00735",
+      "id": "evt-00671",
       "date": "2026-07-11",
       "start": null,
       "end": null,
@@ -22273,7 +20225,7 @@
       }
     },
     {
-      "id": "evt-00736",
+      "id": "evt-00672",
       "date": "2026-07-11",
       "start": null,
       "end": null,
@@ -22294,7 +20246,7 @@
       }
     },
     {
-      "id": "evt-00737",
+      "id": "evt-00673",
       "date": "2026-07-12",
       "start": null,
       "end": null,
@@ -22315,7 +20267,7 @@
       }
     },
     {
-      "id": "evt-00738",
+      "id": "evt-00674",
       "date": "2026-07-12",
       "start": null,
       "end": null,
@@ -22336,7 +20288,7 @@
       }
     },
     {
-      "id": "evt-00739",
+      "id": "evt-00675",
       "date": "2026-07-12",
       "start": null,
       "end": null,
@@ -22357,7 +20309,7 @@
       }
     },
     {
-      "id": "evt-00740",
+      "id": "evt-00676",
       "date": "2026-07-13",
       "start": null,
       "end": null,
@@ -22378,7 +20330,7 @@
       }
     },
     {
-      "id": "evt-00741",
+      "id": "evt-00677",
       "date": "2026-07-13",
       "start": null,
       "end": null,
@@ -22399,7 +20351,7 @@
       }
     },
     {
-      "id": "evt-00742",
+      "id": "evt-00678",
       "date": "2026-07-13",
       "start": null,
       "end": null,
@@ -22420,7 +20372,7 @@
       }
     },
     {
-      "id": "evt-00743",
+      "id": "evt-00679",
       "date": "2026-07-14",
       "start": null,
       "end": null,
@@ -22441,7 +20393,7 @@
       }
     },
     {
-      "id": "evt-00744",
+      "id": "evt-00680",
       "date": "2026-07-14",
       "start": null,
       "end": null,
@@ -22462,7 +20414,7 @@
       }
     },
     {
-      "id": "evt-00745",
+      "id": "evt-00681",
       "date": "2026-07-14",
       "start": null,
       "end": null,
@@ -22483,7 +20435,7 @@
       }
     },
     {
-      "id": "evt-00746",
+      "id": "evt-00682",
       "date": "2026-07-15",
       "start": null,
       "end": null,
@@ -22504,7 +20456,7 @@
       }
     },
     {
-      "id": "evt-00747",
+      "id": "evt-00683",
       "date": "2026-07-15",
       "start": null,
       "end": null,
@@ -22525,7 +20477,7 @@
       }
     },
     {
-      "id": "evt-00748",
+      "id": "evt-00684",
       "date": "2026-07-15",
       "start": null,
       "end": null,
@@ -22546,7 +20498,7 @@
       }
     },
     {
-      "id": "evt-00749",
+      "id": "evt-00685",
       "date": "2026-07-16",
       "start": null,
       "end": null,
@@ -22567,7 +20519,7 @@
       }
     },
     {
-      "id": "evt-00750",
+      "id": "evt-00686",
       "date": "2026-07-16",
       "start": null,
       "end": null,
@@ -22588,7 +20540,7 @@
       }
     },
     {
-      "id": "evt-00751",
+      "id": "evt-00687",
       "date": "2026-07-16",
       "start": null,
       "end": null,
@@ -22609,7 +20561,7 @@
       }
     },
     {
-      "id": "evt-00752",
+      "id": "evt-00688",
       "date": "2026-07-17",
       "start": null,
       "end": null,
@@ -22630,7 +20582,7 @@
       }
     },
     {
-      "id": "evt-00753",
+      "id": "evt-00689",
       "date": "2026-07-17",
       "start": null,
       "end": null,
@@ -22651,7 +20603,7 @@
       }
     },
     {
-      "id": "evt-00754",
+      "id": "evt-00690",
       "date": "2026-07-17",
       "start": null,
       "end": null,
@@ -22672,7 +20624,7 @@
       }
     },
     {
-      "id": "evt-00755",
+      "id": "evt-00691",
       "date": "2026-07-18",
       "start": null,
       "end": null,
@@ -24574,29 +22526,6 @@
       }
     },
     {
-      "id": "tasking_719bdf8a6536",
-      "date": "2026-06-17",
-      "start": "00:00",
-      "end": null,
-      "title": "NEED 2x FLA Request for today",
-      "role": "CADRE",
-      "category": "Medical",
-      "track": "Air Assault 1",
-      "location": "",
-      "lane": "Cadre",
-      "requiredPeople": 2,
-      "taskees": 0,
-      "notes": "LRTC cadre cell",
-      "sourceKind": "lrtc-tasking",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "U3",
-        "row": 3,
-        "col": 21
-      }
-    },
-    {
       "id": "tasking_3c6a32b77399",
       "date": "2026-06-17",
       "start": "04:25",
@@ -25540,29 +23469,6 @@
       }
     },
     {
-      "id": "tasking_5c56f950be8d",
-      "date": "2026-06-19",
-      "start": "00:00",
-      "end": null,
-      "title": "NEED 1x FLA Request for today",
-      "role": "CADRE",
-      "category": "Medical",
-      "track": "Air Assault 1",
-      "location": "",
-      "lane": "Cadre",
-      "requiredPeople": 1,
-      "taskees": 0,
-      "notes": "LRTC cadre cell",
-      "sourceKind": "lrtc-tasking",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AG3",
-        "row": 3,
-        "col": 33
-      }
-    },
-    {
       "id": "tasking_fa334fe45f5e",
       "date": "2026-06-19",
       "start": "03:20",
@@ -25990,29 +23896,6 @@
         "cell": "AG37",
         "row": 37,
         "col": 33
-      }
-    },
-    {
-      "id": "tasking_ba584b99a231",
-      "date": "2026-06-20",
-      "start": "00:00",
-      "end": null,
-      "title": "NEED 2x FLA Request for today",
-      "role": "CADRE",
-      "category": "Medical",
-      "track": "Air Assault 1",
-      "location": "",
-      "lane": "Cadre",
-      "requiredPeople": 2,
-      "taskees": 0,
-      "notes": "LRTC cadre cell",
-      "sourceKind": "lrtc-tasking",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week2",
-        "cell": "AM3",
-        "row": 3,
-        "col": 39
       }
     },
     {
@@ -27145,29 +25028,6 @@
       }
     },
     {
-      "id": "tasking_74f53345f3a9",
-      "date": "2026-06-24",
-      "start": "00:00",
-      "end": null,
-      "title": "NEED FLA Request for today",
-      "role": "CADRE",
-      "category": "Medical",
-      "track": "Air Assault 2",
-      "location": "",
-      "lane": "Cadre",
-      "requiredPeople": 1,
-      "taskees": 0,
-      "notes": "LRTC cadre cell",
-      "sourceKind": "lrtc-tasking",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "T3",
-        "row": 3,
-        "col": 20
-      }
-    },
-    {
       "id": "tasking_25b604a961ab",
       "date": "2026-06-24",
       "start": "05:00",
@@ -27509,29 +25369,6 @@
         "sheet": "Week3",
         "cell": "Z28",
         "row": 28,
-        "col": 26
-      }
-    },
-    {
-      "id": "tasking_281643cffff2",
-      "date": "2026-06-25",
-      "start": "16:30",
-      "end": null,
-      "title": "FLAG: MAJ L 12-mi Brief",
-      "role": "CADRE",
-      "category": "Medical",
-      "track": "Air Assault 2",
-      "location": "",
-      "lane": "Cadre",
-      "requiredPeople": 1,
-      "taskees": 0,
-      "notes": "LRTC cadre cell",
-      "sourceKind": "lrtc-tasking",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week3",
-        "cell": "Z3",
-        "row": 3,
         "col": 26
       }
     },
@@ -28846,29 +26683,6 @@
         "cell": "N37",
         "row": 37,
         "col": 14
-      }
-    },
-    {
-      "id": "tasking_1ba181d70a0e",
-      "date": "2026-07-01",
-      "start": "00:00",
-      "end": null,
-      "title": "NEED FLA Request for today SUPT's BBQ",
-      "role": "CADRE",
-      "category": "Medical",
-      "track": "Air Assault 3",
-      "location": "",
-      "lane": "Cadre",
-      "requiredPeople": 1,
-      "taskees": 0,
-      "notes": "LRTC cadre cell",
-      "sourceKind": "lrtc-tasking",
-      "source": {
-        "file": "Total AASLT Cadre LRTC (2).xlsx",
-        "sheet": "Week4",
-        "cell": "T3",
-        "row": 3,
-        "col": 20
       }
     },
     {

@@ -570,6 +570,12 @@ function normalizeSourceEvent(event) {
   return normalized;
 }
 
+function shouldSuppressNonRuckMedicalFla(event) {
+  if (event.sourceKind === "manual-event") return false;
+  const text = `${event.title || ""} ${event.category || ""} ${event.location || ""} ${event.notes || ""}`.toUpperCase();
+  return text.includes("FLA") && !text.includes("RUCK") && (event.category === "Medical" || event.sourceKind === "generated-medical");
+}
+
 function eventText(event) {
   return [
     event.title,
@@ -712,31 +718,6 @@ function removeUntimedEvents(events) {
 }
 
 function addDayMinusTwoMarneMedicalSupportEvents(events) {
-  const existing = new Set(
-    events
-      .filter((event) => event.category === "Medical" && /MARNE/i.test(`${event.title || ""} ${event.location || ""} ${event.notes || ""}`))
-      .map((event) => `${event.date}|${event.classKey}|${event.start || ""}|${event.end || ""}`)
-  );
-  const dayMinusTwoEvents = events.filter((event) => event.date && event.classKey && dayLabelFromTitle(event.title) === "Day -2");
-  dayMinusTwoEvents.forEach((dayEvent) => {
-    const key = `${dayEvent.date}|${dayEvent.classKey}|08:00|11:00`;
-    if (existing.has(key)) return;
-    existing.add(key);
-    events.push({
-      id: `generated-day-minus-two-marne-fla-${dayEvent.date}-${dayEvent.classKey.replace(/\s+/g, "-").toLowerCase()}`,
-      date: dayEvent.date,
-      start: "08:00",
-      end: "11:00",
-      title: "0800-1100 Medical coverage - MARNE",
-      category: "Medical",
-      group: "Medical Coverage",
-      classKey: dayEvent.classKey,
-      sourceKind: "generated-medical",
-      location: "MARNE",
-      notes: "X1 FLA support",
-      relatedSources: [...(dayEvent.relatedSources || [])],
-    });
-  });
   return events;
 }
 
@@ -852,7 +833,7 @@ function coalesceMealEvents(events) {
 }
 
 function buildOperationalEvents(rawEvents) {
-  const normalized = rawEvents.map(normalizeSourceEvent).filter(isCanonicalLrtcEvent);
+  const normalized = rawEvents.map(normalizeSourceEvent).filter((event) => isCanonicalLrtcEvent(event) && !shouldSuppressNonRuckMedicalFla(event));
   buildClassDayLabels(normalized);
   const messMap = new Map();
   const messEvents = normalized.filter((event) => event.sourceKind === "mess");
@@ -2640,7 +2621,9 @@ function renderPersistentTaskItem(item) {
   checkbox.checked = task.status === "done";
   checkbox.addEventListener("change", () => updatePersistentTask(task.id, { status: checkbox.checked ? "done" : "open" }));
   titleRow.append(checkbox, createElement("span", { className: "ops-mini-title", text: task.title }));
-  main.append(titleRow, createElement("div", { className: "ops-mini-meta", text: `${task.owner} / ${task.status === "done" ? "complete" : "open"}` }));
+  const meta = createElement("div", { className: "ops-mini-meta" });
+  meta.append(createElement("span", { text: task.owner || "Unassigned" }), createElement("span", { text: task.status === "done" ? "complete" : "open" }));
+  main.append(titleRow, meta);
 
   const actions = createElement("div", { className: "ops-mini-actions" });
   actions.append(

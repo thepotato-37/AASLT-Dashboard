@@ -179,6 +179,11 @@ def infer_category(text: str, header: str = "") -> str:
     return "Operations"
 
 
+def is_non_ruck_fla_text(text: str) -> bool:
+    upper = compact_text(text).upper()
+    return "FLA" in upper and "RUCK" not in upper
+
+
 def infer_location(text: str) -> str:
     candidates = [
         "Bartlett",
@@ -933,6 +938,8 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                         "entryIndex": entry_index,
                         "fontColor": color,
                     }
+                    if is_non_ruck_fla_text(text):
+                        continue
                     make_event(
                         events=events,
                         source_file=path.name,
