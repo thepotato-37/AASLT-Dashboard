@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260617-5" />
-    <script src="firebase-config.js?v=20260617-5" defer></script>
-    <script src="app.js?v=20260617-5" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260617-6" />
+    <script src="firebase-config.js?v=20260617-6" defer></script>
+    <script src="app.js?v=20260617-6" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -450,6 +450,9 @@
             <p id="weekTableSubtitle" class="subtle"></p>
           </div>
           <div class="week-table-actions">
+            <button class="icon-button solid" id="weekAddEventButton" type="button" title="Add event to week" aria-label="Add event to week">
+              <i data-lucide="plus"></i>
+            </button>
             <div class="week-zoom-controls" aria-label="Week table zoom">
               <button class="icon-button" id="weekZoomOutButton" type="button" title="Zoom out" aria-label="Zoom out">
                 <i data-lucide="minus"></i>

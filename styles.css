@@ -1738,10 +1738,10 @@ label {
 .event-dot[data-category="Instruction"],
 .category-instruction,
 .cat-instruction {
-  --badge-bg: var(--blue-soft);
-  --badge-ink: #214c72;
-  background: var(--blue-soft);
-  color: #214c72;
+  --badge-bg: #e3f0ff;
+  --badge-ink: #155da8;
+  background: #e3f0ff;
+  color: #155da8;
 }
 
 .category-badge[data-category="Meals"],
@@ -1750,10 +1750,10 @@ label {
 .event-dot[data-category="Meals"],
 .category-meals,
 .cat-meals {
-  --badge-bg: var(--amber-soft);
-  --badge-ink: #774711;
-  background: var(--amber-soft);
-  color: #774711;
+  --badge-bg: #fff0d6;
+  --badge-ink: #a55a00;
+  background: #fff0d6;
+  color: #a55a00;
 }
 
 .category-badge[data-category="Medical"],
@@ -1762,10 +1762,10 @@ label {
 .event-dot[data-category="Medical"],
 .category-medical,
 .cat-medical {
-  --badge-bg: var(--red-soft);
-  --badge-ink: #80342d;
-  background: var(--red-soft);
-  color: #80342d;
+  --badge-bg: #ffe3df;
+  --badge-ink: #b0322a;
+  background: #ffe3df;
+  color: #b0322a;
 }
 
 .category-badge[data-category="Training"],
@@ -1774,10 +1774,10 @@ label {
 .event-dot[data-category="Training"],
 .category-training,
 .cat-training {
-  --badge-bg: var(--olive-soft);
-  --badge-ink: #4e641f;
-  background: var(--olive-soft);
-  color: #4e641f;
+  --badge-bg: #e8f6d3;
+  --badge-ink: #557c13;
+  background: #e8f6d3;
+  color: #557c13;
 }
 
 .category-badge[data-category="Cadre"],
@@ -1786,10 +1786,10 @@ label {
 .event-dot[data-category="Cadre"],
 .category-cadre,
 .cat-cadre {
-  --badge-bg: var(--accent-soft);
-  --badge-ink: var(--accent-strong);
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  --badge-bg: #f0e5ff;
+  --badge-ink: #7142b8;
+  background: #f0e5ff;
+  color: #7142b8;
 }
 
 .category-badge[data-category="Logistics"],
@@ -1798,17 +1798,17 @@ label {
 .event-dot[data-category="Logistics"],
 .category-logistics,
 .cat-logistics {
-  --badge-bg: var(--violet-soft);
-  --badge-ink: #51446f;
-  background: var(--violet-soft);
-  color: #51446f;
+  --badge-bg: #d8f5ef;
+  --badge-ink: #087b69;
+  background: #d8f5ef;
+  color: #087b69;
 }
 
 .cat-operations {
-  --badge-bg: #e8ecec;
-  --badge-ink: #4f6065;
-  background: #e8ecec;
-  color: #4f6065;
+  --badge-bg: #e7edf7;
+  --badge-ink: #425f8f;
+  background: #e7edf7;
+  color: #425f8f;
 }
 
 .cat-instruction,
@@ -2506,9 +2506,52 @@ body.week-table-open {
 }
 
 .week-event-cell {
+  position: relative;
   height: auto;
   min-height: 68px;
   background: #fbfdfc;
+}
+
+.week-empty-slot {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px dashed transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: rgba(46, 112, 118, 0.34);
+  padding: 8px;
+  font-size: 0.72rem;
+  font-weight: 850;
+  opacity: 0.55;
+}
+
+.week-empty-slot span {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.week-empty-slot svg {
+  width: 15px;
+  height: 15px;
+}
+
+.week-event-cell:hover .week-empty-slot,
+.week-empty-slot:focus-visible {
+  border-color: rgba(46, 112, 118, 0.34);
+  background: rgba(46, 112, 118, 0.07);
+  color: var(--accent-strong);
+  opacity: 1;
+}
+
+.week-event-cell:hover .week-empty-slot span,
+.week-empty-slot:focus-visible span {
+  width: auto;
+  opacity: 1;
 }
 
 .week-empty-lane {
@@ -2594,13 +2637,15 @@ body.week-table-open {
   gap: 4px;
 }
 
-.week-event-mini.cat-training { border-left-color: #667d34; }
-.week-event-mini.cat-instruction { border-left-color: #386da3; }
-.week-event-mini.cat-medical { border-left-color: #a3483e; }
-.week-event-mini.cat-meals { border-left-color: #a7641b; }
-.week-event-mini.cat-cadre { border-left-color: #6e628f; }
+.week-event-mini.cat-training,
+.week-event-mini.cat-instruction,
+.week-event-mini.cat-medical,
+.week-event-mini.cat-meals,
+.week-event-mini.cat-cadre,
 .week-event-mini.cat-logistics,
-.week-event-mini.cat-operations { border-left-color: #2e7076; }
+.week-event-mini.cat-operations {
+  border-left-color: var(--badge-ink);
+}
 
 .day-workspace,
 .day-main,

@@ -1709,6 +1709,7 @@ function bindEvents() {
   $("#prevDayButton").addEventListener("click", () => selectDate(addDays(state.selectedDate, -1)));
   $("#nextDayButton").addEventListener("click", () => selectDate(addDays(state.selectedDate, 1)));
   $("#addEventButton").addEventListener("click", openNewEventEditor);
+  $("#weekAddEventButton").addEventListener("click", () => openNewEventEditor({ date: state.selectedDate }));
   $("#openWeekTableButton").addEventListener("click", openWeekTableView);
   $("#closeWeekTableButton").addEventListener("click", closeWeekTableView);
   $("#weekZoomOutButton").addEventListener("click", () => setWeekZoom(state.weekZoom - WEEK_ZOOM_STEP));
@@ -2152,6 +2153,25 @@ function renderWeekTable() {
         const td = createElement("td", { className: lane.track ? "week-event-cell" : "week-event-cell week-empty-lane" });
         const items = lane.events.filter((event) => (event.start || "Unscheduled") === time).sort(eventSort);
         items.forEach((event) => td.append(renderWeekEventMini(event)));
+        if (lane.track && !items.length) {
+          const addSlot = createElement("button", {
+            className: "week-empty-slot",
+            html: '<i data-lucide="plus"></i><span>Add</span>',
+            attrs: {
+              type: "button",
+              title: `Add event on ${formatCompactDate(day.iso)} at ${time} for ${lane.label}`,
+              "aria-label": `Add event on ${formatCompactDate(day.iso)} at ${time} for ${lane.label}`,
+            },
+          });
+          addSlot.addEventListener("click", () =>
+            openNewEventEditor({
+              date: day.iso,
+              start: time === "Unscheduled" ? "" : time,
+              classKey: lane.track,
+            })
+          );
+          td.append(addSlot);
+        }
         tr.append(td);
       });
     });
@@ -2427,21 +2447,22 @@ function openEventEditor(event) {
   refreshIcons();
 }
 
-function openNewEventEditor() {
-  const tracks = activeTracksForDate(state.selectedDate);
+function openNewEventEditor(defaults = {}) {
+  const targetDate = defaults.date || state.selectedDate;
+  const tracks = activeTracksForDate(targetDate);
   $("#eventDialog").close();
   $("#eventEditForm").dataset.mode = "create";
   $("#eventEditId").value = "";
   $("#eventEditModeLabel").textContent = "New Timeline Event";
   $("#eventEditHeading").textContent = "New Event";
   $("#eventEditTitle").value = "";
-  $("#eventEditDate").value = state.selectedDate;
-  $("#eventEditStart").value = "";
-  $("#eventEditEnd").value = "";
-  $("#eventEditTrack").value = tracks[0] || "";
-  $("#eventEditCategory").value = "Training";
-  $("#eventEditLocation").value = "";
-  $("#eventEditNotes").value = "";
+  $("#eventEditDate").value = targetDate;
+  $("#eventEditStart").value = defaults.start || "";
+  $("#eventEditEnd").value = defaults.end || "";
+  $("#eventEditTrack").value = defaults.classKey || tracks[0] || "";
+  $("#eventEditCategory").value = defaults.category || "Training";
+  $("#eventEditLocation").value = defaults.location || "";
+  $("#eventEditNotes").value = defaults.notes || "";
   $("#resetEventEdit").hidden = true;
   $("#resetEventEdit").textContent = "Reset Source";
   $("#eventEditSubmitLabel").textContent = "Add Event";
