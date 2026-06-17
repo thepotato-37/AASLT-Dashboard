@@ -418,7 +418,7 @@ main {
 
 .control-grid {
   display: grid;
-  grid-template-columns: minmax(360px, 0.96fr) minmax(420px, 1.3fr) minmax(320px, 0.94fr);
+  grid-template-columns: minmax(330px, 0.78fr) minmax(640px, 1.9fr) minmax(250px, 0.52fr);
   gap: 18px;
   align-items: stretch;
 }
@@ -454,8 +454,14 @@ main {
 }
 
 .right-stack .load-pane {
+  display: none;
   flex: 0 0 auto;
-  min-height: 620px;
+  min-height: 0;
+}
+
+.right-stack .persistent-pane {
+  flex: 0 1 auto;
+  min-height: 260px;
 }
 
 .day-pane {
@@ -1146,7 +1152,7 @@ textarea {
 
 .event-top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
   min-width: 0;
@@ -1155,6 +1161,7 @@ textarea {
 .event-chips {
   display: inline-flex;
   min-width: 0;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   gap: 5px;
@@ -1192,6 +1199,17 @@ textarea {
   color: var(--accent-strong);
   overflow: visible;
   text-overflow: clip;
+  white-space: normal;
+}
+
+.owner-chip {
+  max-width: 100%;
+  border-color: rgba(50, 116, 168, 0.28);
+  background: var(--blue-soft);
+  color: #173a5c;
+  overflow: visible;
+  text-overflow: clip;
+  text-transform: none;
   white-space: normal;
 }
 
@@ -3689,10 +3707,6 @@ body.week-table-open {
   border-left-color: var(--violet);
 }
 
-.s4-lane[data-lane="FLA Request"] .s4-item {
-  border-left-color: var(--red);
-}
-
 .empty.compact {
   padding: 8px;
 }
@@ -3747,7 +3761,7 @@ body.week-table-open {
   }
 
   .control-grid {
-    grid-template-columns: minmax(330px, 0.82fr) minmax(520px, 1.4fr) minmax(330px, 0.82fr);
+    grid-template-columns: minmax(300px, 0.72fr) minmax(560px, 1.78fr) minmax(240px, 0.5fr);
     gap: 14px;
   }
 

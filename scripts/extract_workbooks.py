@@ -947,18 +947,6 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                         class_key=class_key,
                         source_extra=source_extra,
                     )
-                    make_support_item(
-                        support_items=support_items,
-                        source_file=path.name,
-                        sheet=ws.title,
-                        row=row_idx,
-                        col=col_idx,
-                        event_date=event_date,
-                        title=title,
-                        role=role,
-                        class_key=class_key,
-                        row_start=row_start,
-                    )
                     if role in {"CADRE", "ADMIN"} or (role != "TRAINEES" and is_lrtc_task_cell(text, role)):
                         make_tasking(
                             taskings=taskings,

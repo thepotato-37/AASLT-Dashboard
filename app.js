@@ -34,13 +34,23 @@ const TRACKED_PEOPLE = [
   "2LT Goldstien",
 ];
 const ASSIGNABLE_PEOPLE = TRACKED_PEOPLE.filter((person) => person !== "Unassigned");
+const CADRE_ROLE_TO_PERSON = {
+  S1: "Noah Ginty",
+  CO: "Thomas Gargan",
+  CSM: "Massimo Luciano",
+  AS4: "Anant Sabata",
+  S4: "Brian Samuel",
+  S3: "Chinmay Satpute",
+  AS1: "Chadwick Nash",
+  XO: "Patrick Dunn",
+};
+const CADRE_ROLE_PATTERN = /(^|[^A-Z0-9])(AS1|AS4|S1|S3|S4|CO|CSM|XO)(?=$|[^A-Z0-9])/gi;
 
-const S4_LANES = ["Draw", "Water Buffalo", "LMTV TMR", "FLA Request"];
+const S4_LANES = ["Draw", "Water Buffalo", "LMTV TMR"];
 const S4_STATUS_OPTIONS = {
   Draw: ["Planned", "Drawn", "Complete"],
   "Water Buffalo": ["Planned", "Sent", "Complete"],
   "LMTV TMR": ["Planned", "Sent", "Complete"],
-  "FLA Request": ["Planned", "Sent", "Complete"],
 };
 const S4_FIELD_CONFIG = {
   Draw: {
@@ -62,12 +72,6 @@ const S4_FIELD_CONFIG = {
     itemPlaceholder: "e.g. Enabler PLT movement",
     timeLabel: "Request Time",
     required: ["item"],
-  },
-  "FLA Request": {
-    visible: ["qty", "placement", "needBy", "status", "notes"],
-    qtyLabel: "FLAs",
-    timeLabel: "Request Time",
-    required: ["placement"],
   },
 };
 
@@ -1144,6 +1148,7 @@ async function writeCloudState(reason = "state") {
 }
 
 function applyCloudState(payload = {}) {
+  let shouldRewriteCleanS4 = false;
   state.cloud.applying = true;
   try {
     state.deletedSource = normalizeDeletedSource(payload.deletedSource || {});
@@ -1151,7 +1156,9 @@ function applyCloudState(payload = {}) {
     state.tasks = mergeSourceTaskings(Array.isArray(payload.tasks) ? payload.tasks : [], state.data.taskings || []);
     state.rfis = migrateRfis(Array.isArray(payload.rfis) ? payload.rfis : state.rfis);
     state.persistentTasks = migratePersistentTasks(Array.isArray(payload.persistentTasks) ? payload.persistentTasks : state.persistentTasks);
-    state.s4Items = mergeSourceSupportItems(migrateS4(Array.isArray(payload.s4Items) ? payload.s4Items : []), state.data.supportItems || []);
+    const incomingS4Items = migrateS4(Array.isArray(payload.s4Items) ? payload.s4Items : []);
+    state.s4Items = mergeSourceSupportItems(incomingS4Items, state.data.supportItems || []);
+    shouldRewriteCleanS4 = incomingS4Items.length !== state.s4Items.length;
     if (Array.isArray(payload.receiptRegister)) {
       const localReceipts = new Map(state.receipts.map((receipt) => [receipt.id, receipt]));
       state.receipts = payload.receiptRegister.map((receipt) => ({ ...receipt, blob: localReceipts.get(receipt.id)?.blob }));
@@ -1162,6 +1169,7 @@ function applyCloudState(payload = {}) {
     setSyncStatus("Synced", "online");
   } finally {
     state.cloud.applying = false;
+    if (shouldRewriteCleanS4) scheduleCloudSave("s4-cleanup");
   }
 }
 
@@ -1269,6 +1277,20 @@ function peopleRequiredFromTitle(title) {
   return generic ? Math.max(1, Number(generic[1])) : 1;
 }
 
+function cadreOwnersFromText(...texts) {
+  const owners = new Set();
+  texts
+    .filter(Boolean)
+    .forEach((text) => {
+      String(text).replace(CADRE_ROLE_PATTERN, (match, _prefix, role) => {
+        const person = CADRE_ROLE_TO_PERSON[String(role || "").toUpperCase()];
+        if (person) owners.add(person);
+        return match;
+      });
+    });
+  return Array.from(owners);
+}
+
 function canonicalTaskTitle(title) {
   return cleanTitle(title)
     .replace(/^Cadre coverage\s*-\s*(?:\d+\s*x\s*Cadre\s*)+$/i, "Cadre coverage")
@@ -1308,7 +1330,8 @@ function likelySameWorkItem(a, b) {
 
 function taskOwners(task) {
   const owners = Array.isArray(task.owners) ? task.owners : task.owner && task.owner !== "Unassigned" ? [task.owner] : [];
-  return Array.from(new Set(owners.filter((owner) => ASSIGNABLE_PEOPLE.includes(owner))));
+  const inferredOwners = cadreOwnersFromText(task.title, task.notes, task.role, task.lane);
+  return Array.from(new Set([...owners, ...inferredOwners].filter((owner) => ASSIGNABLE_PEOPLE.includes(owner))));
 }
 
 function ownersLabel(task) {
@@ -1616,40 +1639,10 @@ function s4FromSourceSupport(item) {
 }
 
 function mergeSourceSupportItems(existingItems, sourceItems = []) {
-  const deleted = new Set(state.deletedSource.supportItems || []);
-  const seeds = sourceItems.map(s4FromSourceSupport).filter((item) => !deleted.has(item.sourceSeedId));
-  const seedIds = new Set(seeds.map((item) => item.sourceSeedId));
-  const existingBySeed = new Map();
-  const manualItems = [];
-
-  existingItems.forEach((item) => {
-    if (item.sourceSeedId && deleted.has(item.sourceSeedId)) return;
-    if (item.sourceKind === "lrtc-support" && item.sourceSeedId) {
-      if (seedIds.has(item.sourceSeedId)) existingBySeed.set(item.sourceSeedId, item);
-      return;
-    }
-    manualItems.push(item);
-  });
-
-  const mergedSeeds = seeds.map((seed) => {
-    const existing = existingBySeed.get(seed.sourceSeedId);
-    if (!existing) return seed;
-    return normalizeS4Item({
-      ...seed,
-      id: existing.id || seed.id,
-      status: existing.status || seed.status,
-      owner: existing.owner || seed.owner,
-      notes: existing.notes || seed.notes,
-      requestKind: existing.requestKind || seed.requestKind,
-      location: existing.location || seed.location,
-      placement: existing.placement || seed.placement,
-      pax: existing.pax ?? seed.pax,
-      pickupTime: existing.pickupTime || seed.pickupTime,
-      returnTime: existing.returnTime || seed.returnTime,
-    });
-  });
-
-  return [...manualItems.map(normalizeS4Item), ...mergedSeeds];
+  return existingItems
+    .filter((item) => item?.sourceKind !== "lrtc-support")
+    .map(normalizeS4Item)
+    .filter((item) => item.type !== "FLA Request");
 }
 
 async function init() {
@@ -1867,10 +1860,10 @@ function renderAll() {
 function renderSummary() {
   const dayEvents = eventsForDate(state.selectedDate);
   const tracks = activeTracksForDate(state.selectedDate);
-  const openTasks = tasksForDate(state.selectedDate).filter((task) => task.status !== "done").length;
+  const openStandingTasks = state.persistentTasks.filter((task) => task.status !== "done").length;
   const nextMeal = dayEvents.find((event) => event.category === "Meals" && (event.start || "99:99") >= new Date().toTimeString().slice(0, 5)) || dayEvents.find((event) => event.category === "Meals");
   $("#summaryTracks").textContent = tracks.length ? tracks.map((track) => track.replace("Air Assault ", "AA")).join(" / ") : "Shared";
-  $("#summaryOpenTasks").textContent = `${openTasks} open`;
+  $("#summaryOpenTasks").textContent = `${openStandingTasks} open`;
   $("#summaryNextMeal").textContent = nextMeal ? `${nextMeal.start || ""} ${nextMeal.title}`.trim() : "No meal found";
 }
 
@@ -2083,8 +2076,8 @@ function renderEventCard(event) {
   const chips = createElement("span", { className: "event-chips" });
   if (event.isEdited) chips.append(createElement("span", { className: "source-chip edited-chip", text: "Edited" }));
   if (event.classKey) chips.append(createElement("span", { className: "source-chip", text: event.classKey.replace("Air Assault ", "AA") }));
-  const workLabel = eventWorkLabel(event);
-  if (workLabel) chips.append(createElement("span", { className: "source-chip work-chip", text: workLabel }));
+  const cadreLabel = eventCadreLabel(event);
+  if (cadreLabel) chips.append(createElement("span", { className: "source-chip owner-chip", text: cadreLabel }));
   if (chips.children.length) top.append(chips);
   card.append(top);
   card.append(createElement("strong", { text: event.title }));
@@ -2122,8 +2115,8 @@ function renderWeekEventMini(event) {
   const top = createElement("span", { className: "week-event-top" });
   top.append(createElement("b", { text: event.category }));
   if (event.end) top.append(createElement("em", { text: event.end }));
-  const workLabel = eventWorkLabel(event);
-  if (workLabel) top.append(createElement("em", { text: workLabel }));
+  const cadreLabel = eventCadreLabel(event);
+  if (cadreLabel) top.append(createElement("em", { text: cadreLabel }));
   card.append(top, createElement("strong", { text: event.title }));
   const meta = [event.location, event.notes].filter(Boolean).join(" / ");
   if (meta) card.append(createElement("small", { text: meta }));
@@ -2313,6 +2306,17 @@ function eventWorkLabel(event) {
   const done = linked.every((task) => task.status === "done");
   const status = done ? "done" : assigned ? "claimed" : "open";
   return `${status} / ${assigned} of ${required} cadre${taskees ? ` / ${taskees} taskees` : ""}`;
+}
+
+function eventCadreOwners(event) {
+  const linkedOwners = tasksForEvent(event).flatMap(taskOwners);
+  const inferredOwners = cadreOwnersFromText(event.title, event.notes, event.group, event.location);
+  return Array.from(new Set([...linkedOwners, ...inferredOwners].filter((owner) => ASSIGNABLE_PEOPLE.includes(owner))));
+}
+
+function eventCadreLabel(event) {
+  const owners = eventCadreOwners(event);
+  return owners.length ? owners.join(", ") : "";
 }
 
 function resetTaskForm(date = state.selectedDate) {
@@ -3244,18 +3248,16 @@ function openEvent(event) {
     ["Track", event.classKey || "Shared"],
     ["Location", event.location],
     ["Notes", event.notes],
-    ["Work Queue", eventWorkLabel(event)],
+    ["Cadre", eventCadreLabel(event)],
     ["Source", sourceSummary(event)],
     ["Local Edit", event.isEdited ? "Edited in this browser" : ""],
   ]
     .filter(([, value]) => value)
     .forEach(([label, value]) => details.append(createElement("dt", { text: label }), createElement("dd", { text: value })));
   const actions = createElement("div", { className: "dialog-action-row" });
-  const taskAction = createElement("button", { className: "task-submit dialog-action", html: '<i data-lucide="clipboard-plus"></i><span>Create Work Item</span>', attrs: { type: "button" } });
   const editAction = createElement("button", { className: "secondary-button dialog-action", html: '<i data-lucide="pencil"></i><span>Edit Event</span>', attrs: { type: "button" } });
-  taskAction.addEventListener("click", () => createTaskFromEvent(event));
   editAction.addEventListener("click", () => openEventEditor(event));
-  actions.append(taskAction, editAction);
+  actions.append(editAction);
   details.append(createElement("dt", { text: "Action" }), createElement("dd", { children: [actions] }));
   $("#eventDialog").showModal();
   refreshIcons();
@@ -3386,12 +3388,43 @@ function printAssignments(tasks) {
     <section class="print-section">
       <div class="print-section-head">
         <div>
-          <p class="print-eyebrow">Current Work Queue</p>
+          <p class="print-eyebrow">Cadre Ownership</p>
           <h2>Ownership - ${escapeHtml(viewLabel)}</h2>
         </div>
         <span>${open} open / ${claimed} claimed / ${done} done</span>
       </div>
       ${state.assignmentView === "list" ? printAssignmentsList(tasks) : printAssignmentsByTime(tasks)}
+    </section>
+  `;
+}
+
+function printStandingWork() {
+  const items = migratePersistentTasks(state.persistentTasks).slice().sort(sortOpenFirst);
+  const open = items.filter((task) => task.status !== "done").length;
+  return `
+    <section class="print-section">
+      <div class="print-section-head">
+        <div>
+          <p class="print-eyebrow">Standing Work</p>
+          <h2>Persistent Tasks</h2>
+        </div>
+        <span>${open} open</span>
+      </div>
+      ${
+        items.length
+          ? `<div class="print-task-list">${items
+              .map(
+                (task) => `
+                  <article class="print-task-line status-${safeClassName(task.status)}">
+                    <span>${escapeHtml(task.status)}</span>
+                    <strong>${printValue(task.title, "Untitled standing task")}</strong>
+                    <small>${printValue(task.owner || "Unassigned")}</small>
+                  </article>
+                `
+              )
+              .join("")}</div>`
+          : `<div class="print-empty">No standing work entered.</div>`
+      }
     </section>
   `;
 }
@@ -3469,7 +3502,6 @@ function buildPrintHtml(options = {}) {
   const autoPrint = Boolean(options.autoPrint);
   const iso = state.selectedDate;
   const dayEvents = eventsForDate(iso).sort(eventSort);
-  const dayTasks = tasksForDate(iso);
   const trackLabels = activeTracksForDate(iso).map((track) => [track, classDayLabelForTrack(iso, track)].filter(Boolean).join(" - "));
   const activeTrackLabel = trackLabels.length ? trackLabels.join(" / ") : "Shared";
 
@@ -3810,7 +3842,7 @@ function buildPrintHtml(options = {}) {
         ${printTimelineMatrix(dayEvents)}
       </section>
 
-      ${printAssignments(dayTasks)}
+      ${printStandingWork()}
     </section>
 
     ${printS4Page()}

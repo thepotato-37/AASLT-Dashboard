@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260616-1" />
-    <script src="firebase-config.js?v=20260616-1" defer></script>
-    <script src="app.js?v=20260616-1" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260617-1" />
+    <script src="firebase-config.js?v=20260617-1" defer></script>
+    <script src="app.js?v=20260617-1" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -25,7 +25,7 @@
           </button>
           <label class="search-box" for="globalSearch">
             <i data-lucide="search"></i>
-            <input id="globalSearch" type="search" placeholder="Search work, unit, source, location" />
+            <input id="globalSearch" type="search" placeholder="Search timeline, unit, source, location" />
           </label>
           <button class="icon-button" id="todayButton" type="button" title="Today" aria-label="Today">
             <i data-lucide="calendar-days"></i>
@@ -62,15 +62,15 @@
             <button class="mobile-menu-item" data-mobile-view="tasks" type="button">
               <i data-lucide="clipboard-list"></i>
               <span>
-                <strong>Work Queue</strong>
-                <small>Ownership and standing work</small>
+                <strong>Standing Work</strong>
+                <small>Persistent tasks</small>
               </span>
             </button>
             <button class="mobile-menu-item" data-mobile-view="s4" type="button">
               <i data-lucide="boxes"></i>
               <span>
                 <strong>S4</strong>
-                <small>Draws, TMRs, water, FLA requests</small>
+                <small>Draws, TMRs, water</small>
               </span>
             </button>
           </div>
@@ -82,7 +82,7 @@
             <strong id="summaryTracks">0</strong>
           </div>
           <div class="summary-card">
-            <span class="metric-label">Open Work</span>
+            <span class="metric-label">Standing Work</span>
             <strong id="summaryOpenTasks">0</strong>
           </div>
           <div class="summary-card">
@@ -124,7 +124,7 @@
             </div>
             <div id="nextDayList" class="next-list"></div>
           </section>
-          <section>
+          <section hidden>
             <div class="drawer-section-head">
               <h3>Open Work</h3>
               <span id="nextTaskCount" class="status-pill">0</span>
@@ -221,7 +221,7 @@
           </section>
 
           <div class="side-stack right-stack">
-          <aside class="pane load-pane">
+          <aside class="pane load-pane" hidden aria-hidden="true">
             <div class="pane-header">
               <div>
                 <p class="eyebrow">Work Queue</p>
@@ -328,7 +328,6 @@
                       <option>Draw</option>
                       <option>Water Buffalo</option>
                       <option>LMTV TMR</option>
-                      <option>FLA Request</option>
                     </select>
                   </label>
                   <label class="s4-field wide" data-s4-field="item"><span id="s4ItemLabel">Item / Mission</span><input id="s4Item" /></label>
