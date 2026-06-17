@@ -946,6 +946,7 @@ main {
 .view-tools {
   display: flex;
   min-width: 0;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
@@ -1848,6 +1849,48 @@ label {
   color: var(--badge-ink);
 }
 
+.category-key {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.timeline-tools .category-key {
+  flex: 1 1 360px;
+}
+
+.week-category-key {
+  margin-top: 8px;
+}
+
+.category-key-chip {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid color-mix(in srgb, var(--badge-ink, var(--accent)) 24%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--badge-bg, var(--accent-soft)) 66%, white);
+  color: var(--badge-ink, var(--accent-strong));
+  padding: 3px 7px 3px 5px;
+  font-size: 0.64rem;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.category-key-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border: 2px solid var(--badge-ink, var(--accent));
+  border-radius: 999px;
+  background: var(--badge-bg, var(--accent-soft));
+}
+
 .calendar-dot[data-category],
 .event-dot[data-category],
 .dot.cat-instruction,
@@ -2382,6 +2425,10 @@ body.week-table-open {
 .week-table-head h2 {
   margin-top: 3px;
   font-size: 1.04rem;
+}
+
+.week-table-head > div:first-child {
+  min-width: 0;
 }
 
 .week-table-actions,
@@ -4060,6 +4107,15 @@ body.week-table-open {
   .view-tools {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .timeline-tools .category-key {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .category-key-chip {
+    font-size: 0.62rem;
   }
 
   .secondary-button.compact {

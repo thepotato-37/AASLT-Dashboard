@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260617-8" />
-    <script src="firebase-config.js?v=20260617-8" defer></script>
-    <script src="app.js?v=20260617-8" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260617-9" />
+    <script src="firebase-config.js?v=20260617-9" defer></script>
+    <script src="app.js?v=20260617-9" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -211,6 +211,15 @@
                   <i data-lucide="table-2"></i>
                   <span>Table View</span>
                 </button>
+                <div class="category-key compact" aria-label="Timeline color key">
+                  <span class="category-key-chip cat-training"><span class="category-key-dot"></span><span>Training</span></span>
+                  <span class="category-key-chip cat-instruction"><span class="category-key-dot"></span><span>Instruction</span></span>
+                  <span class="category-key-chip cat-medical"><span class="category-key-dot"></span><span>Medical</span></span>
+                  <span class="category-key-chip cat-meals"><span class="category-key-dot"></span><span>Meals</span></span>
+                  <span class="category-key-chip cat-cadre"><span class="category-key-dot"></span><span>Cadre</span></span>
+                  <span class="category-key-chip cat-logistics"><span class="category-key-dot"></span><span>Logistics</span></span>
+                  <span class="category-key-chip cat-operations"><span class="category-key-dot"></span><span>Ops</span></span>
+                </div>
               </div>
               <select id="sourceFilter" aria-label="Source filter">
                 <option value="all">All sources</option>
@@ -448,6 +457,15 @@
             <p class="eyebrow">Week Table</p>
             <h2 id="weekTableTitle">Timeline Matrix</h2>
             <p id="weekTableSubtitle" class="subtle"></p>
+            <div class="category-key week-category-key" aria-label="Week table color key">
+              <span class="category-key-chip cat-training"><span class="category-key-dot"></span><span>Training</span></span>
+              <span class="category-key-chip cat-instruction"><span class="category-key-dot"></span><span>Instruction</span></span>
+              <span class="category-key-chip cat-medical"><span class="category-key-dot"></span><span>Medical</span></span>
+              <span class="category-key-chip cat-meals"><span class="category-key-dot"></span><span>Meals</span></span>
+              <span class="category-key-chip cat-cadre"><span class="category-key-dot"></span><span>Cadre</span></span>
+              <span class="category-key-chip cat-logistics"><span class="category-key-dot"></span><span>Logistics</span></span>
+              <span class="category-key-chip cat-operations"><span class="category-key-dot"></span><span>Ops</span></span>
+            </div>
           </div>
           <div class="week-table-actions">
             <button class="icon-button solid" id="weekAddEventButton" type="button" title="Add event to week" aria-label="Add event to week">
