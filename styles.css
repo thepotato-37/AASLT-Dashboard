@@ -946,7 +946,8 @@ main {
 .view-tools {
   display: flex;
   min-width: 0;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 8px;
 }
@@ -1852,23 +1853,37 @@ label {
 .category-key {
   display: flex;
   min-width: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 5px;
 }
 
 .timeline-tools .category-key {
-  flex: 1 1 360px;
+  flex: 1 1 auto;
+  justify-content: center;
+  overflow: visible;
+}
+
+.timeline-tools .category-key-dot {
+  display: none;
+}
+
+.timeline-tools .category-key-chip {
+  padding-inline: 6px;
 }
 
 .week-category-key {
-  margin-top: 8px;
+  flex: 1 1 auto;
+  justify-content: center;
+  margin: 0;
+  overflow: hidden;
 }
 
 .category-key-chip {
   display: inline-flex;
   min-width: 0;
   max-width: 100%;
+  flex: 0 0 auto;
   align-items: center;
   gap: 4px;
   border: 1px solid color-mix(in srgb, var(--badge-ink, var(--accent)) 24%, transparent);
@@ -2428,6 +2443,7 @@ body.week-table-open {
 }
 
 .week-table-head > div:first-child {
+  flex: 0 1 auto;
   min-width: 0;
 }
 
@@ -4112,6 +4128,16 @@ body.week-table-open {
   .timeline-tools .category-key {
     width: 100%;
     flex-basis: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow: visible;
+  }
+
+  .week-category-key {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow: visible;
   }
 
   .category-key-chip {
