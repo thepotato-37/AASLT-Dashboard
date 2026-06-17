@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 from hashlib import sha1
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 from typing import Any
@@ -94,6 +94,12 @@ def compact_text(value: Any) -> str:
     if isinstance(value, time):
         return value.strftime("%H%M")
     return re.sub(r"\s+", " ", str(value)).strip()
+
+
+def normalize_repeated_resource_counts(text: Any) -> str:
+    cleaned = compact_text(text)
+    # Some LRTC cells wrap the same coverage count twice on adjacent lines.
+    return re.sub(r"\b(\d+\s*x\s*Cadre)(?:\s+\1\b)+", r"\1", cleaned, flags=re.I)
 
 
 def parse_day_label(text: str, fallback_month: int | None = 6) -> str | None:
@@ -385,7 +391,7 @@ def make_event(
     location: str = "",
     source_extra: dict[str, Any] | None = None,
 ) -> None:
-    text = compact_text(title)
+    text = normalize_repeated_resource_counts(title)
     if not event_date or not text:
         return
     if len(text) <= 1:
@@ -463,13 +469,28 @@ def split_lrtc_entries(value: Any) -> list[str]:
     pieces = [compact_text(piece) for piece in text.split("\n")]
     pieces = [piece for piece in pieces if piece]
     if len(pieces) <= 1:
-        return pieces
+        return [normalize_repeated_resource_counts(piece) for piece in pieces]
+
+    time_line_pattern = re.compile(r"^[0-2]?\d[0-5]\d(?:\s*[-–]\s*(?:[0-2]?\d[0-5]\d|UTC))?$", re.I)
+    if sum(1 for piece in pieces if time_line_pattern.fullmatch(piece)) >= 2:
+        grouped: list[str] = []
+        current: list[str] = []
+        for piece in pieces:
+            if time_line_pattern.fullmatch(piece) and current:
+                grouped.append(normalize_repeated_resource_counts(" ".join(current)))
+                current = [piece]
+            else:
+                current.append(piece)
+        if current:
+            grouped.append(normalize_repeated_resource_counts(" ".join(current)))
+        return [entry for entry in grouped if entry]
+
     timed_pieces = [piece for piece in pieces if parse_time_token(piece)[0]]
     # Support cells often wrap one requirement across several lines, e.g.
     # "0530-0845 / 1x FLA Bartlett / 1x FLA Davis Shelf". Keep those intact.
     if len(timed_pieces) < 2:
-        return [compact_text(text)]
-    return pieces
+        return [normalize_repeated_resource_counts(text)]
+    return [normalize_repeated_resource_counts(piece) for piece in pieces]
 
 
 def cell_color_key(cell: Any) -> str:
@@ -596,6 +617,7 @@ def lrtc_lane_for_role(role: str, header: str, text: str) -> str:
 
 
 def required_people_from_text(text: str, role: str) -> int:
+    text = normalize_repeated_resource_counts(text)
     matches = [int(match) for match in re.findall(r"\b(\d+)\s*x\s*Cadre\b", text, re.I)]
     if matches:
         return max(1, sum(matches))
@@ -638,7 +660,7 @@ def is_lrtc_task_cell(text: str, role: str) -> bool:
 
 
 def normalize_lrtc_task_title(text: str, role: str) -> str:
-    cleaned = compact_text(text)
+    cleaned = normalize_repeated_resource_counts(text)
     if cleaned.upper() in {"B", "Z"}:
         return ""
     cleaned = re.sub(r"^\s*[0-2]?\d[0-5]\d\s*-\s*(?:[0-2]?\d[0-5]\d|UTC)\s*", "", cleaned, flags=re.I).strip()
@@ -669,7 +691,7 @@ def make_tasking(
     required_people: int | None = None,
     taskees: int = 0,
 ) -> None:
-    text = compact_text(title)
+    text = normalize_repeated_resource_counts(title)
     if not event_date or not text or len(text) <= 1:
         return
     if re.fullmatch(r"\d{4}", text):
@@ -916,6 +938,8 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                             class_key = class_by_date_day.get((event_date, day_number))
                             if class_key:
                                 break
+                    if re.search(r"\bROTC\s+DAY\s+0\b", text, re.I):
+                        class_key = None
                     day_number = None
                     for candidate_day, candidate_track in day_track_map_for_block(date_header_by_col.get(col_idx, ""), block_headers).items():
                         if class_key and candidate_track == class_key:
@@ -1259,22 +1283,97 @@ def merge_event(existing: dict[str, Any], event: dict[str, Any]) -> None:
         sources.append(event["source"])
 
 
+def minutes_from_time(value: str | None) -> int | None:
+    if not value or not re.fullmatch(r"\d{2}:\d{2}", value):
+        return None
+    hours, minutes = value.split(":")
+    return int(hours) * 60 + int(minutes)
+
+
+def ruck_sequence_label(event: dict[str, Any]) -> str:
+    if event.get("category") == "Medical":
+        return ""
+    text = f"{event.get('title', '')} {event.get('location', '')}".upper()
+    if "12 MILE RUCK" in text:
+        return "12 Mile Ruck Start/Finish"
+    if "6 MILE RUCK" in text:
+        return "6 Mile Ruck Start/Finish"
+    if re.search(r"\bRUCK\s+(?:SP|MARCH|COMPLETE|COMPLETION)\b", text):
+        return "Ruck Start/Finish"
+    return ""
+
+
+def is_medical_ruck_support(event: dict[str, Any]) -> bool:
+    if event.get("category") != "Medical":
+        return False
+    text = f"{event.get('title', '')} {event.get('location', '')}".upper()
+    return "FLA" in text and "RUCK" in text
+
+
+def best_ruck_track_for_medical_event(
+    event: dict[str, Any],
+    ruck_events_by_date_class: dict[tuple[str, str], list[dict[str, Any]]],
+) -> str | None:
+    event_date = event.get("date")
+    event_start = minutes_from_time(event.get("start"))
+    best: tuple[int, str] | None = None
+    for (date_value, class_key), ruck_events in ruck_events_by_date_class.items():
+        if date_value != event_date:
+            continue
+        score = 0
+        nearest_delta = 9999
+        for ruck_event in ruck_events:
+            text = f"{ruck_event.get('title', '')} {ruck_event.get('location', '')}".upper()
+            ruck_start = minutes_from_time(ruck_event.get("start"))
+            if ruck_start is not None and event_start is not None:
+                nearest_delta = min(nearest_delta, abs(ruck_start - event_start))
+            if "RUCK SP" in text or "RUCK MARCH" in text:
+                score += 200
+            elif "6 MILE RUCK" in text or "12 MILE RUCK" in text:
+                score += 150
+            elif "RUCK COMPLETE" in text or "COMPLETION OF RUCK" in text:
+                score += 80
+        if nearest_delta != 9999:
+            score += max(0, 180 - nearest_delta)
+        score += len(ruck_events)
+        if best is None or score > best[0]:
+            best = (score, class_key)
+    return best[1] if best else None
+
+
+def remove_completion_day_taps(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    completion_keys = {
+        (event.get("date"), event.get("classKey") or "")
+        for event in events
+        if re.search(r"\b(?:GRADUATION|OUT[-\s]?PROCESSING)\b", event.get("title", ""), re.I)
+    }
+    cleaned = []
+    for event in events:
+        if re.fullmatch(r"(?:[0-2]?\d[0-5]\d\s+)?TAPS", event.get("title", ""), re.I):
+            if (event.get("date"), event.get("classKey") or "") in completion_keys:
+                continue
+        cleaned.append(event)
+    return cleaned
+
+
 def normalize_medical_ruck_labels(events: list[dict[str, Any]]) -> None:
     ruck_by_date: dict[str, str] = {}
     ruck_by_date_class: dict[tuple[str, str], str] = {}
+    ruck_events_by_date_class: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    day_numbers_by_date_class: defaultdict[tuple[str, str], Counter[int]] = defaultdict(Counter)
     for event in events:
+        class_key = event.get("classKey") or ""
+        day_number = event.get("dayNumber")
+        if class_key and isinstance(day_number, int):
+            day_numbers_by_date_class[(event["date"], class_key)][day_number] += 1
         if event.get("category") == "Medical":
             continue
         text = f"{event.get('title', '')} {event.get('location', '')}".upper()
-        label = ""
-        if "12 MILE RUCK" in text:
-            label = "12 Mile Ruck Start/Finish"
-        elif "6 MILE RUCK" in text and event["date"] not in ruck_by_date:
-            label = "6 Mile Ruck Start/Finish"
+        label = ruck_sequence_label(event)
         if not label:
             continue
-        class_key = event.get("classKey") or ""
         if class_key:
+            ruck_events_by_date_class[(event["date"], class_key)].append(event)
             current = ruck_by_date_class.get((event["date"], class_key))
             if not current or label.startswith("12 Mile"):
                 ruck_by_date_class[(event["date"], class_key)] = label
@@ -1285,6 +1384,21 @@ def normalize_medical_ruck_labels(events: list[dict[str, Any]]) -> None:
         if event.get("category") != "Medical":
             continue
         text = f"{event.get('title', '')} {event.get('location', '')}".upper()
+        if is_medical_ruck_support(event):
+            target_class = best_ruck_track_for_medical_event(event, ruck_events_by_date_class)
+            if target_class:
+                previous_class = event.get("classKey") or ""
+                event["classKey"] = target_class
+                source = event.get("source")
+                if isinstance(source, dict):
+                    source["reassignedFromClassKey"] = source.get("reassignedFromClassKey") or previous_class
+                    source["reassignedReason"] = "matched same-day ruck sequence"
+                day_counts = day_numbers_by_date_class.get((event["date"], target_class))
+                if day_counts:
+                    day_number = day_counts.most_common(1)[0][0]
+                    event["dayNumber"] = day_number
+                    if isinstance(source, dict):
+                        source["dayNumber"] = day_number
         if "RUCK S/F" not in text:
             continue
         label = ruck_by_date_class.get((event["date"], event.get("classKey") or "")) or ruck_by_date.get(event["date"], "Ruck Start/Finish")
@@ -1637,6 +1751,7 @@ def main() -> None:
         elif path.name == "1. CST 26 Mess Matrix (Live Document).xlsx":
             parse_mess_matrix(path, events, notes)
     normalize_medical_ruck_labels(events)
+    events = remove_completion_day_taps(events)
     events = dedupe_events(events)
     taskings = dedupe_taskings(taskings)
     support_items = dedupe_support_items(support_items)
