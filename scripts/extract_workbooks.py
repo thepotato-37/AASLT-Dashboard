@@ -99,7 +99,16 @@ def compact_text(value: Any) -> str:
 def normalize_repeated_resource_counts(text: Any) -> str:
     cleaned = compact_text(text)
     # Some LRTC cells wrap the same coverage count twice on adjacent lines.
-    return re.sub(r"\b(\d+\s*x\s*Cadre)(?:\s+\1\b)+", r"\1", cleaned, flags=re.I)
+    cleaned = re.sub(r"\b(\d+\s*x\s*Cadre)(?:\s+\1\b)+", r"\1", cleaned, flags=re.I)
+    replacements = {
+        "Classrom": "Classroom",
+        "Recieve": "Receive",
+        "Rapelling": "Rappelling",
+        "Assualt": "Assault",
+    }
+    for typo, correction in replacements.items():
+        cleaned = re.sub(rf"\b{typo}\b", correction, cleaned, flags=re.I)
+    return cleaned
 
 
 def parse_day_label(text: str, fallback_month: int | None = 6) -> str | None:
