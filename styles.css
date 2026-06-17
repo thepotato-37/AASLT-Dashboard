@@ -2351,6 +2351,11 @@ body.week-table-open {
   padding: 16px;
 }
 
+:fullscreen .week-table-view {
+  background: #e8f0f0;
+  padding: 10px;
+}
+
 .week-table-shell {
   display: grid;
   min-width: 0;

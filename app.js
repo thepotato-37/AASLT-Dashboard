@@ -143,6 +143,7 @@ const state = {
   assignmentView: "list",
   mobileView: "ops",
   weekZoom: 1,
+  weekTableFullscreenRequested: false,
   tasks: [],
   rfis: [],
   persistentTasks: [],
@@ -2188,7 +2189,46 @@ function renderWeekTable() {
   applyWeekZoom();
 }
 
-function openWeekTableView() {
+function fullscreenElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement || null;
+}
+
+async function requestWeekTableFullscreen() {
+  if (fullscreenElement()) return;
+  const target = document.documentElement;
+  const request = target.requestFullscreen || target.webkitRequestFullscreen;
+  if (!request) return;
+  try {
+    await request.call(target, { navigationUI: "hide" });
+    state.weekTableFullscreenRequested = true;
+  } catch {
+    try {
+      await request.call(target);
+      state.weekTableFullscreenRequested = true;
+    } catch {
+      state.weekTableFullscreenRequested = false;
+    }
+  }
+}
+
+function exitWeekTableFullscreen() {
+  if (!state.weekTableFullscreenRequested) return;
+  if (!fullscreenElement()) {
+    state.weekTableFullscreenRequested = false;
+    return;
+  }
+  state.weekTableFullscreenRequested = false;
+  const exit = document.exitFullscreen || document.webkitExitFullscreen;
+  if (!exit) return;
+  try {
+    const result = exit.call(document);
+    if (result?.catch) result.catch(() => {});
+  } catch {
+    // Fullscreen exit can fail if the browser already handled Esc.
+  }
+}
+
+async function openWeekTableView() {
   renderWeekTable();
   const view = $("#weekTableView");
   view.hidden = false;
@@ -2198,6 +2238,7 @@ function openWeekTableView() {
   toggleNextDrawer(false);
   applyWeekZoom();
   refreshIcons();
+  await requestWeekTableFullscreen();
 }
 
 function closeWeekTableView() {
@@ -2206,6 +2247,7 @@ function closeWeekTableView() {
   view.hidden = true;
   view.setAttribute("aria-hidden", "true");
   document.body.classList.remove("week-table-open");
+  exitWeekTableFullscreen();
 }
 
 function setWeekZoom(value, options = {}) {
