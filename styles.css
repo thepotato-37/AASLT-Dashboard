@@ -2664,6 +2664,24 @@ body.week-table-open {
 .week-event-mini.cat-cadre,
 .week-event-mini.cat-logistics,
 .week-event-mini.cat-operations {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--badge-bg) 52%, transparent), transparent 170px),
+    var(--surface-soft);
+  border-left-color: var(--badge-ink);
+  color: var(--ink);
+}
+
+.week-event-mini.cat-training:hover,
+.week-event-mini.cat-instruction:hover,
+.week-event-mini.cat-medical:hover,
+.week-event-mini.cat-meals:hover,
+.week-event-mini.cat-cadre:hover,
+.week-event-mini.cat-logistics:hover,
+.week-event-mini.cat-operations:hover {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--badge-bg) 58%, transparent), transparent 180px),
+    var(--surface-raised);
+  border-color: color-mix(in srgb, var(--badge-ink) 28%, var(--line-strong));
   border-left-color: var(--badge-ink);
 }
 
