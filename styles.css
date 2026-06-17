@@ -2411,7 +2411,7 @@ body.week-table-open {
 
 .week-matrix {
   width: max-content;
-  min-width: calc(92px + 14 * 250px);
+  min-width: calc(92px + 14 * 285px);
   table-layout: fixed;
   border-top: 1px solid var(--line-strong);
   border-left: 1px solid var(--line);
@@ -2422,9 +2422,9 @@ body.week-table-open {
 
 .week-matrix th,
 .week-matrix td {
-  width: 250px;
-  min-width: 250px;
-  max-width: 250px;
+  width: 285px;
+  min-width: 285px;
+  max-width: 285px;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   padding: 6px;
@@ -2499,7 +2499,8 @@ body.week-table-open {
 }
 
 .week-event-cell {
-  height: 58px;
+  height: auto;
+  min-height: 68px;
   background: #fbfdfc;
 }
 
@@ -2511,13 +2512,13 @@ body.week-table-open {
   display: grid;
   width: 100%;
   min-width: 0;
-  gap: 4px;
+  gap: 6px;
   border: 1px solid var(--line);
   border-left: 4px solid var(--accent);
   border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--ink);
-  padding: 6px 7px;
+  padding: 8px 9px;
   text-align: left;
 }
 
@@ -2533,30 +2534,32 @@ body.week-table-open {
 
 .week-event-mini strong {
   overflow-wrap: anywhere;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 900;
-  line-height: 1.16;
+  line-height: 1.22;
 }
 
 .week-event-mini small {
   display: block;
   overflow-wrap: anywhere;
   color: var(--ink-muted);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 650;
-  line-height: 1.22;
+  line-height: 1.28;
 }
 
 .week-event-top {
   display: flex;
   min-width: 0;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
 }
 
 .week-event-top b,
-.week-event-top em {
+.week-event-top em,
+.week-event-meta em {
   min-width: 0;
   border-radius: 999px;
   padding: 2px 6px;
@@ -2569,16 +2572,22 @@ body.week-table-open {
 .week-event-top b {
   background: #e8eff0;
   color: var(--ink-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
-.week-event-top em {
+.week-event-top em,
+.week-event-meta em {
   flex: 0 0 auto;
   background: var(--accent-soft);
   color: var(--accent-strong);
+}
+
+.week-event-meta {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 4px;
 }
 
 .week-event-mini.cat-training { border-left-color: #667d34; }

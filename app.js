@@ -2020,12 +2020,12 @@ function renderTrackTimelines(byTrack) {
   columns.forEach((column) => {
     const pane = createElement("section", { className: column.className });
     pane.append(createElement("h3", { text: column.title }));
-    renderTimeline(column.events.sort(eventSort), pane);
+    renderTimeline(column.events.sort(eventSort), pane, { hideTrackChip: true });
     wrap.append(pane);
   });
 }
 
-function renderTimeline(events, wrap) {
+function renderTimeline(events, wrap, options = {}) {
   const heading = wrap.matches?.(".track-column") ? wrap.querySelector("h3") : null;
   wrap.replaceChildren();
   if (heading) wrap.append(heading);
@@ -2043,20 +2043,20 @@ function renderTimeline(events, wrap) {
     const group = createElement("section", { className: "time-group" });
     group.append(createElement("div", { className: "time-label", text: time }));
     const list = createElement("div", { className: "event-stack" });
-    items.forEach((event) => list.append(renderEventCard(event)));
+    items.forEach((event) => list.append(renderEventCard(event, options)));
     group.append(list);
     wrap.append(group);
   });
 }
 
-function renderEventCard(event) {
+function renderEventCard(event, options = {}) {
   const editedClass = event.isEdited ? " is-edited" : "";
   const card = createElement("button", { className: `event-card ${CATEGORY_CLASS[event.category] || "cat-operations"}${editedClass}`, attrs: { type: "button" } });
   const top = createElement("div", { className: "event-top" });
   top.append(createElement("span", { className: "badge", text: event.category }));
   const chips = createElement("span", { className: "event-chips" });
   if (event.isEdited) chips.append(createElement("span", { className: "source-chip edited-chip", text: "Edited" }));
-  if (event.classKey) chips.append(createElement("span", { className: "source-chip", text: event.classKey.replace("Air Assault ", "AA") }));
+  if (event.classKey && !options.hideTrackChip) chips.append(createElement("span", { className: "source-chip", text: event.classKey.replace("Air Assault ", "AA") }));
   const cadreLabel = eventCadreLabel(event);
   if (cadreLabel) chips.append(createElement("span", { className: "source-chip owner-chip", text: cadreLabel }));
   if (chips.children.length) top.append(chips);
@@ -2095,12 +2095,15 @@ function renderWeekEventMini(event) {
   });
   const top = createElement("span", { className: "week-event-top" });
   top.append(createElement("b", { text: event.category }));
-  if (event.end) top.append(createElement("em", { text: event.end }));
+  if (event.isEdited) top.append(createElement("em", { text: "Edited" }));
+  const metaRow = createElement("span", { className: "week-event-meta" });
+  if (event.end) metaRow.append(createElement("em", { text: `Ends ${event.end}` }));
   const cadreLabel = eventCadreLabel(event);
-  if (cadreLabel) top.append(createElement("em", { text: cadreLabel }));
+  if (cadreLabel) metaRow.append(createElement("em", { text: cadreLabel }));
   card.append(top, createElement("strong", { text: event.title }));
   const meta = [event.location, event.notes].filter(Boolean).join(" / ");
   if (meta) card.append(createElement("small", { text: meta }));
+  if (metaRow.children.length) card.append(metaRow);
   card.addEventListener("click", () => openEvent(event));
   return card;
 }
