@@ -633,6 +633,75 @@ def taskees_from_text(text: str) -> int:
     return int(match.group(1)) if match else 0
 
 
+CADRE_EVENT_TERMS = [
+    "ADMIN SYNC",
+    "ALL HANDS",
+    "BIG 3",
+    "BRIEF",
+    "CADRE FORMED",
+    "CADRE STAGED",
+    "CLEANING",
+    "CONOP",
+    "CUB",
+    "DAY 0",
+    "DISMISSED",
+    "DISTRO",
+    "DROP",
+    "DUE",
+    "DUNK",
+    "EMAIL",
+    "ENABLER",
+    "FORMED WITH",
+    "FORMATION",
+    "GLOVE",
+    "IN-BRIEF",
+    "INBRIEF",
+    "INPROCESSING",
+    "IN-PROCESSING",
+    "ISSUE",
+    "LOADOUT",
+    "LOGSYNC",
+    "LRC",
+    "LTC",
+    "MARNE",
+    "MEETING",
+    "MRE",
+    "NET",
+    "PICKUP",
+    "PROCESSING",
+    "PX SHUTTLE",
+    "RECEIVE",
+    "RECIEVE",
+    "RESUPPLY",
+    "RETURN",
+    "ROTC",
+    "SET UP",
+    "SETUP",
+    "SHUTTLE",
+    "STAFF SYNC",
+    "STAGED",
+    "SYNC",
+    "TEST",
+    "WALK-ON",
+    "WATER BUFFALO",
+    "WIRE BRUSH",
+]
+
+
+def is_staffing_coverage_only_text(text: str, role: str) -> bool:
+    if role not in {"CADRE", "ADMIN"}:
+        return False
+    if not parse_time_token(text)[0]:
+        return True
+    cleaned = normalize_repeated_resource_counts(text)
+    cleaned = re.sub(r"^\s*[0-2]?\d[0-5]\d\s*-\s*(?:[0-2]?\d[0-5]\d|UTC)\s*", "", cleaned, flags=re.I).strip()
+    cleaned = re.sub(r"^\s*[0-2]?\d[0-5]\d\s*", "", cleaned, count=1).strip()
+    if re.fullmatch(r"\d+\s*x\s*Cadre(?:\s+\d+\s*x\s*Cadre)*", cleaned, re.I):
+        return True
+    upper = cleaned.upper()
+    return not any(term in upper for term in CADRE_EVENT_TERMS)
+
+
 def is_lrtc_task_cell(text: str, role: str) -> bool:
     upper = compact_text(text).upper()
     if role in {"CADRE", "ADMIN"}:
@@ -964,20 +1033,21 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                     }
                     if is_non_ruck_fla_text(text):
                         continue
-                    make_event(
-                        events=events,
-                        source_file=path.name,
-                        sheet=ws.title,
-                        row=row_idx,
-                        col=col_idx,
-                        event_date=event_date,
-                        title=title,
-                        header=lane,
-                        assigned="",
-                        source_kind="lrtc",
-                        class_key=class_key,
-                        source_extra=source_extra,
-                    )
+                    if not is_staffing_coverage_only_text(title, role):
+                        make_event(
+                            events=events,
+                            source_file=path.name,
+                            sheet=ws.title,
+                            row=row_idx,
+                            col=col_idx,
+                            event_date=event_date,
+                            title=title,
+                            header=lane,
+                            assigned="",
+                            source_kind="lrtc",
+                            class_key=class_key,
+                            source_extra=source_extra,
+                        )
                     if role in {"CADRE", "ADMIN"} or (role != "TRAINEES" and is_lrtc_task_cell(text, role)):
                         make_tasking(
                             taskings=taskings,
