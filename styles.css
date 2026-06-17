@@ -1853,8 +1853,9 @@ label {
 .category-key {
   display: flex;
   min-width: 0;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
+  align-content: center;
   gap: 5px;
 }
 
@@ -1876,7 +1877,7 @@ label {
   flex: 1 1 auto;
   justify-content: center;
   margin: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .category-key-chip {
