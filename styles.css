@@ -2411,7 +2411,7 @@ body.week-table-open {
 
 .week-matrix {
   width: max-content;
-  min-width: calc(92px + 14 * 285px);
+  min-width: calc(92px + 14 * 220px);
   table-layout: fixed;
   border-top: 1px solid var(--line-strong);
   border-left: 1px solid var(--line);
@@ -2422,9 +2422,9 @@ body.week-table-open {
 
 .week-matrix th,
 .week-matrix td {
-  width: 285px;
-  min-width: 285px;
-  max-width: 285px;
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   padding: 6px;
@@ -2512,13 +2512,14 @@ body.week-table-open {
   display: grid;
   width: 100%;
   min-width: 0;
-  gap: 6px;
+  align-content: start;
+  gap: 5px;
   border: 1px solid var(--line);
   border-left: 4px solid var(--accent);
   border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--ink);
-  padding: 8px 9px;
+  padding: 8px;
   text-align: left;
 }
 
@@ -2534,7 +2535,7 @@ body.week-table-open {
 
 .week-event-mini strong {
   overflow-wrap: anywhere;
-  font-size: 0.82rem;
+  font-size: 0.79rem;
   font-weight: 900;
   line-height: 1.22;
 }
@@ -2543,7 +2544,7 @@ body.week-table-open {
   display: block;
   overflow-wrap: anywhere;
   color: var(--ink-muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 650;
   line-height: 1.28;
 }
@@ -2557,7 +2558,6 @@ body.week-table-open {
   gap: 4px;
 }
 
-.week-event-top b,
 .week-event-top em,
 .week-event-meta em {
   min-width: 0;
@@ -2567,12 +2567,6 @@ body.week-table-open {
   font-style: normal;
   font-weight: 900;
   line-height: 1.1;
-}
-
-.week-event-top b {
-  background: #e8eff0;
-  color: var(--ink-muted);
-  text-transform: uppercase;
 }
 
 .week-event-top em,

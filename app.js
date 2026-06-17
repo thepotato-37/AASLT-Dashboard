@@ -2094,13 +2094,13 @@ function renderWeekEventMini(event) {
     attrs: { type: "button", "aria-label": `Open ${event.title}` },
   });
   const top = createElement("span", { className: "week-event-top" });
-  top.append(createElement("b", { text: event.category }));
   if (event.isEdited) top.append(createElement("em", { text: "Edited" }));
   const metaRow = createElement("span", { className: "week-event-meta" });
   if (event.end) metaRow.append(createElement("em", { text: `Ends ${event.end}` }));
   const cadreLabel = eventCadreLabel(event);
   if (cadreLabel) metaRow.append(createElement("em", { text: cadreLabel }));
-  card.append(top, createElement("strong", { text: event.title }));
+  if (top.children.length) card.append(top);
+  card.append(createElement("strong", { text: event.title }));
   const meta = [event.location, event.notes].filter(Boolean).join(" / ");
   if (meta) card.append(createElement("small", { text: meta }));
   if (metaRow.children.length) card.append(metaRow);
