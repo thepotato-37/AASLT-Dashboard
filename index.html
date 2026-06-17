@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260615-2" />
-    <script src="firebase-config.js?v=20260615-2" defer></script>
-    <script src="app.js?v=20260615-2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260616-1" />
+    <script src="firebase-config.js?v=20260616-1" defer></script>
+    <script src="app.js?v=20260616-1" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -25,7 +25,7 @@
           </button>
           <label class="search-box" for="globalSearch">
             <i data-lucide="search"></i>
-            <input id="globalSearch" type="search" placeholder="Search task, unit, source, location" />
+            <input id="globalSearch" type="search" placeholder="Search work, unit, source, location" />
           </label>
           <button class="icon-button" id="todayButton" type="button" title="Today" aria-label="Today">
             <i data-lucide="calendar-days"></i>
@@ -62,8 +62,8 @@
             <button class="mobile-menu-item" data-mobile-view="tasks" type="button">
               <i data-lucide="clipboard-list"></i>
               <span>
-                <strong>Assignments</strong>
-                <small>Cadre tasking and standing work</small>
+                <strong>Work Queue</strong>
+                <small>Ownership and standing work</small>
               </span>
             </button>
             <button class="mobile-menu-item" data-mobile-view="s4" type="button">
@@ -82,7 +82,7 @@
             <strong id="summaryTracks">0</strong>
           </div>
           <div class="summary-card">
-            <span class="metric-label">Open Taskings</span>
+            <span class="metric-label">Open Work</span>
             <strong id="summaryOpenTasks">0</strong>
           </div>
           <div class="summary-card">
@@ -126,7 +126,7 @@
           </section>
           <section>
             <div class="drawer-section-head">
-              <h3>Open Taskings</h3>
+              <h3>Open Work</h3>
               <span id="nextTaskCount" class="status-pill">0</span>
             </div>
             <div id="nextTaskList" class="next-list"></div>
@@ -224,24 +224,24 @@
           <aside class="pane load-pane">
             <div class="pane-header">
               <div>
-                <p class="eyebrow">Cadre Tasking</p>
-                <h2>Assignments</h2>
+                <p class="eyebrow">Work Queue</p>
+                <h2>Ownership</h2>
               </div>
-              <button class="icon-button solid" id="quickTaskButton" type="button" title="Add task" aria-label="Add task">
+              <button class="icon-button solid" id="quickTaskButton" type="button" title="Add work item" aria-label="Add work item">
                 <i data-lucide="plus"></i>
               </button>
             </div>
             <form id="taskForm" class="task-form is-hidden" aria-hidden="true">
               <div class="task-form-head">
                 <div>
-                  <p id="taskFormMode" class="eyebrow">New Task</p>
-                  <h3 id="taskFormTitle">New Task</h3>
+                  <p id="taskFormMode" class="eyebrow">New Work Item</p>
+                  <h3 id="taskFormTitle">New Work Item</h3>
                 </div>
-                <button class="icon-button" id="closeTaskFormButton" type="button" title="Close task editor" aria-label="Close task editor">
+                <button class="icon-button" id="closeTaskFormButton" type="button" title="Close work item editor" aria-label="Close work item editor">
                   <i data-lucide="x"></i>
                 </button>
               </div>
-              <label class="wide">Task<input id="taskTitle" placeholder="e.g. Confirm MRE pickup for AA2" required /></label>
+              <label class="wide">Work Item<input id="taskTitle" placeholder="e.g. Confirm MRE pickup for AA2" required /></label>
               <label>Date<input id="taskDate" type="date" required /></label>
               <label>Start<input id="taskStart" type="time" /></label>
               <label>End<input id="taskEnd" type="time" /></label>
@@ -269,11 +269,11 @@
                 </select>
               </label>
               <label class="wide">Notes<input id="taskNotes" placeholder="Location, handoff, special coordination" /></label>
-              <button class="task-submit" type="submit"><i data-lucide="check"></i><span id="taskSubmitLabel">Save Task</span></button>
+              <button class="task-submit" type="submit"><i data-lucide="check"></i><span id="taskSubmitLabel">Save Work</span></button>
             </form>
             <div class="assignment-tools">
               <div class="segmented" role="tablist" aria-label="Assignment views">
-                <button class="segment is-active" data-assignment-view="list" type="button">By Task</button>
+                <button class="segment is-active" data-assignment-view="list" type="button">By Work</button>
                 <button class="segment" data-assignment-view="timeline" type="button">By Person</button>
               </div>
               <span id="assignmentCount" class="status-pill">0</span>

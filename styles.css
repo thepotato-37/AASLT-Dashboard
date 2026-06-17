@@ -1185,6 +1185,16 @@ textarea {
   color: var(--accent-strong);
 }
 
+.work-chip {
+  max-width: 100%;
+  border-color: rgba(46, 112, 118, 0.26);
+  background: #f5fbfa;
+  color: var(--accent-strong);
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
 .people-row {
   display: flex;
   flex-wrap: wrap;

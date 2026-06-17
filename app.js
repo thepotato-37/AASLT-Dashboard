@@ -17,7 +17,6 @@ const SETTINGS_KEY = "aaslt.settings.v2";
 const EVENT_OVERRIDES_KEY = "aaslt.eventOverrides.v2";
 const RECEIPT_DB = "aaslt-receipts";
 const RECEIPT_STORE = "files";
-const CANONICAL_LRTC_FILE = "Total AASLT Cadre LRTC (1).xlsx";
 const CLOUD_SYNC_SCHEMA = 1;
 
 const TRACKED_PEOPLE = [
@@ -173,7 +172,6 @@ const state = {
   sourceIndex: 0,
   sheetIndex: 0,
   sourceSearch: "",
-  classLookup: new Map(),
   classDayLabels: new Map(),
 };
 
@@ -490,13 +488,13 @@ function eventSourceFiles(event) {
   return (event.relatedSources || [event.source].filter(Boolean)).map((source) => source?.file).filter(Boolean);
 }
 
-function isClassesMealSource(event) {
-  return event.sourceKind === "class-calendar" || eventSourceFiles(event).includes("CLASSES.xlsx");
+function isLrtcMealSource(event) {
+  return event.sourceKind === "lrtc" || eventSourceFiles(event).some((file) => file.startsWith("Total AASLT Cadre LRTC"));
 }
 
 function mealScheduleScore(event) {
   let score = 0;
-  if (isClassesMealSource(event)) score += 100;
+  if (isLrtcMealSource(event)) score += 100;
   if (event.start) score += 20;
   score += mealLocationScore(event);
   return score;
@@ -528,8 +526,8 @@ function mealNotesFor(status, meal, schedule) {
   if (isCadetMessStatus(status)) return `Meal type from mess matrix; Cadet Mess fixed ${meal.toLowerCase()} time.`;
   if (status === "MRE") {
     return schedule?.start
-      ? "Meal type from mess matrix; MRE time from CLASSES schedule."
-      : "Meal type from mess matrix; no CLASSES schedule time found, so a planning default is shown.";
+      ? "Meal type from mess matrix; MRE time from LRTC."
+      : "Meal type from mess matrix; no LRTC meal time found, so a planning default is shown.";
   }
   if (status) return "Meal type from mess matrix; time/location from schedule when available.";
   return "Time/location from schedule; no mess matrix status found.";
@@ -542,27 +540,7 @@ function inferClassKey(event) {
   if (airMatch) return `Air Assault ${airMatch[1]}`;
   const aaMatch = text.match(/\bAA\s*(\d)\b/);
   if (aaMatch) return `Air Assault ${aaMatch[1]}`;
-  const source = event.source || {};
-  const lookup = state.classLookup.get(`${source.file}|${source.sheet}|${source.row}|${source.col}`);
-  return lookup || "";
-}
-
-function buildClassLookup() {
-  state.classLookup = new Map();
-  const classes = state.data.sources.find((source) => source.name === "CLASSES.xlsx");
-  const sheet = classes?.sheets.find((item) => item.name === "SCHED WORKING");
-  if (!sheet) return;
-  const headings = sheet.cells.filter((cell) => /DAY\s+[-\d]+\s+WP\d+/i.test(String(cell.v || "")));
-  for (const heading of headings) {
-    const wp = String(heading.v).match(/WP(\d+)/i);
-    if (!wp) continue;
-    const number = Number(wp[1]) - 699;
-    if (number < 1 || number > 9) continue;
-    for (let row = heading.r + 2; row <= heading.r + 12; row += 1) {
-      state.classLookup.set(`CLASSES.xlsx|SCHED WORKING|${row}|${heading.c}`, `Air Assault ${number}`);
-      state.classLookup.set(`CLASSES.xlsx|SCHED WORKING|${row}|${heading.c + 1}`, `Air Assault ${number}`);
-    }
-  }
+  return "";
 }
 
 function normalizeSourceEvent(event) {
@@ -612,6 +590,14 @@ function classNumberFromKey(classKey) {
   return Number(String(classKey || "").match(/\d+/)?.[0] || 0);
 }
 
+function eventCountsAsActiveTrack(event) {
+  if (!event.classKey) return false;
+  const role = String(event.role || "").toUpperCase();
+  if (role === "ADMIN" || role === "CADRE") return false;
+  if (["Cadre", "Logistics", "Operations"].includes(event.category)) return false;
+  return true;
+}
+
 function trackSort(value) {
   return value || "Shared";
 }
@@ -631,7 +617,8 @@ function classDayLabelForTrack(iso, track) {
 function buildClassDayLabels(events) {
   state.classDayLabels = new Map();
   events.forEach((event) => {
-    const label = dayLabelFromTitle(event.title);
+    const numericDay = Number(event.dayNumber);
+    const label = Number.isFinite(numericDay) ? `Day ${numericDay}` : dayLabelFromTitle(event.title) || dayLabelFromTitle(event.dateHeader) || dayLabelFromTitle(event.group);
     if (!label || !event.date || !event.classKey) return;
     state.classDayLabels.set(`${event.date}|${event.classKey}`, label);
   });
@@ -709,72 +696,11 @@ function normalizeSouthDockPeEvents(events) {
     const duplicateSources = items.filter((event) => event !== keeper).flatMap((event) => event.relatedSources || []);
     keeper.relatedSources = dedupeSources([...(keeper.relatedSources || []), ...duplicateSources]);
     items.forEach((event) => {
-      if (event !== keeper && event.sourceKind === "class-calendar") removeIds.add(event.id);
+      if (event !== keeper) removeIds.add(event.id);
     });
   });
 
   return events.filter((event) => !removeIds.has(event.id));
-}
-
-function minutesFromTime(value) {
-  const normalized = normalizeTime(value);
-  if (!normalized) return null;
-  const [hour, minute] = normalized.split(":").map(Number);
-  return hour * 60 + minute;
-}
-
-function canonicalActivityText(text) {
-  return cleanTitle(text)
-    .toUpperCase()
-    .replace(/\b[0-2]?\d[0-5]\d\s*-\s*(?:[0-2]?\d[0-5]\d|UTC)\b/g, " ")
-    .replace(/\b[0-2]?\d[0-5]\d\b/g, " ")
-    .replace(/\bP\s*([123])\b/g, "PHASE $1")
-    .replace(/\bCLASSROM\b/g, "CLASSROOM")
-    .replace(/\bRAPELLING\b/g, "RAPPELLING")
-    .replace(/\bAIR\s+ASSUALT\b/g, "AIR ASSAULT")
-    .replace(/\bGRAD\b/g, "GRADUATION")
-    .replace(/[^\w\s/]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function activityEndMinutes(event, start) {
-  const explicitEnd = minutesFromTime(event.end);
-  if (explicitEnd !== null) return explicitEnd;
-  return /\bUTC\b/i.test(event.title || "") ? start + 240 : start + 45;
-}
-
-function activityWindowsOverlap(a, b) {
-  const aStart = minutesFromTime(a.start);
-  const bStart = minutesFromTime(b.start);
-  if (aStart === null || bStart === null) return false;
-  const aEnd = activityEndMinutes(a, aStart);
-  const bEnd = activityEndMinutes(b, bStart);
-  return Math.max(aStart, bStart) < Math.min(aEnd, bEnd);
-}
-
-function isClassEventCoveredByLrtc(classEvent, lrtcEvent) {
-  if (!["Training", "Instruction"].includes(classEvent.category) || !["Training", "Instruction"].includes(lrtcEvent.category)) return false;
-  if (classEvent.date !== lrtcEvent.date || (classEvent.classKey || "") !== (lrtcEvent.classKey || "")) return false;
-  const classTitle = canonicalActivityText(classEvent.title);
-  const lrtcTitle = canonicalActivityText(lrtcEvent.title);
-  if (!classTitle || !lrtcTitle) return false;
-  const sameStart = classEvent.start && lrtcEvent.start && classEvent.start === lrtcEvent.start;
-  const sameWindow = sameStart && (classEvent.end || "") === (lrtcEvent.end || "");
-  const overlappingWindow = activityWindowsOverlap(classEvent, lrtcEvent);
-  const similarTitle = lrtcTitle.includes(classTitle) || classTitle.includes(lrtcTitle) || (classTitle.includes("PHASE 1 TEST") && lrtcTitle.includes("PHASE 1 TEST"));
-  const ambiguousClassTitle = /^(\d+\s*HR|PHASE\s+\d+\s+TEST|COLD\s+LOAD|FORMATION|AIR|LZ\/PZ|SLING)/.test(classTitle);
-  const samePlace = classEvent.location && lrtcEvent.location && canonicalActivityText(classEvent.location) === canonicalActivityText(lrtcEvent.location);
-  return (overlappingWindow && similarTitle) || (sameWindow && (ambiguousClassTitle || samePlace || lrtcTitle.length > classTitle.length + 6));
-}
-
-function removeClassEventsCoveredByLrtc(events) {
-  const lrtcEvents = events.filter((event) => event.sourceKind === "lrtc" && event.classKey);
-  if (!lrtcEvents.length) return events;
-  return events.filter((event) => {
-    if (event.sourceKind !== "class-calendar") return true;
-    return !lrtcEvents.some((lrtcEvent) => isClassEventCoveredByLrtc(event, lrtcEvent));
-  });
 }
 
 function removeUntimedEvents(events) {
@@ -811,9 +737,7 @@ function addDayMinusTwoMarneMedicalSupportEvents(events) {
 }
 
 function isCanonicalLrtcEvent(event) {
-  if (event.sourceKind !== "lrtc") return true;
-  const sources = event.relatedSources || [event.source].filter(Boolean);
-  return sources.some((source) => source?.file === CANONICAL_LRTC_FILE);
+  return true;
 }
 
 function coalesceSharedMedicalEvents(events) {
@@ -1002,8 +926,7 @@ function buildOperationalEvents(rawEvents) {
     });
   }
 
-  const lrtcPreferred = removeClassEventsCoveredByLrtc(operational);
-  const southDockNormalized = normalizeSouthDockPeEvents(lrtcPreferred);
+  const southDockNormalized = normalizeSouthDockPeEvents(operational);
   const withDayMinusTwoSupport = addDayMinusTwoMarneMedicalSupportEvents(southDockNormalized);
   const timedOperational = removeUntimedEvents(withDayMinusTwoSupport);
   return coalesceSharedMedicalEvents(coalesceMealEvents(mergeEvents(timedOperational)));
@@ -1341,7 +1264,9 @@ function saveSettings() {
 
 function peopleRequiredFromTitle(title) {
   const matches = Array.from(String(title || "").matchAll(/\b(\d+)\s*x\s*Cadre\b/gi));
-  return matches.length ? matches.reduce((sum, match) => sum + Number(match[1]), 0) : 1;
+  if (matches.length) return matches.reduce((sum, match) => sum + Number(match[1]), 0);
+  const generic = String(title || "").match(/^\s*(?:[0-2]?\d[0-5]\d(?:\s*-\s*(?:[0-2]?\d[0-5]\d|UTC))?\s+)?(\d+)\s*x\b/i);
+  return generic ? Math.max(1, Number(generic[1])) : 1;
 }
 
 function canonicalTaskTitle(title) {
@@ -1349,6 +1274,36 @@ function canonicalTaskTitle(title) {
     .replace(/^Cadre coverage\s*-\s*(?:\d+\s*x\s*Cadre\s*)+$/i, "Cadre coverage")
     .replace(/\bRecieve\b/gi, "Receive")
     .replace(/\bClassrom\b/gi, "Classroom");
+}
+
+function looseTaskTitleKey(title) {
+  return canonicalTaskTitle(title)
+    .toUpperCase()
+    .replace(/\b[0-2]?\d[0-5]\d\s*-\s*(?:[0-2]?\d[0-5]\d|UTC)\b/g, " ")
+    .replace(/\b[0-2]?\d[0-5]\d\b/g, " ")
+    .replace(/\bW\/\s+.+$/g, " ")
+    .replace(/\([^)]*\bS4\b[^)]*\)/g, " ")
+    .replace(/\bS4\b|\bAS4\b|\bTM\b/g, " ")
+    .replace(/\bCADRE COVERAGE\b/g, "CADRE")
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function compatibleTaskTracks(a, b) {
+  const aTrack = a.track || a.classKey || "Shared";
+  const bTrack = b.track || b.classKey || "Shared";
+  return aTrack === bTrack || aTrack === "Shared" || bTrack === "Shared";
+}
+
+function likelySameWorkItem(a, b) {
+  if (a.date !== b.date) return false;
+  if ((a.start || "") !== (b.start || "")) return false;
+  if (!compatibleTaskTracks(a, b)) return false;
+  const aKey = looseTaskTitleKey(a.title);
+  const bKey = looseTaskTitleKey(b.title);
+  if (!aKey || !bKey) return false;
+  return aKey === bKey || aKey.includes(bKey) || bKey.includes(aKey);
 }
 
 function taskOwners(task) {
@@ -1488,7 +1443,7 @@ function consolidateTasks(tasks) {
 }
 
 function taskFromSourceTasking(tasking) {
-  const requiredPeople = peopleRequiredFromTitle(tasking.title);
+  const requiredPeople = Math.max(1, Number(tasking.requiredPeople || 0), peopleRequiredFromTitle(tasking.title));
   return {
     id: `seed-${tasking.id}`,
     sourceSeedId: tasking.id,
@@ -1501,10 +1456,30 @@ function taskFromSourceTasking(tasking) {
     owners: [],
     owner: "Unassigned",
     requiredPeople,
-    taskees: 0,
+    taskees: taskTaskees(tasking),
     status: "open",
-    notes: [tasking.location, tasking.role, sourceSummary(tasking)].filter(Boolean).join(" / "),
+    notes: [tasking.location, tasking.lane || tasking.role, sourceSummary(tasking)].filter(Boolean).join(" / "),
     updatedAt: state.data?.generatedAt || new Date().toISOString(),
+  };
+}
+
+function mergeExistingTasksIntoSeed(seed, existingTasks = []) {
+  if (!existingTasks.length) return seed;
+  const owners = Array.from(new Set(existingTasks.flatMap(taskOwners)));
+  const sourceSeedIds = Array.from(new Set([seed.sourceSeedId, ...existingTasks.flatMap(taskSourceSeedIds)].filter(Boolean)));
+  const done = existingTasks.some((task) => task.status === "done");
+  const claimed = owners.length || existingTasks.some((task) => task.status === "claimed");
+  return {
+    ...seed,
+    id: existingTasks.find((task) => !String(task.id || "").startsWith("seed-"))?.id || existingTasks[0].id || seed.id,
+    owners,
+    owner: owners[0] || "Unassigned",
+    requiredPeople: Math.max(seed.requiredPeople || 1, ...existingTasks.map(taskRequiredPeople), owners.length),
+    taskees: Math.max(taskTaskees(seed), ...existingTasks.map(taskTaskees)),
+    status: done ? "done" : claimed ? "claimed" : seed.status,
+    notes: compactTaskNotes([seed.notes, ...existingTasks.map((task) => task.notes)].filter(Boolean).join(" / ")),
+    sourceSeedIds,
+    updatedAt: existingTasks.map((task) => task.updatedAt).filter(Boolean).sort().pop() || seed.updatedAt,
   };
 }
 
@@ -1513,7 +1488,7 @@ function mergeSourceTaskings(existingTasks, sourceTaskings = []) {
   const seeds = sourceTaskings.map(taskFromSourceTasking).filter((task) => !deleted.has(task.sourceSeedId));
   const seedIds = new Set(seeds.map((task) => task.sourceSeedId));
   const existingBySeed = new Map();
-  const manualTasks = [];
+  const manualCandidates = [];
 
   existingTasks.forEach((task) => {
     if (taskSourceSeedIds(task).some((seedId) => deleted.has(seedId))) return;
@@ -1521,26 +1496,22 @@ function mergeSourceTaskings(existingTasks, sourceTaskings = []) {
       if (seedIds.has(task.sourceSeedId)) existingBySeed.set(task.sourceSeedId, task);
       return;
     }
-    manualTasks.push(task);
+    manualCandidates.push(task);
   });
 
+  const matchedManualIds = new Set();
   const mergedSeeds = seeds.map((seed) => {
-    const existing = existingBySeed.get(seed.sourceSeedId);
-    if (!existing) return seed;
-    const owners = taskOwners(existing);
-    return {
-      ...seed,
-      id: existing.id || seed.id,
-      owners,
-      owner: owners[0] || "Unassigned",
-      requiredPeople: Math.max(seed.requiredPeople || 1, existing.requiredPeople || 1, owners.length),
-      taskees: taskTaskees(existing),
-      status: existing.status || seed.status,
-      notes: existing.notes || seed.notes,
-      updatedAt: existing.updatedAt || seed.updatedAt,
-    };
+    const existing = [existingBySeed.get(seed.sourceSeedId)].filter(Boolean);
+    manualCandidates.forEach((task) => {
+      if (matchedManualIds.has(task.id)) return;
+      if (!likelySameWorkItem(seed, task)) return;
+      matchedManualIds.add(task.id);
+      existing.push(task);
+    });
+    return mergeExistingTasksIntoSeed(seed, existing);
   });
 
+  const manualTasks = manualCandidates.filter((task) => !matchedManualIds.has(task.id));
   return consolidateTasks([...manualTasks, ...mergedSeeds]);
 }
 
@@ -1695,7 +1666,6 @@ async function init() {
   state.s4Items = mergeSourceSupportItems(state.s4Items, state.data.supportItems || []);
   saveTasks();
   saveS4();
-  buildClassLookup();
   rebuildEvents();
   initSettings();
   bindEvents();
@@ -2033,7 +2003,8 @@ function renderDay() {
   const dayEvents = eventsForDate(state.selectedDate).sort(eventSort);
   const byTrack = eventsByTrack(dayEvents);
   $("#selectedDateLabel").textContent = formatFullDate(state.selectedDate);
-  $("#selectedDaySubtitle").textContent = `${dayEvents.length} merged event${dayEvents.length === 1 ? "" : "s"} from ${state.sourceFilter === "all" ? "all sources" : state.sourceFilter}`;
+  const sourceLabel = state.sourceFilter === "all" ? "LRTC + mess matrix" : state.sourceFilter;
+  $("#selectedDaySubtitle").textContent = `${dayEvents.length} timeline item${dayEvents.length === 1 ? "" : "s"} from ${sourceLabel}`;
   $("#dayTrackOne").textContent = (byTrack[0]?.events.length || 0).toString();
   $("#dayTrackTwo").textContent = (byTrack[1]?.events.length || 0).toString();
   $("#dayShared").textContent = byTrack.shared.length.toString();
@@ -2047,7 +2018,7 @@ function renderDay() {
 }
 
 function activeTracksForDate(iso) {
-  const tracks = Array.from(new Set(state.events.filter((event) => event.date === iso && event.classKey).map((event) => event.classKey)));
+  const tracks = Array.from(new Set(state.events.filter((event) => event.date === iso && eventCountsAsActiveTrack(event)).map((event) => event.classKey)));
   return tracks.sort((a, b) => (classNumberFromKey(a) || 99) - (classNumberFromKey(b) || 99)).slice(0, 2);
 }
 
@@ -2112,6 +2083,8 @@ function renderEventCard(event) {
   const chips = createElement("span", { className: "event-chips" });
   if (event.isEdited) chips.append(createElement("span", { className: "source-chip edited-chip", text: "Edited" }));
   if (event.classKey) chips.append(createElement("span", { className: "source-chip", text: event.classKey.replace("Air Assault ", "AA") }));
+  const workLabel = eventWorkLabel(event);
+  if (workLabel) chips.append(createElement("span", { className: "source-chip work-chip", text: workLabel }));
   if (chips.children.length) top.append(chips);
   card.append(top);
   card.append(createElement("strong", { text: event.title }));
@@ -2149,6 +2122,8 @@ function renderWeekEventMini(event) {
   const top = createElement("span", { className: "week-event-top" });
   top.append(createElement("b", { text: event.category }));
   if (event.end) top.append(createElement("em", { text: event.end }));
+  const workLabel = eventWorkLabel(event);
+  if (workLabel) top.append(createElement("em", { text: workLabel }));
   card.append(top, createElement("strong", { text: event.title }));
   const meta = [event.location, event.notes].filter(Boolean).join(" / ");
   if (meta) card.append(createElement("small", { text: meta }));
@@ -2321,6 +2296,25 @@ function tasksForDate(iso) {
   return state.tasks.filter((task) => task.date === iso).sort((a, b) => (a.start || "99:99").localeCompare(b.start || "99:99") || a.title.localeCompare(b.title));
 }
 
+function tasksForEvent(event) {
+  const eventTrack = event.classKey || "Shared";
+  const eventTask = { date: event.date, start: event.start || "", track: eventTrack, title: event.title };
+  return state.tasks.filter((task) => {
+    return likelySameWorkItem(eventTask, task);
+  });
+}
+
+function eventWorkLabel(event) {
+  const linked = tasksForEvent(event);
+  if (!linked.length) return "";
+  const required = linked.reduce((sum, task) => sum + taskRequiredPeople(task), 0);
+  const assigned = linked.reduce((sum, task) => sum + taskOwners(task).length, 0);
+  const taskees = linked.reduce((sum, task) => sum + taskTaskees(task), 0);
+  const done = linked.every((task) => task.status === "done");
+  const status = done ? "done" : assigned ? "claimed" : "open";
+  return `${status} / ${assigned} of ${required} cadre${taskees ? ` / ${taskees} taskees` : ""}`;
+}
+
 function resetTaskForm(date = state.selectedDate) {
   $("#taskForm").reset();
   $("#taskDate").value = date || state.selectedDate;
@@ -2337,9 +2331,9 @@ function setTaskFormOpen(open, mode = "new") {
   form.classList.toggle("is-hidden", !open);
   form.setAttribute("aria-hidden", String(!open));
   $("#quickTaskButton").classList.toggle("is-active", open && mode === "new");
-  $("#taskFormMode").textContent = mode === "edit" ? "Editing Task" : "New Task";
-  $("#taskFormTitle").textContent = mode === "edit" ? "Editing Task" : "New Task";
-  $("#taskSubmitLabel").textContent = mode === "edit" ? "Save Changes" : "Save Task";
+  $("#taskFormMode").textContent = mode === "edit" ? "Editing Work Item" : "New Work Item";
+  $("#taskFormTitle").textContent = mode === "edit" ? "Editing Work Item" : "New Work Item";
+  $("#taskSubmitLabel").textContent = mode === "edit" ? "Save Changes" : "Save Work";
   refreshIcons();
 }
 
@@ -2682,7 +2676,7 @@ function renderAssignmentTimeline(tasks) {
   const wrap = $("#assignmentTimeline");
   wrap.replaceChildren();
   if (!tasks.length) {
-    wrap.append(createElement("div", { className: "empty", text: "No cadre taskings yet. Add one above or create one from a schedule event." }));
+    wrap.append(createElement("div", { className: "empty", text: "No open work items for this day." }));
     return;
   }
   const laneTasks = new Map(TRACKED_PEOPLE.map((person) => [person, []]));
@@ -2705,7 +2699,7 @@ function renderAssignmentList(tasks) {
   const list = $("#assignmentBoard");
   list.replaceChildren();
   if (!tasks.length) {
-    list.append(createElement("div", { className: "empty", text: "No taskings for this day." }));
+    list.append(createElement("div", { className: "empty", text: "No work items for this day." }));
     return;
   }
   tasks.forEach((task) => list.append(renderTaskRow(task)));
@@ -2786,7 +2780,7 @@ function renderNextDay() {
   const taskList = $("#nextTaskList");
   taskList.replaceChildren();
   nextTasks.forEach((task) => taskList.append(renderTaskMini(task)));
-  if (!nextTasks.length) taskList.append(createElement("div", { className: "empty", text: "No open taskings for next day." }));
+  if (!nextTasks.length) taskList.append(createElement("div", { className: "empty", text: "No open work for next day." }));
 }
 
 function renderMealStatus() {
@@ -3250,13 +3244,14 @@ function openEvent(event) {
     ["Track", event.classKey || "Shared"],
     ["Location", event.location],
     ["Notes", event.notes],
+    ["Work Queue", eventWorkLabel(event)],
     ["Source", sourceSummary(event)],
     ["Local Edit", event.isEdited ? "Edited in this browser" : ""],
   ]
     .filter(([, value]) => value)
     .forEach(([label, value]) => details.append(createElement("dt", { text: label }), createElement("dd", { text: value })));
   const actions = createElement("div", { className: "dialog-action-row" });
-  const taskAction = createElement("button", { className: "task-submit dialog-action", html: '<i data-lucide="clipboard-plus"></i><span>Create Tasking</span>', attrs: { type: "button" } });
+  const taskAction = createElement("button", { className: "task-submit dialog-action", html: '<i data-lucide="clipboard-plus"></i><span>Create Work Item</span>', attrs: { type: "button" } });
   const editAction = createElement("button", { className: "secondary-button dialog-action", html: '<i data-lucide="pencil"></i><span>Edit Event</span>', attrs: { type: "button" } });
   taskAction.addEventListener("click", () => createTaskFromEvent(event));
   editAction.addEventListener("click", () => openEventEditor(event));
@@ -3338,7 +3333,7 @@ function printTaskCard(task) {
         <span class="print-time-chip">${escapeHtml(printTimeRange(task))}</span>
         <span class="print-badge">${printValue(task.status || "open")}</span>
       </div>
-      <strong>${printValue(task.title, "Untitled task")}</strong>
+      <strong>${printValue(task.title, "Untitled work item")}</strong>
       <p>${printValue(task.track || "Shared")} / ${escapeHtml(taskStaffingText(task))}</p>
       <p>Owners: ${escapeHtml(ownersLabel(task))}</p>
       ${notes ? `<p>${escapeHtml(notes)}</p>` : ""}
@@ -3347,7 +3342,7 @@ function printTaskCard(task) {
 }
 
 function printAssignmentsByTime(tasks) {
-  if (!tasks.length) return `<div class="print-empty">No cadre taskings for this day.</div>`;
+  if (!tasks.length) return `<div class="print-empty">No work items for this day.</div>`;
   const laneTasks = new Map(TRACKED_PEOPLE.map((person) => [person, []]));
   tasks.forEach((task) => {
     const owners = taskOwners(task);
@@ -3371,14 +3366,14 @@ function printTaskLine(task) {
   return `
     <article class="print-task-line status-${safeClassName(task.status)}">
       <span>${escapeHtml(printTimeRange(task))}</span>
-      <strong>${printValue(task.title, "Untitled task")}</strong>
+      <strong>${printValue(task.title, "Untitled work item")}</strong>
       <small>${printValue(task.track || "Shared")} / ${escapeHtml(taskStaffingText(task))}</small>
     </article>
   `;
 }
 
 function printAssignmentsList(tasks) {
-  if (!tasks.length) return `<div class="print-empty">No cadre taskings for this day.</div>`;
+  if (!tasks.length) return `<div class="print-empty">No work items for this day.</div>`;
   return `<div class="print-task-list">${tasks.map(printTaskCard).join("")}</div>`;
 }
 
@@ -3386,13 +3381,13 @@ function printAssignments(tasks) {
   const done = tasks.filter((task) => task.status === "done").length;
   const claimed = tasks.filter((task) => task.status === "claimed").length;
   const open = tasks.filter((task) => task.status !== "done").length;
-  const viewLabel = state.assignmentView === "list" ? "By Task" : "By Person";
+  const viewLabel = state.assignmentView === "list" ? "By Work" : "By Person";
   return `
     <section class="print-section">
       <div class="print-section-head">
         <div>
-          <p class="print-eyebrow">Current Task List</p>
-          <h2>Cadre Tasking - ${escapeHtml(viewLabel)}</h2>
+          <p class="print-eyebrow">Current Work Queue</p>
+          <h2>Ownership - ${escapeHtml(viewLabel)}</h2>
         </div>
         <span>${open} open / ${claimed} claimed / ${done} done</span>
       </div>

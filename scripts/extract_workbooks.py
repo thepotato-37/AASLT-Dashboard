@@ -14,16 +14,18 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
-LRTC_SOURCE_FILE = (
-    Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC (1).xlsx")
-    if Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC (1).xlsx").exists()
-    else Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC.xlsx")
+LRTC_SOURCE_FILE = next(
+    path
+    for path in [
+        Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC (2).xlsx"),
+        Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC (1).xlsx"),
+        Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC.xlsx"),
+    ]
+    if path.exists()
 )
 
 SOURCE_FILES = [
-    Path("/Users/anantsabata/Downloads/CLASSES.xlsx"),
     LRTC_SOURCE_FILE,
-    Path("/Users/anantsabata/Downloads/West Point Medical Coverage.xlsx"),
     Path("/Users/anantsabata/Downloads/1. CST 26 Mess Matrix (Live Document).xlsx"),
 ]
 
@@ -403,23 +405,26 @@ def make_event(
     }
     if source_extra:
         source.update(source_extra)
-    events.append(
-        {
-            "id": event_id,
-            "date": event_date,
-            "start": start,
-            "end": end,
-            "title": text,
-            "category": category,
-            "group": compact_text(header),
-            "location": event_location,
-            "people": [],
-            "notes": notes,
-            "classKey": event_class_key,
-            "sourceKind": source_kind,
-            "source": source,
-        }
-    )
+    event_record = {
+        "id": event_id,
+        "date": event_date,
+        "start": start,
+        "end": end,
+        "title": text,
+        "category": category,
+        "group": compact_text(header),
+        "location": event_location,
+        "people": [],
+        "notes": notes,
+        "classKey": event_class_key,
+        "sourceKind": source_kind,
+        "source": source,
+    }
+    if source_extra:
+        for key in ("lane", "role", "dateHeader", "fontColor", "dayNumber"):
+            if source_extra.get(key) is not None and source_extra.get(key) != "":
+                event_record[key] = source_extra[key]
+    events.append(event_record)
 
 
 def lrtc_column_role(header: str) -> str:
@@ -435,6 +440,170 @@ def lrtc_column_role(header: str) -> str:
     if "HOURLY" in upper:
         return "HOURLY"
     return ""
+
+
+def class_key_from_aa_number(number: str | int) -> str:
+    return f"Air Assault {int(number)}"
+
+
+def class_key_from_lrtc_header(header: str) -> str | None:
+    match = re.search(r"\bAA\s*([1-9]\d*)\b", compact_text(header), re.I)
+    return class_key_from_aa_number(match.group(1)) if match else None
+
+
+def split_lrtc_entries(value: Any) -> list[str]:
+    if value is None:
+        return []
+    text = str(value).replace("\r\n", "\n").replace("\r", "\n")
+    pieces = [compact_text(piece) for piece in text.split("\n")]
+    pieces = [piece for piece in pieces if piece]
+    if len(pieces) <= 1:
+        return pieces
+    timed_pieces = [piece for piece in pieces if parse_time_token(piece)[0]]
+    # Support cells often wrap one requirement across several lines, e.g.
+    # "0530-0845 / 1x FLA Bartlett / 1x FLA Davis Shelf". Keep those intact.
+    if len(timed_pieces) < 2:
+        return [compact_text(text)]
+    return pieces
+
+
+def cell_color_key(cell: Any) -> str:
+    color = cell.font.color
+    if not color:
+        return ""
+    if color.type == "rgb" and color.rgb:
+        return color.rgb.upper()
+    if color.type == "indexed" and color.indexed is not None:
+        return f"indexed:{color.indexed}"
+    if color.type == "theme" and color.theme is not None:
+        return f"theme:{color.theme}"
+    return color.type or ""
+
+
+def is_red_lrtc_color(color: str) -> bool:
+    return color in {"FFFF0000", "00FF0000", "FF0000"}
+
+
+def is_blue_lrtc_color(color: str) -> bool:
+    return color in {"FF4472C4", "FF0070C0", "000070C0", "004472C4"}
+
+
+def is_green_lrtc_color(color: str) -> bool:
+    return color in {"FF00B050", "0000B050", "FF70AD47"}
+
+
+def day_track_map_for_block(date_header: str, block_headers: list[str]) -> dict[int, str]:
+    trainee_tracks = []
+    for header in block_headers:
+        class_key = class_key_from_lrtc_header(header)
+        if class_key and class_key not in trainee_tracks:
+            trainee_tracks.append(class_key)
+    day_numbers = day_numbers_from_header(date_header)
+    if not trainee_tracks:
+        return {}
+    return {day_number: trainee_tracks[index] for index, day_number in enumerate(day_numbers[: len(trainee_tracks)])}
+
+
+def infer_lrtc_track(
+    *,
+    text: str,
+    header: str,
+    date_header: str,
+    block_headers: list[str],
+    color: str,
+) -> str | None:
+    explicit = infer_class_key(text, header) or class_key_from_lrtc_header(header)
+    if explicit:
+        return explicit
+
+    day_to_track = day_track_map_for_block(date_header, block_headers)
+    if len(day_to_track) == 1:
+        return next(iter(day_to_track.values()))
+
+    # In the current LRTC convention, red/blue/green font colors distinguish
+    # track-specific support cells inside shared admin/medic columns.
+    ordered_tracks = [track for _, track in sorted(day_to_track.items())]
+    if is_red_lrtc_color(color) and ordered_tracks:
+        return ordered_tracks[0]
+    if (is_blue_lrtc_color(color) or is_green_lrtc_color(color)) and len(ordered_tracks) > 1:
+        return ordered_tracks[1]
+    return None
+
+
+def lrtc_date_blocks(ws: Any) -> list[dict[str, Any]]:
+    date_by_col: dict[int, str] = {}
+    date_header_by_col: dict[int, str] = {}
+    for row_idx in range(1, min(ws.max_row, 8) + 1):
+        for col_idx in range(1, ws.max_column + 1):
+            text = compact_text(ws.cell(row_idx, col_idx).value)
+            day = parse_day_label(text, 6)
+            if day:
+                date_by_col[col_idx] = day
+                date_header_by_col[col_idx] = text
+    blocks = []
+    sorted_cols = sorted(date_by_col)
+    for idx, start_col in enumerate(sorted_cols):
+        end_col = (sorted_cols[idx + 1] - 1) if idx + 1 < len(sorted_cols) else ws.max_column
+        block_headers = [compact_text(ws.cell(2, col).value) for col in range(start_col, end_col + 1)]
+        blocks.append(
+            {
+                "startCol": start_col,
+                "endCol": end_col,
+                "date": date_by_col[start_col],
+                "header": date_header_by_col[start_col],
+                "blockHeaders": block_headers,
+            }
+        )
+    return blocks
+
+
+def build_lrtc_class_by_date_day(wb: Any) -> dict[tuple[str, int], str]:
+    lookup: dict[tuple[str, int], str] = {}
+    for ws in wb.worksheets:
+        for block in lrtc_date_blocks(ws):
+            for day_number, class_key in day_track_map_for_block(block["header"], block["blockHeaders"]).items():
+                lookup[(block["date"], day_number)] = class_key
+
+    anchors = [(iso, day_number, class_key) for (iso, day_number), class_key in lookup.items()]
+    for iso, anchor_day, class_key in anchors:
+        anchor_date = date.fromisoformat(iso)
+        for target_day in range(-3, 15):
+            target_date = anchor_date + timedelta(days=target_day - anchor_day)
+            if target_date.year != YEAR:
+                continue
+            lookup.setdefault((target_date.isoformat(), target_day), class_key)
+    return lookup
+
+
+def lrtc_lane_for_role(role: str, header: str, text: str) -> str:
+    upper = f"{header} {text}".upper()
+    if role == "TRAINEES":
+        return "Trainees"
+    if role == "CADRE":
+        return "Cadre"
+    if role == "ADMIN":
+        return "Admin"
+    if role == "MEDICS":
+        return "Medics"
+    if "S4" in upper:
+        return "S4"
+    return role.title() if role else "Timeline"
+
+
+def required_people_from_text(text: str, role: str) -> int:
+    matches = [int(match) for match in re.findall(r"\b(\d+)\s*x\s*Cadre\b", text, re.I)]
+    if matches:
+        return max(1, sum(matches))
+    if role in {"CADRE", "ADMIN"}:
+        generic = re.search(r"\b(\d+)\s*x\b", text, re.I)
+        if generic:
+            return max(1, int(generic.group(1)))
+    return 1
+
+
+def taskees_from_text(text: str) -> int:
+    match = re.search(r"\b(\d+)\s*taskees?\b", text, re.I)
+    return int(match.group(1)) if match else 0
 
 
 def is_lrtc_task_cell(text: str, role: str) -> bool:
@@ -454,6 +623,11 @@ def is_lrtc_task_cell(text: str, role: str) -> bool:
         "TASKEE BRIEF",
         "CADRE IN-BRIEF",
         "MAJ L",
+        "MRE PICKUP",
+        "MRE ISSUE",
+        "LOADOUT",
+        "ADMIN SYNC",
+        "STAFF SYNC",
     ]
     return any(term in upper for term in task_terms)
 
@@ -486,6 +660,9 @@ def make_tasking(
     header: str = "",
     class_key: str | None = None,
     row_start: str | None = None,
+    lane: str = "",
+    required_people: int | None = None,
+    taskees: int = 0,
 ) -> None:
     text = compact_text(title)
     if not event_date or not text or len(text) <= 1:
@@ -515,6 +692,9 @@ def make_tasking(
             "category": infer_category(f"{header} {text}", header),
             "track": class_key or "Shared",
             "location": infer_location(f"{header} {text}"),
+            "lane": lane or lrtc_lane_for_role(role, header, text),
+            "requiredPeople": required_people or required_people_from_text(text, role),
+            "taskees": taskees_from_text(text) if taskees == 0 else taskees,
             "notes": f"LRTC {role.lower()} cell".strip(),
             "sourceKind": "lrtc-tasking",
             "source": source,
@@ -676,26 +856,20 @@ def parse_classes(path: Path, events: list[dict[str, Any]]) -> None:
 
 def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str, Any]], support_items: list[dict[str, Any]]) -> None:
     wb = load_workbook(path, data_only=True)
-    class_by_date_day = build_class_by_date_day(events)
+    style_wb = load_workbook(path, data_only=False)
+    class_by_date_day = build_lrtc_class_by_date_day(wb)
     for ws in wb.worksheets:
+        style_ws = style_wb[ws.title]
         date_by_col: dict[int, str] = {}
         date_header_by_col: dict[int, str] = {}
         header_by_col: dict[int, str] = {}
         role_by_col: dict[int, str] = {}
-        for row_idx in range(1, min(ws.max_row, 8) + 1):
-            for col_idx in range(1, ws.max_column + 1):
-                text = compact_text(ws.cell(row_idx, col_idx).value)
-                day = parse_day_label(text, 6)
-                if day:
-                    date_by_col[col_idx] = day
-                    date_header_by_col[col_idx] = text
-        # Forward-fill grouped dates until the next date header.
-        sorted_cols = sorted(date_by_col)
-        for idx, start_col in enumerate(sorted_cols):
-            end_col = (sorted_cols[idx + 1] - 1) if idx + 1 < len(sorted_cols) else ws.max_column
-            for col in range(start_col, end_col + 1):
-                date_by_col[col] = date_by_col[start_col]
-                date_header_by_col[col] = date_header_by_col[start_col]
+        block_headers_by_col: dict[int, list[str]] = {}
+        for block in lrtc_date_blocks(ws):
+            for col in range(block["startCol"], block["endCol"] + 1):
+                date_by_col[col] = block["date"]
+                date_header_by_col[col] = block["header"]
+                block_headers_by_col[col] = block["blockHeaders"]
 
         for col_idx in range(1, ws.max_column + 1):
             header_parts = []
@@ -710,65 +884,98 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
             hourly = compact_text(ws.cell(row_idx, 1).value)
             row_start = normalize_time(hourly) if re.fullmatch(r"\d{3,4}", hourly) else None
             for col_idx in range(2, ws.max_column + 1):
-                text = compact_text(ws.cell(row_idx, col_idx).value)
-                if not text or parse_day_label(text, 6):
-                    continue
+                entries = split_lrtc_entries(ws.cell(row_idx, col_idx).value)
                 role = role_by_col.get(col_idx, "")
                 if role == "HOURLY":
                     continue
                 event_date = date_by_col.get(col_idx)
                 header = header_by_col.get(col_idx, "")
-                class_key = infer_class_key(header, text, path.name, ws.title)
-                if not class_key and event_date:
-                    for day_number in day_numbers_from_header(date_header_by_col.get(col_idx, "")):
-                        class_key = class_by_date_day.get((event_date, day_number))
-                        if class_key:
-                            break
-                make_support_item(
-                    support_items=support_items,
-                    source_file=path.name,
-                    sheet=ws.title,
-                    row=row_idx,
-                    col=col_idx,
-                    event_date=event_date,
-                    title=text,
-                    role=role,
-                    class_key=class_key,
-                    row_start=row_start,
-                )
-                if role == "MEDICS":
+                if not entries or not event_date:
                     continue
-                if is_lrtc_task_cell(text, role):
-                    make_tasking(
-                        taskings=taskings,
+                color = cell_color_key(style_ws.cell(row_idx, col_idx))
+                block_headers = block_headers_by_col.get(col_idx, [])
+                for entry_index, text in enumerate(entries, start=1):
+                    if not text or parse_day_label(text, 6):
+                        continue
+                    if re.fullmatch(r"[BZ]", text, re.I):
+                        continue
+                    class_key = infer_lrtc_track(
+                        text=text,
+                        header=header,
+                        date_header=date_header_by_col.get(col_idx, ""),
+                        block_headers=block_headers,
+                        color=color,
+                    )
+                    if not class_key:
+                        for day_number in day_numbers_from_header(date_header_by_col.get(col_idx, "")):
+                            class_key = class_by_date_day.get((event_date, day_number))
+                            if class_key:
+                                break
+                    day_number = None
+                    for candidate_day, candidate_track in day_track_map_for_block(date_header_by_col.get(col_idx, ""), block_headers).items():
+                        if class_key and candidate_track == class_key:
+                            day_number = candidate_day
+                            break
+                    if day_number is None and class_key:
+                        for (lookup_date, lookup_day), lookup_track in class_by_date_day.items():
+                            if lookup_date == event_date and lookup_track == class_key:
+                                day_number = lookup_day
+                                break
+                    lane = lrtc_lane_for_role(role, header, text)
+                    title = text
+                    if row_start and not parse_time_token(title)[0]:
+                        title = f"{hourly} {text}"
+                    source_extra = {
+                        "lane": lane,
+                        "dateHeader": date_header_by_col.get(col_idx, ""),
+                        "dayNumber": day_number,
+                        "role": role,
+                        "entryIndex": entry_index,
+                        "fontColor": color,
+                    }
+                    make_event(
+                        events=events,
                         source_file=path.name,
                         sheet=ws.title,
                         row=row_idx,
                         col=col_idx,
                         event_date=event_date,
-                        title=text,
+                        title=title,
+                        header=lane,
+                        assigned="",
+                        source_kind="lrtc",
+                        class_key=class_key,
+                        source_extra=source_extra,
+                    )
+                    make_support_item(
+                        support_items=support_items,
+                        source_file=path.name,
+                        sheet=ws.title,
+                        row=row_idx,
+                        col=col_idx,
+                        event_date=event_date,
+                        title=title,
                         role=role,
-                        header=header,
                         class_key=class_key,
                         row_start=row_start,
                     )
-                    continue
-                title = text if not row_start or parse_time_token(text)[0] else text
-                if row_start and not parse_time_token(title)[0]:
-                    title = f"{hourly} {text}"
-                make_event(
-                    events=events,
-                    source_file=path.name,
-                    sheet=ws.title,
-                    row=row_idx,
-                    col=col_idx,
-                    event_date=event_date,
-                    title=title,
-                    header=header,
-                    assigned="",
-                    source_kind="lrtc",
-                    class_key=class_key,
-                )
+                    if role in {"CADRE", "ADMIN"} or (role != "TRAINEES" and is_lrtc_task_cell(text, role)):
+                        make_tasking(
+                            taskings=taskings,
+                            source_file=path.name,
+                            sheet=ws.title,
+                            row=row_idx,
+                            col=col_idx,
+                            event_date=event_date,
+                            title=title,
+                            role=role,
+                            header=header,
+                            class_key=class_key,
+                            row_start=row_start,
+                            lane=lane,
+                            required_people=required_people_from_text(text, role),
+                            taskees=taskees_from_text(text),
+                        )
 
 
 def parse_medical(path: Path, events: list[dict[str, Any]]) -> None:
@@ -1182,6 +1389,17 @@ def meal_label_for_event(event: dict[str, Any]) -> str:
     return labels[0] if labels else ""
 
 
+def event_counts_as_active_track(event: dict[str, Any]) -> bool:
+    if not event.get("classKey"):
+        return False
+    role = compact_text(event.get("role", "")).upper()
+    if role in {"ADMIN", "CADRE"}:
+        return False
+    if event.get("category") in {"Cadre", "Logistics", "Operations"}:
+        return False
+    return True
+
+
 def build_diagnostics(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
     diagnostics: list[dict[str, Any]] = []
     tracks_by_date: defaultdict[str, set[str]] = defaultdict(set)
@@ -1193,7 +1411,7 @@ def build_diagnostics(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for event in events:
         date_value = event.get("date")
         class_key = event.get("classKey") or ""
-        if date_value and class_key:
+        if date_value and class_key and event_counts_as_active_track(event):
             tracks_by_date[date_value].add(class_key)
 
         if event.get("category") == "Meals":
@@ -1419,12 +1637,8 @@ def main() -> None:
     notes: list[dict[str, Any]] = []
     for path in SOURCE_FILES:
         raw_sources.append(extract_raw_workbook(path))
-        if path.name == "CLASSES.xlsx":
-            parse_classes(path, events)
-        elif path == LRTC_SOURCE_FILE or path.name.startswith("Total AASLT Cadre LRTC"):
+        if path == LRTC_SOURCE_FILE or path.name.startswith("Total AASLT Cadre LRTC"):
             parse_lrtc(path, events, taskings, support_items)
-        elif path.name == "West Point Medical Coverage.xlsx":
-            parse_medical(path, events)
         elif path.name == "1. CST 26 Mess Matrix (Live Document).xlsx":
             parse_mess_matrix(path, events, notes)
     normalize_medical_ruck_labels(events)
