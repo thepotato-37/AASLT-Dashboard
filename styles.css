@@ -4487,7 +4487,17 @@ body.week-table-open {
     align-items: stretch;
     flex-direction: column;
     position: relative;
-    padding: 12px;
+    padding: 10px 12px;
+  }
+
+  .week-table-head .eyebrow,
+  #weekTableSubtitle {
+    display: none;
+  }
+
+  .week-table-head h2 {
+    margin-top: 0;
+    font-size: 0.98rem;
   }
 
   .week-table-actions {
