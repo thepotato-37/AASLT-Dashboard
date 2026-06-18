@@ -1701,9 +1701,14 @@ function bindEvents() {
     renderAll();
   });
   $("#todayButton").addEventListener("click", () => {
+    if (window.matchMedia("(max-width: 820px)").matches) {
+      openMobileCalendar();
+      return;
+    }
     const today = toIso(new Date());
     selectDate(state.events.some((event) => event.date === today) ? today : state.data.summary.dateRange[0]);
   });
+  $("#mobileCalendarCloseButton")?.addEventListener("click", closeMobileCalendar);
   $("#prevMonthButton").addEventListener("click", () => {
     state.viewMonth.setMonth(state.viewMonth.getMonth() - 1);
     renderCalendar();
@@ -1746,11 +1751,16 @@ function bindEvents() {
   window.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (closeColorKeys()) return;
+    if (document.body.classList.contains("mobile-calendar-open")) {
+      closeMobileCalendar();
+      return;
+    }
     if (!$("#weekTableView")?.hidden) closeWeekTableView();
     toggleMobileMenu(false);
   });
   window.addEventListener("resize", () => {
     if (!window.matchMedia("(max-width: 820px)").matches) toggleMobileMenu(false);
+    if (!window.matchMedia("(max-width: 820px)").matches) closeMobileCalendar();
   });
   $$("#quickTaskButton").forEach((el) => el.addEventListener("click", openNewTaskForm));
   $$(".segment[data-day-view]").forEach((button) => {
@@ -1988,9 +1998,14 @@ function renderTodayWeatherStrip() {
 }
 
 function selectDate(iso) {
+  const calendarWasOpen = document.body.classList.contains("mobile-calendar-open");
   state.selectedDate = iso;
   state.viewMonth = parseDate(iso);
   state.mobileTrackIndex = 0;
+  if (calendarWasOpen) {
+    closeMobileCalendar();
+    state.mobileView = "ops";
+  }
   if (!state.taskFormOpen || !state.editingTaskId) $("#taskDate").value = iso;
   renderAll();
 }
@@ -2966,6 +2981,19 @@ function closeColorKeys(exceptKey = null) {
     closed = true;
   });
   return closed;
+}
+
+function openMobileCalendar() {
+  closeColorKeys();
+  toggleMobileMenu(false);
+  toggleNextDrawer(false);
+  state.viewMonth = parseDate(state.selectedDate);
+  renderCalendar();
+  document.body.classList.add("mobile-calendar-open");
+}
+
+function closeMobileCalendar() {
+  document.body.classList.remove("mobile-calendar-open");
 }
 
 function toggleMobileMenu(force) {

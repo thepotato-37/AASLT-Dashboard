@@ -219,6 +219,7 @@ h3 {
 
 .mobile-menu-toggle,
 .mobile-next-day-button,
+.mobile-calendar-close,
 .mobile-menu,
 .mobile-menu-backdrop {
   display: none;
@@ -2182,6 +2183,7 @@ label {
 }
 
 .icon-button.mobile-menu-toggle,
+.icon-button.mobile-calendar-close,
 .secondary-button.mobile-next-day-button {
   display: none;
 }
@@ -4122,6 +4124,78 @@ body.week-table-open {
 
   body.mobile-menu-open {
     overflow: hidden;
+  }
+
+  body.mobile-calendar-open {
+    overflow: hidden;
+  }
+
+  .calendar-pane {
+    display: none;
+  }
+
+  body.mobile-calendar-open .calendar-pane {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    border: 0;
+    border-radius: 0;
+    background: var(--surface);
+    box-shadow: none;
+    overflow: auto;
+  }
+
+  body.mobile-calendar-open .calendar-pane .pane-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    padding: 18px 16px 14px;
+  }
+
+  body.mobile-calendar-open .calendar-pane .button-row {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  body.mobile-calendar-open .icon-button.mobile-calendar-close {
+    display: inline-grid;
+  }
+
+  body.mobile-calendar-open .weekday-grid {
+    padding: 16px 14px 0;
+    font-size: 0.7rem;
+  }
+
+  body.mobile-calendar-open .calendar-grid {
+    align-content: start;
+    gap: 8px;
+    padding: 10px 14px 18px;
+  }
+
+  body.mobile-calendar-open .calendar-day {
+    min-height: 68px;
+    padding: 8px;
+  }
+
+  body.mobile-calendar-open .calendar-day > strong {
+    min-width: 22px;
+    height: 22px;
+    font-size: 0.72rem;
+  }
+
+  body.mobile-calendar-open .calendar-date,
+  body.mobile-calendar-open .day-number {
+    font-size: 0.86rem;
+  }
+
+  body.mobile-calendar-open .weather-panel {
+    display: none;
   }
 
   .command-actions .search-box,

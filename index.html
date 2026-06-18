@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260618-6" />
-    <script src="firebase-config.js?v=20260618-6" defer></script>
-    <script src="app.js?v=20260618-6" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260618-7" />
+    <script src="firebase-config.js?v=20260618-7" defer></script>
+    <script src="app.js?v=20260618-7" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -27,7 +27,7 @@
             <i data-lucide="search"></i>
             <input id="globalSearch" type="search" placeholder="Search timeline, unit, source, location" />
           </label>
-          <button class="icon-button" id="todayButton" type="button" title="Today" aria-label="Today">
+          <button class="icon-button" id="todayButton" type="button" title="Calendar" aria-label="Calendar">
             <i data-lucide="calendar-days"></i>
           </button>
           <button class="secondary-button mobile-next-day-button" id="mobileNextPaneButton" type="button" title="Open next day pane" aria-label="Open next day pane">
@@ -151,6 +151,9 @@
                 </button>
                 <button class="icon-button" id="nextMonthButton" type="button" title="Next month" aria-label="Next month">
                   <i data-lucide="chevron-right"></i>
+                </button>
+                <button class="icon-button mobile-calendar-close" id="mobileCalendarCloseButton" type="button" title="Back to tracks" aria-label="Back to tracks">
+                  <i data-lucide="x"></i>
                 </button>
               </div>
             </div>
