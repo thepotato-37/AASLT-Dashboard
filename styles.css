@@ -60,6 +60,10 @@ body {
     var(--bg);
 }
 
+[hidden] {
+  display: none !important;
+}
+
 button,
 input,
 select,
@@ -2052,6 +2056,29 @@ label {
 
 .event-edit-form {
   margin: 0;
+}
+
+#eventEditDialog {
+  overflow: hidden;
+}
+
+#eventEditDialog .event-edit-form {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: inherit;
+}
+
+#eventEditDialog .event-edit-grid {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+#eventEditDialog .dialog-actions {
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  padding-top: 12px;
 }
 
 .event-edit-grid {
@@ -4588,6 +4615,40 @@ body.week-table-open {
 
   .event-dialog {
     width: calc(100vw - 18px);
+    max-height: calc(100dvh - 18px);
+  }
+
+  @supports not (height: 100dvh) {
+    .event-dialog {
+      max-height: calc(100vh - 18px);
+    }
+  }
+
+  #eventEditDialog .event-edit-form {
+    max-height: calc(100dvh - 18px);
+  }
+
+  @supports not (height: 100dvh) {
+    #eventEditDialog .event-edit-form {
+      max-height: calc(100vh - 18px);
+    }
+  }
+
+  #eventEditDialog .dialog-head {
+    padding: 14px;
+  }
+
+  #eventEditDialog .event-edit-grid {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  #eventEditDialog .event-edit-grid textarea {
+    min-height: 72px;
+  }
+
+  #eventEditDialog .dialog-actions {
+    padding: 12px 14px max(14px, env(safe-area-inset-bottom));
   }
 
   .event-edit-grid,
@@ -4597,6 +4658,10 @@ body.week-table-open {
 
   .dialog-actions span {
     display: none;
+  }
+
+  #eventEditDialog .dialog-actions span {
+    display: inline;
   }
 
   .print-standing-slider {
