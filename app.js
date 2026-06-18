@@ -129,7 +129,7 @@ const WEATHER_CODE_LABELS = {
   96: "Storms with hail",
   99: "Storms with hail",
 };
-const MOBILE_VIEWS = new Set(["ops", "tasks", "s4"]);
+const MOBILE_VIEWS = new Set(["ops", "tasks"]);
 
 const state = {
   data: null,
@@ -1742,12 +1742,7 @@ function bindEvents() {
     renderAll();
   });
   $$("#openNextPaneButton, #mobileNextPaneButton, #closeNextPaneButton, #drawerBackdrop").forEach((el) => el.addEventListener("click", () => toggleNextDrawer()));
-  $("#mobileMenuButton")?.addEventListener("click", () => toggleMobileMenu(true));
-  $("#mobileMenuClose")?.addEventListener("click", () => toggleMobileMenu(false));
-  $("#mobileMenuBackdrop")?.addEventListener("click", () => toggleMobileMenu(false));
-  $$(".mobile-menu-item[data-mobile-view]").forEach((button) => {
-    button.addEventListener("click", () => setMobileView(button.dataset.mobileView));
-  });
+  $("#mobileStandingButton")?.addEventListener("click", toggleStandingWorkView);
   window.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (closeColorKeys()) return;
@@ -1756,10 +1751,8 @@ function bindEvents() {
       return;
     }
     if (!$("#weekTableView")?.hidden) closeWeekTableView();
-    toggleMobileMenu(false);
   });
   window.addEventListener("resize", () => {
-    if (!window.matchMedia("(max-width: 820px)").matches) toggleMobileMenu(false);
     if (!window.matchMedia("(max-width: 820px)").matches) closeMobileCalendar();
   });
   $$("#quickTaskButton").forEach((el) => el.addEventListener("click", openNewTaskForm));
@@ -2297,7 +2290,6 @@ async function openWeekTableView() {
   view.hidden = false;
   view.setAttribute("aria-hidden", "false");
   document.body.classList.add("week-table-open");
-  toggleMobileMenu(false);
   toggleNextDrawer(false);
   applyWeekZoom();
   refreshIcons();
@@ -2995,7 +2987,6 @@ function closeColorKeys(exceptKey = null) {
 
 function openMobileCalendar() {
   closeColorKeys();
-  toggleMobileMenu(false);
   toggleNextDrawer(false);
   state.viewMonth = parseDate(state.selectedDate);
   renderCalendar();
@@ -3006,24 +2997,21 @@ function closeMobileCalendar() {
   document.body.classList.remove("mobile-calendar-open");
 }
 
-function toggleMobileMenu(force) {
-  const menu = $("#mobileMenu");
-  const backdrop = $("#mobileMenuBackdrop");
-  if (!menu || !backdrop) return;
-  const open = typeof force === "boolean" ? force : menu.getAttribute("aria-hidden") === "true";
-  menu.setAttribute("aria-hidden", open ? "false" : "true");
-  document.body.classList.toggle("mobile-menu-open", open);
-  backdrop.hidden = !open;
-  $("#mobileMenuButton")?.setAttribute("aria-expanded", open ? "true" : "false");
+function toggleStandingWorkView() {
+  const nextView = state.mobileView === "tasks" ? "ops" : "tasks";
+  if (nextView === "tasks") {
+    closeColorKeys();
+    closeMobileCalendar();
+    toggleNextDrawer(false);
+  }
+  setMobileView(nextView);
 }
 
 function setMobileView(view) {
   if (!MOBILE_VIEWS.has(view)) return;
   state.mobileView = view;
-  if (view === "s4") selectTab("s4");
   applyMobileView();
   saveSettings();
-  toggleMobileMenu(false);
 }
 
 function applyMobileView() {
@@ -3031,11 +3019,12 @@ function applyMobileView() {
   state.mobileView = view;
   document.body.dataset.mobileView = view;
   MOBILE_VIEWS.forEach((name) => document.body.classList.toggle(`mobile-view-${name}`, name === view));
-  $$(".mobile-menu-item[data-mobile-view]").forEach((button) => {
-    const active = button.dataset.mobileView === view;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", active ? "true" : "false");
-  });
+  const standingButton = $("#mobileStandingButton");
+  if (standingButton) {
+    const active = view === "tasks";
+    standingButton.classList.toggle("is-active", active);
+    standingButton.setAttribute("aria-pressed", active ? "true" : "false");
+  }
 }
 
 function migrateS4(items) {
