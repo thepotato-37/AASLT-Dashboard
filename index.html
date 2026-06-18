@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260618-5" />
-    <script src="firebase-config.js?v=20260618-5" defer></script>
-    <script src="app.js?v=20260618-5" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260618-6" />
+    <script src="firebase-config.js?v=20260618-6" defer></script>
+    <script src="app.js?v=20260618-6" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -216,6 +216,10 @@
                   <span>Table View</span>
                 </button>
                 <button class="info-dot-button mobile-color-info-toggle" id="timelineColorInfoButton" type="button" aria-label="Show color key" aria-controls="timelineColorKey" aria-expanded="false">i</button>
+              </div>
+              <div class="segmented mobile-track-switcher" id="mobileTrackSwitcher" role="tablist" aria-label="Active track views" hidden>
+                <button class="segment is-active" data-mobile-track-index="0" type="button">Track 1</button>
+                <button class="segment" data-mobile-track-index="1" type="button">Track 2</button>
               </div>
               <div class="category-key compact" id="timelineColorKey" aria-label="Timeline color key">
                 <span class="category-key-chip cat-training"><span class="category-key-dot"></span><span>Training</span></span>

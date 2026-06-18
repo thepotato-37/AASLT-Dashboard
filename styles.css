@@ -964,6 +964,10 @@ main {
   padding: 3px;
 }
 
+.mobile-track-switcher {
+  display: none;
+}
+
 .segment,
 .tab {
   min-width: 0;
@@ -4176,6 +4180,16 @@ body.week-table-open {
     display: none;
   }
 
+  .mobile-track-switcher:not([hidden]) {
+    display: inline-grid;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mobile-track-switcher .segment {
+    min-width: 0;
+  }
+
   #openWeekTableButton {
     width: 100%;
   }
@@ -4306,6 +4320,15 @@ body.week-table-open {
   .task-board,
   .assignment-board {
     grid-template-columns: 1fr;
+  }
+
+  #trackTimelines .track-column {
+    display: none;
+  }
+
+  #trackTimelines .track-column.is-mobile-selected,
+  #trackTimelines .track-column.full-column {
+    display: grid;
   }
 
   .timeline.timeline-split {

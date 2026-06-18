@@ -142,6 +142,7 @@ const state = {
   dayView: "tracks",
   assignmentView: "list",
   mobileView: "ops",
+  mobileTrackIndex: 0,
   weekZoom: 1,
   weekTableFullscreenRequested: false,
   tasks: [],
@@ -1249,6 +1250,7 @@ function saveSettings() {
       dayView: state.dayView,
       assignmentView: state.assignmentView,
       mobileView: state.mobileView,
+      mobileTrackIndex: state.mobileTrackIndex,
       weekZoom: state.weekZoom,
     })
   );
@@ -1689,6 +1691,7 @@ function initSettings() {
   state.dayView = DAY_VIEWS.has(settings.dayView) ? settings.dayView : "tracks";
   state.assignmentView = "list";
   state.mobileView = MOBILE_VIEWS.has(settings.mobileView) ? settings.mobileView : "ops";
+  state.mobileTrackIndex = Number.isInteger(settings.mobileTrackIndex) ? Math.max(0, Math.min(settings.mobileTrackIndex, 1)) : 0;
   state.weekZoom = clampWeekZoom(settings.weekZoom);
 }
 
@@ -1756,6 +1759,13 @@ function bindEvents() {
       renderDay();
       saveSettings();
     });
+  });
+  $("#mobileTrackSwitcher")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-mobile-track-index]");
+    if (!button) return;
+    state.mobileTrackIndex = Number(button.dataset.mobileTrackIndex) || 0;
+    renderDay();
+    saveSettings();
   });
   $$(".segment[data-assignment-view]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1980,6 +1990,7 @@ function renderTodayWeatherStrip() {
 function selectDate(iso) {
   state.selectedDate = iso;
   state.viewMonth = parseDate(iso);
+  state.mobileTrackIndex = 0;
   if (!state.taskFormOpen || !state.editingTaskId) $("#taskDate").value = iso;
   renderAll();
 }
@@ -1998,6 +2009,7 @@ function renderDay() {
   $$(".segment[data-day-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.dayView === effectiveDayView));
   $("#trackTimelines").classList.toggle("is-hidden", effectiveDayView !== "tracks");
   $("#dayTimeline").classList.toggle("is-hidden", effectiveDayView !== "all");
+  renderMobileTrackSwitcher(byTrack);
   renderTrackTimelines(byTrack);
   renderTimeline(dayEvents, $("#dayTimeline"));
   if (!$("#weekTableView")?.hidden) renderWeekTable();
@@ -2023,17 +2035,38 @@ function renderTrackTimelines(byTrack) {
   const wrap = $("#trackTimelines");
   wrap.replaceChildren();
   const hasTwoTracks = byTrack.tracks.length > 1;
+  const selectedIndex = Math.min(state.mobileTrackIndex, Math.max(byTrack.tracks.length - 1, 0));
   const columns = byTrack.tracks.map((track, index) => ({
     title: [track, byTrack[index]?.dayLabel].filter(Boolean).join(" - "),
     events: byTrack[index]?.events || [],
-    className: hasTwoTracks ? "track-column" : "track-column full-column",
+    className: [hasTwoTracks ? "track-column" : "track-column full-column", index === selectedIndex ? "is-mobile-selected" : ""].filter(Boolean).join(" "),
+    index,
   }));
   if (!columns.length) wrap.append(createElement("div", { className: "empty", text: "No active Air Assault tracks for this day." }));
   columns.forEach((column) => {
-    const pane = createElement("section", { className: column.className });
+    const pane = createElement("section", { className: column.className, attrs: { "data-mobile-track-index": column.index.toString() } });
     pane.append(createElement("h3", { text: column.title }));
     renderTimeline(column.events.sort(eventSort), pane, { hideTrackChip: true, hideCategoryBadge: true });
     wrap.append(pane);
+  });
+}
+
+function renderMobileTrackSwitcher(byTrack) {
+  const switcher = $("#mobileTrackSwitcher");
+  if (!switcher) return;
+  const buttons = $$("[data-mobile-track-index]", switcher);
+  const hasChoices = byTrack.tracks.length > 1;
+  switcher.hidden = !hasChoices;
+  state.mobileTrackIndex = hasChoices ? Math.min(Math.max(state.mobileTrackIndex, 0), byTrack.tracks.length - 1) : 0;
+  buttons.forEach((button, index) => {
+    const track = byTrack.tracks[index];
+    const dayLabel = byTrack[index]?.dayLabel;
+    const active = hasChoices && index === state.mobileTrackIndex;
+    button.hidden = !track;
+    button.textContent = track ? track.replace("Air Assault ", "AA") : `Track ${index + 1}`;
+    button.title = [track, dayLabel].filter(Boolean).join(" - ");
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", active ? "true" : "false");
   });
 }
 
