@@ -4209,6 +4209,32 @@ body.week-table-open {
     display: none;
   }
 
+  .today-weather-strip {
+    min-height: 34px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 5px 10px;
+    text-align: left;
+    scrollbar-width: none;
+  }
+
+  .today-weather-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .today-weather-label {
+    display: none;
+  }
+
+  .today-weather-chip {
+    min-height: 22px;
+    flex: 0 0 auto;
+    padding: 3px 7px;
+    font-size: 0.68rem;
+  }
+
   .overview-strip,
   .summary-strip {
     display: none;
@@ -4238,16 +4264,16 @@ body.week-table-open {
   }
 
   .timeline-tools {
-    align-items: stretch;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(96px, 0.72fr) var(--control-h-sm) minmax(138px, 1.28fr);
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
     position: relative;
   }
 
   .view-tools {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--control-h-sm);
-    align-items: center;
-    gap: 8px;
+    display: contents;
   }
 
   .view-tools .segmented {
@@ -4262,10 +4288,13 @@ body.week-table-open {
 
   .mobile-track-switcher .segment {
     min-width: 0;
+    padding: 0 6px;
   }
 
   #openWeekTableButton {
     width: 100%;
+    min-width: 0;
+    padding-inline: 8px;
   }
 
   .info-dot-button.mobile-color-info-toggle {
@@ -4312,7 +4341,7 @@ body.week-table-open {
     font-size: 0.62rem;
   }
 
-  .secondary-button.compact {
+  .timeline-tools .secondary-button.compact {
     width: 100%;
   }
 

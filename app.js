@@ -1967,22 +1967,33 @@ function selectedWeatherLabel() {
   return `Weather ${formatCompactDate(state.selectedDate)}`;
 }
 
+function isMobileLayout() {
+  return window.matchMedia("(max-width: 820px)").matches;
+}
+
 function renderTodayWeatherStrip() {
   const strip = $("#todayWeatherStrip");
   if (!strip) return;
   strip.replaceChildren();
   const label = selectedWeatherLabel();
+  const showLabel = !isMobileLayout();
+  const appendWeatherLabel = () => {
+    if (showLabel) strip.append(createElement("span", { className: "today-weather-label", text: label }));
+  };
   if (state.weather.status === "loading") {
-    strip.append(createElement("span", { className: "today-weather-label", text: label }), createElement("strong", { className: "today-weather-chip", text: "Loading forecast" }));
+    appendWeatherLabel();
+    strip.append(createElement("strong", { className: "today-weather-chip", text: "Loading forecast" }));
     return;
   }
   if (state.weather.status === "error") {
-    strip.append(createElement("span", { className: "today-weather-label", text: label }), createElement("strong", { className: "today-weather-chip", text: "Weather unavailable" }));
+    appendWeatherLabel();
+    strip.append(createElement("strong", { className: "today-weather-chip", text: "Weather unavailable" }));
     return;
   }
   const selectedWeather = (state.weather.days || []).find((day) => day.iso === state.selectedDate);
   if (!selectedWeather) {
-    strip.append(createElement("span", { className: "today-weather-label", text: label }), createElement("strong", { className: "today-weather-chip", text: "Forecast unavailable" }));
+    appendWeatherLabel();
+    strip.append(createElement("strong", { className: "today-weather-chip", text: "Forecast unavailable" }));
     return;
   }
   const chips = [
@@ -1991,7 +2002,7 @@ function renderTodayWeatherStrip() {
     selectedWeather.heatIndex === undefined ? "HI TBD" : `HI ${formatTemp(selectedWeather.heatIndex)}`,
     selectedWeather.humidity === undefined ? "Humidity TBD" : `Humidity ${selectedWeather.humidity}%`,
   ];
-  strip.append(createElement("span", { className: "today-weather-label", text: label }));
+  appendWeatherLabel();
   chips.forEach((chip, index) => {
     strip.append(createElement(index === 1 ? "strong" : "span", { className: "today-weather-chip", text: chip }));
   });
