@@ -2987,6 +2987,7 @@ function closeColorKeys(exceptKey = null) {
 function openMobileCalendar() {
   closeColorKeys();
   toggleNextDrawer(false);
+  if (state.mobileView !== "ops") setMobileView("ops");
   state.viewMonth = parseDate(state.selectedDate);
   renderCalendar();
   document.body.classList.add("mobile-calendar-open");
