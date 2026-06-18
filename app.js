@@ -961,21 +961,24 @@ function createManualEventId() {
 
 function applyEventOverrides(events) {
   const sourceIds = new Set(events.map((event) => event.id));
-  const editedSourceEvents = events.map((event) => {
-    const override = state.eventOverrides[event.id];
-    if (!override) return event;
-    return {
-      ...event,
-      ...override,
-      id: event.id,
-      relatedSources: event.relatedSources,
-      source: event.source,
-      sourceKind: event.sourceKind,
-      isEdited: true,
-    };
-  });
+  const editedSourceEvents = events
+    .map((event) => {
+      const override = state.eventOverrides[event.id];
+      if (override?.deleted) return null;
+      if (!override) return event;
+      return {
+        ...event,
+        ...override,
+        id: event.id,
+        relatedSources: event.relatedSources,
+        source: event.source,
+        sourceKind: event.sourceKind,
+        isEdited: true,
+      };
+    })
+    .filter(Boolean);
   const manualEvents = Object.entries(state.eventOverrides)
-    .filter(([id, override]) => override?.sourceKind === "manual-event" && !sourceIds.has(id))
+    .filter(([id, override]) => override?.sourceKind === "manual-event" && !override.deleted && !sourceIds.has(id))
     .map(([id, override]) => manualEventFromOverride(id, override));
   return [...editedSourceEvents, ...manualEvents].filter((event) => event.start);
 }
@@ -1822,6 +1825,7 @@ function bindEvents() {
   $("#closeEditDialog").addEventListener("click", () => $("#eventEditDialog").close());
   $("#cancelEventEdit").addEventListener("click", () => $("#eventEditDialog").close());
   $("#resetEventEdit").addEventListener("click", resetEditedEvent);
+  $("#deleteEventEdit").addEventListener("click", () => deleteEventById($("#eventEditId").value));
   $("#printDayButton").addEventListener("click", openPrintOptions);
   $("#printOptionsForm")?.addEventListener("submit", submitPrintOptions);
   $("#closePrintOptions")?.addEventListener("click", closePrintOptions);
@@ -2544,8 +2548,9 @@ function openEventEditor(event) {
   $("#eventEditLocation").value = event.location || "";
   $("#eventEditNotes").value = event.notes || "";
   setSelectedOwners($("#eventEditOwners"), eventCadreOwners(event));
-  $("#resetEventEdit").hidden = !state.eventOverrides[event.id];
-  $("#resetEventEdit").textContent = event.isManual ? "Delete Event" : "Reset Source";
+  $("#resetEventEdit").hidden = event.isManual || !state.eventOverrides[event.id];
+  $("#resetEventEdit").textContent = "Reset Source";
+  $("#deleteEventEdit").hidden = false;
   $("#eventEditSubmitLabel").textContent = "Save Event";
   $("#eventEditDialog").showModal();
   refreshIcons();
@@ -2570,6 +2575,7 @@ function openNewEventEditor(defaults = {}) {
   setSelectedOwners($("#eventEditOwners"), defaults.owners || []);
   $("#resetEventEdit").hidden = true;
   $("#resetEventEdit").textContent = "Reset Source";
+  $("#deleteEventEdit").hidden = true;
   $("#eventEditSubmitLabel").textContent = "Add Event";
   $("#eventEditDialog").showModal();
   $("#eventEditTitle").focus();
@@ -2613,17 +2619,40 @@ function saveEventEdit(event) {
 function resetEditedEvent() {
   const id = $("#eventEditId").value;
   if (!id) return;
-  const wasManual = state.eventOverrides[id]?.sourceKind === "manual-event";
   delete state.eventOverrides[id];
   saveEventOverrides();
   $("#eventEditDialog").close();
   rebuildEvents();
-  const restored = wasManual ? null : eventById(id);
+  const restored = eventById(id);
   if (restored) {
     state.selectedDate = restored.date;
     state.viewMonth = parseDate(restored.date);
     $("#taskDate").value = restored.date;
   }
+  renderAll();
+}
+
+function deleteEventById(id, options = {}) {
+  if (!id) return;
+  const event = eventById(id);
+  const title = event?.title || $("#eventEditTitle")?.value.trim() || "this event";
+  const shouldConfirm = options.confirm !== false;
+  if (shouldConfirm && !window.confirm(`Delete "${title}" from the timeline? This will sync for everyone.`)) return;
+  const override = state.eventOverrides[id];
+  const isManual = event?.isManual || event?.sourceKind === "manual-event" || override?.sourceKind === "manual-event";
+  if (isManual) {
+    delete state.eventOverrides[id];
+  } else {
+    state.eventOverrides[id] = {
+      ...override,
+      deleted: true,
+      updatedAt: new Date().toISOString(),
+    };
+  }
+  saveEventOverrides();
+  $("#eventDialog")?.close();
+  $("#eventEditDialog")?.close();
+  rebuildEvents();
   renderAll();
 }
 
@@ -3411,7 +3440,9 @@ function openEvent(event) {
   const actions = createElement("div", { className: "dialog-action-row" });
   const editAction = createElement("button", { className: "secondary-button dialog-action", html: '<i data-lucide="pencil"></i><span>Edit Event</span>', attrs: { type: "button" } });
   editAction.addEventListener("click", () => openEventEditor(event));
-  actions.append(editAction);
+  const deleteAction = createElement("button", { className: "secondary-button dialog-action danger", html: '<i data-lucide="trash-2"></i><span>Delete Event</span>', attrs: { type: "button" } });
+  deleteAction.addEventListener("click", () => deleteEventById(event.id));
+  actions.append(editAction, deleteAction);
   details.append(createElement("dt", { text: "Action" }), createElement("dd", { children: [actions] }));
   $("#eventDialog").showModal();
   refreshIcons();
