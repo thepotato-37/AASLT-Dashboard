@@ -2187,7 +2187,6 @@ function renderWeekTable() {
   const dayData = dates.map((iso) => ({ iso, lanes: weekTrackLanesForDate(iso, filtered) }));
   const laneEvents = dayData.flatMap((day) => day.lanes.flatMap((lane) => lane.events));
   $("#weekTableTitle").textContent = `Week of ${formatFullDate(dates[0])}`;
-  $("#weekTableSubtitle").textContent = `${formatCompactDate(dates[0])} through ${formatCompactDate(dates[6])} / ${state.sourceFilter === "all" ? "all sources" : state.sourceFilter}`;
   if (!laneEvents.length) {
     wrap.append(createElement("div", { className: "empty week-empty", text: "No track timeline items found for this week." }));
     return;
