@@ -988,6 +988,30 @@ main {
   box-shadow: 0 1px 3px rgba(29, 43, 47, 0.1);
 }
 
+.info-dot-button {
+  display: none;
+  width: var(--control-h-sm);
+  height: var(--control-h-sm);
+  min-width: var(--control-h-sm);
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent-strong);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.info-dot-button:hover,
+.info-dot-button.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
 select,
 input,
 textarea {
@@ -4138,26 +4162,62 @@ body.week-table-open {
   .timeline-tools {
     align-items: stretch;
     flex-direction: column;
+    position: relative;
   }
 
   .view-tools {
-    align-items: stretch;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--control-h-sm);
+    align-items: center;
+    gap: 8px;
+  }
+
+  .view-tools .segmented {
+    display: none;
+  }
+
+  #openWeekTableButton {
+    width: 100%;
+  }
+
+  .info-dot-button.mobile-color-info-toggle {
+    display: inline-flex;
+  }
+
+  .timeline-tools .category-key,
+  .week-category-key {
+    position: absolute;
+    z-index: 25;
+    display: none;
+    width: min(300px, calc(100% - 24px));
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-tight);
+    gap: 6px;
+    overflow: visible;
+    padding: 8px;
   }
 
   .timeline-tools .category-key {
-    width: 100%;
-    flex-basis: auto;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    overflow: visible;
+    top: calc(100% - 4px);
+    right: 12px;
   }
 
   .week-category-key {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    overflow: visible;
+    top: calc(100% - 6px);
+    right: 12px;
+  }
+
+  .timeline-tools .category-key.is-open,
+  .week-category-key.is-open {
+    display: flex;
+  }
+
+  .timeline-tools .category-key-dot {
+    display: inline-block;
   }
 
   .category-key-chip {
@@ -4300,24 +4360,35 @@ body.week-table-open {
   .week-table-head {
     align-items: stretch;
     flex-direction: column;
+    position: relative;
     padding: 12px;
   }
 
   .week-table-actions {
     align-items: center;
     display: grid;
-    grid-template-columns: var(--control-h) minmax(0, auto) var(--control-h);
+    grid-template-columns: var(--control-h) var(--control-h-sm) minmax(0, auto) var(--control-h);
+    gap: 6px;
     justify-content: end;
   }
 
   .week-zoom-controls {
+    gap: 4px;
     justify-content: center;
+    padding: 2px;
+  }
+
+  .week-zoom-controls .icon-button {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
   }
 
   .week-zoom-controls .week-zoom-reset {
     width: auto;
-    min-width: 54px;
-    padding-inline: 8px;
+    min-width: 48px;
+    min-height: 30px;
+    padding-inline: 6px;
   }
 
   .week-exit-button {

@@ -1726,6 +1726,9 @@ function bindEvents() {
   $("#weekTableView").addEventListener("gesturestart", handleWeekZoomGestureStart, { passive: false });
   $("#weekTableView").addEventListener("gesturechange", handleWeekZoomGestureChange, { passive: false });
   $("#weekTableView").addEventListener("gestureend", handleWeekZoomGestureEnd, { passive: false });
+  bindColorKeyToggle("#timelineColorInfoButton", "#timelineColorKey");
+  bindColorKeyToggle("#weekColorInfoButton", "#weekColorKey");
+  document.addEventListener("click", () => closeColorKeys());
   $("#sourceFilter").addEventListener("change", (event) => {
     state.sourceFilter = event.target.value;
     renderAll();
@@ -1739,6 +1742,7 @@ function bindEvents() {
   });
   window.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
+    if (closeColorKeys()) return;
     if (!$("#weekTableView")?.hidden) closeWeekTableView();
     toggleMobileMenu(false);
   });
@@ -1983,6 +1987,7 @@ function selectDate(iso) {
 function renderDay() {
   const dayEvents = eventsForDate(state.selectedDate).sort(eventSort);
   const byTrack = eventsByTrack(dayEvents);
+  const effectiveDayView = window.matchMedia("(max-width: 820px)").matches ? "tracks" : state.dayView;
   $("#selectedDateLabel").textContent = formatFullDate(state.selectedDate);
   const sourceLabel = state.sourceFilter === "all" ? "LRTC + mess matrix" : state.sourceFilter;
   $("#selectedDaySubtitle").textContent = `${dayEvents.length} timeline item${dayEvents.length === 1 ? "" : "s"} from ${sourceLabel}`;
@@ -1990,9 +1995,9 @@ function renderDay() {
   $("#dayTrackTwo").textContent = (byTrack[1]?.events.length || 0).toString();
   $("#dayShared").textContent = byTrack.shared.length.toString();
   $("#dayMeals").textContent = dayEvents.filter((event) => event.category === "Meals").length.toString();
-  $$(".segment[data-day-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.dayView === state.dayView));
-  $("#trackTimelines").classList.toggle("is-hidden", state.dayView !== "tracks");
-  $("#dayTimeline").classList.toggle("is-hidden", state.dayView !== "all");
+  $$(".segment[data-day-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.dayView === effectiveDayView));
+  $("#trackTimelines").classList.toggle("is-hidden", effectiveDayView !== "tracks");
+  $("#dayTimeline").classList.toggle("is-hidden", effectiveDayView !== "all");
   renderTrackTimelines(byTrack);
   renderTimeline(dayEvents, $("#dayTimeline"));
   if (!$("#weekTableView")?.hidden) renderWeekTable();
@@ -2897,6 +2902,37 @@ function toggleNextDrawer(force) {
   drawer.classList.toggle("is-open", open);
   document.body.classList.toggle("drawer-open", open);
   $("#drawerBackdrop").hidden = !open;
+}
+
+function bindColorKeyToggle(buttonSelector, keySelector) {
+  const button = $(buttonSelector);
+  const key = $(keySelector);
+  if (!button || !key) return;
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const open = !key.classList.contains("is-open");
+    closeColorKeys(key);
+    setColorKeyOpen(button, key, open);
+  });
+  key.addEventListener("click", (event) => event.stopPropagation());
+}
+
+function setColorKeyOpen(button, key, open) {
+  key.classList.toggle("is-open", open);
+  button.classList.toggle("is-active", open);
+  button.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+function closeColorKeys(exceptKey = null) {
+  let closed = false;
+  $$(".category-key.is-open").forEach((key) => {
+    if (key === exceptKey) return;
+    const button = key.id ? $(`[aria-controls="${key.id}"]`) : null;
+    if (button) setColorKeyOpen(button, key, false);
+    else key.classList.remove("is-open");
+    closed = true;
+  });
+  return closed;
 }
 
 function toggleMobileMenu(force) {
