@@ -4102,6 +4102,11 @@ body.week-table-open {
     display: none;
   }
 
+  #selectedDaySubtitle,
+  #sourceFilter {
+    display: none;
+  }
+
   .overview-strip,
   .summary-strip {
     display: none;
