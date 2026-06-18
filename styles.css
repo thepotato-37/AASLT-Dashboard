@@ -4217,11 +4217,11 @@ body.week-table-open {
   .today-weather-strip {
     min-height: 34px;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 4px;
     overflow-x: auto;
     padding: 5px 10px;
-    text-align: left;
+    text-align: center;
     scrollbar-width: none;
   }
 
