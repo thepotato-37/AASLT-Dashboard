@@ -2024,10 +2024,6 @@ function renderDay() {
   $("#selectedDateLabel").textContent = formatFullDate(state.selectedDate);
   const sourceLabel = state.sourceFilter === "all" ? "LRTC + mess matrix" : state.sourceFilter;
   $("#selectedDaySubtitle").textContent = `${dayEvents.length} timeline item${dayEvents.length === 1 ? "" : "s"} from ${sourceLabel}`;
-  $("#dayTrackOne").textContent = (byTrack[0]?.events.length || 0).toString();
-  $("#dayTrackTwo").textContent = (byTrack[1]?.events.length || 0).toString();
-  $("#dayShared").textContent = byTrack.shared.length.toString();
-  $("#dayMeals").textContent = dayEvents.filter((event) => event.category === "Meals").length.toString();
   $$(".segment[data-day-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.dayView === effectiveDayView));
   $("#trackTimelines").classList.toggle("is-hidden", effectiveDayView !== "tracks");
   $("#dayTimeline").classList.toggle("is-hidden", effectiveDayView !== "all");

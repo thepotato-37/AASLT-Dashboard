@@ -906,36 +906,6 @@ main {
   color: var(--accent-strong);
 }
 
-.day-kpis {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  border-bottom: 1px solid var(--line);
-  background: var(--line);
-}
-
-.day-kpis div {
-  min-height: 70px;
-  background: var(--surface-soft);
-  padding: 13px 14px;
-}
-
-.day-kpis span {
-  display: block;
-  color: var(--ink-soft);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.day-kpis strong {
-  display: block;
-  margin-top: 7px;
-  font-size: 1.28rem;
-  line-height: 1;
-}
-
 .timeline-tools {
   justify-content: space-between;
   gap: 12px;
@@ -4273,10 +4243,6 @@ body.week-table-open {
   .pane-header .button-row,
   .source-controls {
     justify-content: flex-start;
-  }
-
-  .day-kpis {
-    display: none;
   }
 
   .timeline-tools {
