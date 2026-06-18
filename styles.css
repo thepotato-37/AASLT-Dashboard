@@ -4139,7 +4139,7 @@ body.week-table-open {
     inset: 0;
     z-index: 90;
     display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
     border: 0;
     border-radius: 0;
     background: var(--surface);
@@ -4195,7 +4195,12 @@ body.week-table-open {
   }
 
   body.mobile-calendar-open .weather-panel {
-    display: none;
+    display: grid;
+    margin: 0 14px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    padding: 8px;
   }
 
   .command-actions .search-box,
