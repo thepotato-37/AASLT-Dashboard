@@ -2166,6 +2166,111 @@ label {
   grid-column: auto;
 }
 
+.print-options-dialog {
+  width: min(580px, calc(100vw - 32px));
+}
+
+.print-option-body {
+  padding: 18px;
+}
+
+.print-standing-slider {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.82fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(46, 112, 118, 0.08), rgba(50, 116, 168, 0.06)), var(--surface-soft);
+  padding: 14px;
+  cursor: pointer;
+}
+
+.print-standing-slider input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.print-slider-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  min-height: 62px;
+  border: 1px solid rgba(46, 112, 118, 0.32);
+  border-radius: 999px;
+  background: #dbe7e8;
+  box-shadow: inset 0 2px 8px rgba(19, 32, 37, 0.12);
+  padding: 5px;
+}
+
+.print-slider-knob {
+  position: absolute;
+  inset-block: 5px;
+  left: 5px;
+  width: calc(50% - 5px);
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 8px 18px rgba(19, 32, 37, 0.18);
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.print-slider-text {
+  position: relative;
+  z-index: 1;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.print-slider-on {
+  color: #fff;
+}
+
+.print-standing-slider input:not(:checked) + .print-slider-track .print-slider-knob {
+  background: var(--ink-soft);
+  transform: translateX(100%);
+}
+
+.print-standing-slider input:not(:checked) + .print-slider-track .print-slider-on {
+  color: var(--ink-muted);
+}
+
+.print-standing-slider input:not(:checked) + .print-slider-track .print-slider-off {
+  color: #fff;
+}
+
+.print-slider-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.print-slider-copy strong {
+  color: var(--ink);
+  font-size: 1.08rem;
+  line-height: 1.1;
+}
+
+.print-slider-copy small {
+  color: var(--ink-muted);
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.print-option-actions {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
 .secondary-button {
   display: inline-flex;
   align-items: center;
@@ -4526,6 +4631,14 @@ body.week-table-open {
 
   .dialog-actions span {
     display: none;
+  }
+
+  .print-standing-slider {
+    grid-template-columns: 1fr;
+  }
+
+  .print-option-actions {
+    grid-template-columns: 1fr;
   }
 
   .next-drawer {

@@ -1822,7 +1822,10 @@ function bindEvents() {
   $("#closeEditDialog").addEventListener("click", () => $("#eventEditDialog").close());
   $("#cancelEventEdit").addEventListener("click", () => $("#eventEditDialog").close());
   $("#resetEventEdit").addEventListener("click", resetEditedEvent);
-  $("#printDayButton").addEventListener("click", printSelectedDay);
+  $("#printDayButton").addEventListener("click", openPrintOptions);
+  $("#printOptionsForm")?.addEventListener("submit", submitPrintOptions);
+  $("#closePrintOptions")?.addEventListener("click", closePrintOptions);
+  $("#cancelPrintOptions")?.addEventListener("click", closePrintOptions);
   $("#exportStateButton").addEventListener("click", exportLocalState);
 }
 
@@ -3583,6 +3586,28 @@ function printStandingWork() {
   `;
 }
 
+function openPrintOptions() {
+  const dialog = $("#printOptionsDialog");
+  if (!dialog) {
+    printSelectedDay();
+    return;
+  }
+  $("#printIncludeStanding").checked = true;
+  if (typeof dialog.showModal === "function") dialog.showModal();
+  else printSelectedDay();
+}
+
+function closePrintOptions() {
+  $("#printOptionsDialog")?.close();
+}
+
+function submitPrintOptions(event) {
+  event.preventDefault();
+  const includeStandingWork = $("#printIncludeStanding")?.checked !== false;
+  closePrintOptions();
+  printSelectedDay({ includeStandingWork });
+}
+
 function printMealSummary(dayEvents) {
   const meals = dayEvents.filter((event) => event.category === "Meals").sort(eventSort);
   if (!meals.length) return `<div class="print-empty">No meals found for this day.</div>`;
@@ -3654,6 +3679,7 @@ function printS4Page() {
 
 function buildPrintHtml(options = {}) {
   const autoPrint = Boolean(options.autoPrint);
+  const includeStandingWork = options.includeStandingWork !== false;
   const iso = state.selectedDate;
   const dayEvents = eventsForDate(iso).sort(eventSort);
   const trackLabels = activeTracksForDate(iso).map((track) => [track, classDayLabelForTrack(iso, track)].filter(Boolean).join(" - "));
@@ -3996,7 +4022,7 @@ function buildPrintHtml(options = {}) {
         ${printTimelineMatrix(dayEvents)}
       </section>
 
-      ${printStandingWork()}
+      ${includeStandingWork ? printStandingWork() : ""}
     </section>
 
     ${printS4Page()}
@@ -4013,9 +4039,9 @@ function buildPrintHtml(options = {}) {
 </html>`;
 }
 
-function printSelectedDay() {
+function printSelectedDay(options = {}) {
   const previewOnly = new URLSearchParams(window.location.search).has("printPreview");
-  const blob = new Blob([buildPrintHtml({ autoPrint: !previewOnly })], { type: "text/html" });
+  const blob = new Blob([buildPrintHtml({ autoPrint: !previewOnly, includeStandingWork: options.includeStandingWork !== false })], { type: "text/html" });
   const url = URL.createObjectURL(blob);
   const printWindow = window.open(url, "_blank");
   if (!printWindow) {

@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260618-13" />
-    <script src="firebase-config.js?v=20260618-13" defer></script>
-    <script src="app.js?v=20260618-13" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260618-14" />
+    <script src="firebase-config.js?v=20260618-14" defer></script>
+    <script src="app.js?v=20260618-14" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -553,6 +553,42 @@
           <button class="task-submit" type="submit">
             <i data-lucide="save"></i>
             <span id="eventEditSubmitLabel">Save Event</span>
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="printOptionsDialog" class="event-dialog print-options-dialog">
+      <form id="printOptionsForm" class="event-edit-form">
+        <div class="dialog-head">
+          <div>
+            <p class="eyebrow">Print Options</p>
+            <h2>Daily Print Packet</h2>
+          </div>
+          <button class="icon-button" id="closePrintOptions" type="button" title="Close print options" aria-label="Close print options">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <div class="print-option-body">
+          <label class="print-standing-slider" for="printIncludeStanding">
+            <input id="printIncludeStanding" type="checkbox" checked />
+            <span class="print-slider-track" aria-hidden="true">
+              <span class="print-slider-knob"></span>
+              <span class="print-slider-text print-slider-on">Include</span>
+              <span class="print-slider-text print-slider-off">Skip</span>
+            </span>
+            <span class="print-slider-copy">
+              <strong>Standing Work</strong>
+              <small>Add persistent tasks to this print packet</small>
+            </span>
+          </label>
+        </div>
+        <div class="dialog-actions print-option-actions">
+          <span></span>
+          <button id="cancelPrintOptions" class="secondary-button" type="button">Cancel</button>
+          <button class="task-submit" type="submit">
+            <i data-lucide="printer"></i>
+            <span>Print Packet</span>
           </button>
         </div>
       </form>
