@@ -218,6 +218,7 @@ h3 {
 }
 
 .mobile-menu-toggle,
+.mobile-next-day-button,
 .mobile-menu,
 .mobile-menu-backdrop {
   display: none;
@@ -2152,6 +2153,11 @@ label {
   font-weight: 850;
 }
 
+.icon-button.mobile-menu-toggle,
+.secondary-button.mobile-next-day-button {
+  display: none;
+}
+
 .secondary-button.compact {
   min-height: var(--control-h-sm);
   padding-inline: 10px;
@@ -4065,7 +4071,7 @@ body.week-table-open {
 
   .command-actions {
     display: grid;
-    grid-template-columns: var(--control-h) minmax(0, 1fr) repeat(3, var(--control-h));
+    grid-template-columns: var(--control-h) var(--control-h) minmax(118px, 1fr);
     justify-content: stretch;
   }
 
@@ -4075,22 +4081,30 @@ body.week-table-open {
     display: block;
   }
 
-  .mobile-menu-toggle {
+  .icon-button.mobile-menu-toggle {
     display: inline-grid;
+  }
+
+  .secondary-button.mobile-next-day-button {
+    display: inline-flex;
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
   }
 
   body.mobile-menu-open {
     overflow: hidden;
   }
 
-  .search-box {
-    width: auto;
-    flex: 1 1 auto;
+  .command-actions .search-box,
+  #printDayButton,
+  #exportStateButton {
+    display: none;
   }
 
   .overview-strip,
   .summary-strip {
-    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    display: none;
   }
 
   .metric {
@@ -4319,17 +4333,12 @@ body.week-table-open {
 
   .command-actions {
     display: grid;
-    grid-template-columns: var(--control-h) minmax(0, 1fr) var(--control-h);
-  }
-
-  #printDayButton,
-  #exportStateButton {
-    display: none;
+    grid-template-columns: var(--control-h) var(--control-h) minmax(118px, 1fr);
   }
 
   .overview-strip,
   .summary-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: none;
   }
 
   .weekday-grid {

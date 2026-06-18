@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AASLT Control Dashboard</title>
-    <link rel="stylesheet" href="styles.css?v=20260617-11" />
-    <script src="firebase-config.js?v=20260617-11" defer></script>
-    <script src="app.js?v=20260617-11" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260618-1" />
+    <script src="firebase-config.js?v=20260618-1" defer></script>
+    <script src="app.js?v=20260618-1" defer></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" async onload="window.lucide && window.lucide.createIcons()"></script>
   </head>
   <body>
@@ -29,6 +29,10 @@
           </label>
           <button class="icon-button" id="todayButton" type="button" title="Today" aria-label="Today">
             <i data-lucide="calendar-days"></i>
+          </button>
+          <button class="secondary-button mobile-next-day-button" id="mobileNextPaneButton" type="button" title="Open next day pane" aria-label="Open next day pane">
+            <i data-lucide="panel-right-open"></i>
+            <span>Next Day</span>
           </button>
           <button class="icon-button" id="printDayButton" type="button" title="Print selected day" aria-label="Print selected day">
             <i data-lucide="printer"></i>

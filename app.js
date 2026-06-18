@@ -1730,7 +1730,7 @@ function bindEvents() {
     state.sourceFilter = event.target.value;
     renderAll();
   });
-  $$("#openNextPaneButton, #closeNextPaneButton, #drawerBackdrop").forEach((el) => el.addEventListener("click", () => toggleNextDrawer()));
+  $$("#openNextPaneButton, #mobileNextPaneButton, #closeNextPaneButton, #drawerBackdrop").forEach((el) => el.addEventListener("click", () => toggleNextDrawer()));
   $("#mobileMenuButton")?.addEventListener("click", () => toggleMobileMenu(true));
   $("#mobileMenuClose")?.addEventListener("click", () => toggleMobileMenu(false));
   $("#mobileMenuBackdrop")?.addEventListener("click", () => toggleMobileMenu(false));
