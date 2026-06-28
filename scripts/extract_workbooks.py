@@ -204,6 +204,13 @@ def is_ignored_mess_unit(text: str) -> bool:
     return any(term in upper for term in ["TOTAL", "CADRE", "DROP"])
 
 
+def is_day_two_ruck_setup_support(text: str, role: str, date_header: str) -> bool:
+    if role != "ADMIN" or 2 not in day_numbers_from_header(date_header):
+        return False
+    upper = compact_text(text).upper()
+    return bool(re.search(r"\b(?:RUCK\s+SETUP|SETUP\s+.*RUCK|SP\s+FOR\s+RUCK)\b", upper))
+
+
 def infer_location(text: str) -> str:
     candidates = [
         "Bartlett",
@@ -1057,6 +1064,8 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                             if lookup_date == event_date and lookup_track == class_key:
                                 day_number = lookup_day
                                 break
+                    if is_day_two_ruck_setup_support(text, role, date_header_by_col.get(col_idx, "")):
+                        day_number = 2
                     consensus_class_key = class_by_date_day.get((event_date, day_number)) if day_number is not None else None
                     if consensus_class_key:
                         class_key = consensus_class_key

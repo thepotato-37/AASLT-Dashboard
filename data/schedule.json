@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-28T14:39:22",
+  "generatedAt": "2026-06-28T15:01:00",
   "operation": {
     "name": "West Point Air Assault",
     "dashboardTitle": "AASLT Control Dashboard",
@@ -5262,7 +5262,7 @@
       "location": "",
       "people": [],
       "notes": "",
-      "classKey": "Air Assault 1",
+      "classKey": "Air Assault 2",
       "sourceKind": "lrtc",
       "source": {
         "file": "Total AASLT Cadre LRTC.xlsx",
@@ -5272,7 +5272,7 @@
         "col": 36,
         "lane": "Admin",
         "dateHeader": "19 JUN: DAY 9 DAY 2",
-        "dayNumber": 9,
+        "dayNumber": 2,
         "role": "ADMIN",
         "entryIndex": 1,
         "fontColor": "FF4472C4"
@@ -5281,7 +5281,7 @@
       "role": "ADMIN",
       "dateHeader": "19 JUN: DAY 9 DAY 2",
       "fontColor": "FF4472C4",
-      "dayNumber": 9
+      "dayNumber": 2
     },
     {
       "id": "evt-00179",
@@ -10315,7 +10315,7 @@
       "location": "",
       "people": [],
       "notes": "",
-      "classKey": "Air Assault 2",
+      "classKey": "Air Assault 3",
       "sourceKind": "lrtc",
       "source": {
         "file": "Total AASLT Cadre LRTC.xlsx",
@@ -10325,7 +10325,7 @@
         "col": 35,
         "lane": "Admin",
         "dateHeader": "26 JUN: DAY 9 DAY 2",
-        "dayNumber": 9,
+        "dayNumber": 2,
         "role": "ADMIN",
         "entryIndex": 1,
         "fontColor": "theme:1"
@@ -10334,7 +10334,7 @@
       "role": "ADMIN",
       "dateHeader": "26 JUN: DAY 9 DAY 2",
       "fontColor": "theme:1",
-      "dayNumber": 9
+      "dayNumber": 2
     },
     {
       "id": "evt-00350",
@@ -14437,7 +14437,7 @@
       "location": "",
       "people": [],
       "notes": "",
-      "classKey": "Air Assault 3",
+      "classKey": "Air Assault 4",
       "sourceKind": "lrtc",
       "source": {
         "file": "Total AASLT Cadre LRTC.xlsx",
@@ -14447,7 +14447,7 @@
         "col": 35,
         "lane": "Admin",
         "dateHeader": "03 JUL DAY 9 DAY 2",
-        "dayNumber": 9,
+        "dayNumber": 2,
         "role": "ADMIN",
         "entryIndex": 1,
         "fontColor": "FFCC99FF"
@@ -14456,7 +14456,7 @@
       "role": "ADMIN",
       "dateHeader": "03 JUL DAY 9 DAY 2",
       "fontColor": "FFCC99FF",
-      "dayNumber": 9
+      "dayNumber": 2
     },
     {
       "id": "evt-00492",
@@ -20477,7 +20477,7 @@
       "location": "",
       "people": [],
       "notes": "",
-      "classKey": "Air Assault 4",
+      "classKey": "Air Assault 5",
       "sourceKind": "lrtc",
       "source": {
         "file": "Total AASLT Cadre LRTC.xlsx",
@@ -20487,7 +20487,7 @@
         "col": 36,
         "lane": "Admin",
         "dateHeader": "10 JUL: DAY 9 DAY 2",
-        "dayNumber": 9,
+        "dayNumber": 2,
         "role": "ADMIN",
         "entryIndex": 1,
         "fontColor": "FF4472C4"
@@ -20496,7 +20496,7 @@
       "role": "ADMIN",
       "dateHeader": "10 JUL: DAY 9 DAY 2",
       "fontColor": "FF4472C4",
-      "dayNumber": 9
+      "dayNumber": 2
     },
     {
       "id": "evt-00693",
@@ -27716,7 +27716,7 @@
       "title": "SP for Ruck Setup",
       "role": "ADMIN",
       "category": "Training",
-      "track": "Air Assault 1",
+      "track": "Air Assault 2",
       "location": "",
       "lane": "Admin",
       "requiredPeople": 1,
@@ -30087,7 +30087,7 @@
       "title": "Ruck Setup SP",
       "role": "ADMIN",
       "category": "Training",
-      "track": "Air Assault 2",
+      "track": "Air Assault 3",
       "location": "",
       "lane": "Admin",
       "requiredPeople": 1,
@@ -31860,7 +31860,7 @@
       "title": "SP for Ruck Setup",
       "role": "ADMIN",
       "category": "Training",
-      "track": "Air Assault 3",
+      "track": "Air Assault 4",
       "location": "",
       "lane": "Admin",
       "requiredPeople": 1,
@@ -35165,7 +35165,7 @@
       "title": "SP for Ruck Setup",
       "role": "ADMIN",
       "category": "Training",
-      "track": "Air Assault 4",
+      "track": "Air Assault 5",
       "location": "",
       "lane": "Admin",
       "requiredPeople": 1,
