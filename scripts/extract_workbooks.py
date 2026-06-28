@@ -14,14 +14,9 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
-LRTC_SOURCE_FILE = next(
-    path
-    for path in [
-        Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC (2).xlsx"),
-        Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC (1).xlsx"),
-        Path("/Users/anantsabata/Downloads/Total AASLT Cadre LRTC.xlsx"),
-    ]
-    if path.exists()
+LRTC_SOURCE_FILE = max(
+    (path for path in Path("/Users/anantsabata/Downloads").glob("Total AASLT Cadre LRTC*.xlsx") if path.exists()),
+    key=lambda path: path.stat().st_mtime,
 )
 
 SOURCE_FILES = [
@@ -114,12 +109,12 @@ def normalize_repeated_resource_counts(text: Any) -> str:
 def parse_day_label(text: str, fallback_month: int | None = 6) -> str | None:
     upper = text.upper().replace(".", "")
     month_pattern = r"(JANUARY|JAN|FEBRUARY|FEB|MARCH|MAR|APRIL|APR|MAY|JUNE|JUN|JULY|JUL|AUGUST|AUG|SEPTEMBER|SEPT|SEP|OCTOBER|OCT|NOVEMBER|NOV|DECEMBER|DEC)"
-    for month_name, day_text in re.findall(rf"\b{month_pattern}\s+(\d{{1,2}})\b", upper):
+    for day_text, month_name in re.findall(rf"\b(\d{{1,2}})(?:ST|ND|RD|TH)?\s*(?:-|/)?\s*{month_pattern}\b", upper):
         month = MONTHS.get(month_name)
         day = int(day_text)
         if month:
             return date(YEAR, month, day).isoformat()
-    for day_text, month_name in re.findall(rf"\b(\d{{1,2}})(?:ST|ND|RD|TH)?[-\s]+{month_pattern}\b", upper):
+    for month_name, day_text in re.findall(rf"\b{month_pattern}\s*(?:-|/)?\s*(\d{{1,2}})\b", upper):
         month = MONTHS.get(month_name)
         day = int(day_text)
         if month:
@@ -199,6 +194,16 @@ def is_non_ruck_fla_text(text: str) -> bool:
     return "FLA" in upper and "RUCK" not in upper
 
 
+def is_medical_coverage_text(text: str, role: str = "") -> bool:
+    upper = f"{role} {compact_text(text)}".upper()
+    return any(term in upper for term in ["MEDIC", "MEDICAL", "FLA", "KACH"])
+
+
+def is_ignored_mess_unit(text: str) -> bool:
+    upper = compact_text(text).upper()
+    return any(term in upper for term in ["TOTAL", "CADRE", "DROP"])
+
+
 def infer_location(text: str) -> str:
     candidates = [
         "Bartlett",
@@ -240,7 +245,7 @@ def infer_class_key(*parts: str) -> str | None:
 
 
 def day_number_from_label(text: str) -> int | None:
-    upper = compact_text(text).upper()
+    upper = compact_text(text).upper().replace(" ", "")
     if upper == "ZERO":
         return 0
     try:
@@ -251,7 +256,7 @@ def day_number_from_label(text: str) -> int | None:
 
 def day_numbers_from_header(text: str) -> list[int]:
     numbers: list[int] = []
-    for token in re.findall(r"\bDAY\s+(-?\d+|ZERO)\b", compact_text(text).upper()):
+    for token in re.findall(r"\bDAY\s*(-?\s*\d+|ZERO)\b", compact_text(text).upper()):
         number = day_number_from_label(token)
         if number is not None:
             numbers.append(number)
@@ -593,20 +598,30 @@ def lrtc_date_blocks(ws: Any) -> list[dict[str, Any]]:
 
 
 def build_lrtc_class_by_date_day(wb: Any) -> dict[tuple[str, int], str]:
-    lookup: dict[tuple[str, int], str] = {}
+    direct_lookup: dict[tuple[str, int], str] = {}
     for ws in wb.worksheets:
         for block in lrtc_date_blocks(ws):
             for day_number, class_key in day_track_map_for_block(block["header"], block["blockHeaders"]).items():
-                lookup[(block["date"], day_number)] = class_key
+                direct_lookup[(block["date"], day_number)] = class_key
 
-    anchors = [(iso, day_number, class_key) for (iso, day_number), class_key in lookup.items()]
+    candidate_counts: defaultdict[tuple[str, int], Counter[str]] = defaultdict(Counter)
+    for (iso, day_number), class_key in direct_lookup.items():
+        candidate_counts[(iso, day_number)][class_key] += 1
+
+    anchors = [(iso, day_number, class_key) for (iso, day_number), class_key in direct_lookup.items()]
     for iso, anchor_day, class_key in anchors:
         anchor_date = date.fromisoformat(iso)
         for target_day in range(-3, 15):
             target_date = anchor_date + timedelta(days=target_day - anchor_day)
             if target_date.year != YEAR:
                 continue
-            lookup.setdefault((target_date.isoformat(), target_day), class_key)
+            candidate_counts[(target_date.isoformat(), target_day)][class_key] += 1
+
+    lookup = {
+        key: counts.most_common(1)[0][0]
+        for key, counts in candidate_counts.items()
+        if counts
+    }
     return lookup
 
 
@@ -876,12 +891,24 @@ def extract_raw_workbook(path: Path) -> dict[str, Any]:
     sheets = []
     for values_ws in values_wb.worksheets:
         formula_ws = formulas_wb[values_ws.title]
+        medical_columns: set[int] = set()
+        if path.name.startswith("Total AASLT Cadre LRTC"):
+            medical_columns = {
+                col_idx
+                for col_idx in range(1, values_ws.max_column + 1)
+                if lrtc_column_role(compact_text(values_ws.cell(2, col_idx).value)) == "MEDICS"
+            }
         cells = []
         for row in values_ws.iter_rows():
             for cell in row:
                 formula_value = formula_ws[cell.coordinate].value
                 value = cell_to_json(cell.value)
                 formula = formula_value if isinstance(formula_value, str) and formula_value.startswith("=") else None
+                if path.name.startswith("Total AASLT Cadre LRTC"):
+                    if cell.column in medical_columns:
+                        continue
+                    if is_medical_coverage_text(value) or is_medical_coverage_text(formula):
+                        continue
                 if value is not None or formula:
                     cells.append(
                         {
@@ -1004,6 +1031,8 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                         continue
                     if re.fullmatch(r"[BZ]", text, re.I):
                         continue
+                    if is_medical_coverage_text(text, role):
+                        continue
                     class_key = infer_lrtc_track(
                         text=text,
                         header=header,
@@ -1028,6 +1057,9 @@ def parse_lrtc(path: Path, events: list[dict[str, Any]], taskings: list[dict[str
                             if lookup_date == event_date and lookup_track == class_key:
                                 day_number = lookup_day
                                 break
+                    consensus_class_key = class_by_date_day.get((event_date, day_number)) if day_number is not None else None
+                    if consensus_class_key:
+                        class_key = consensus_class_key
                     lane = lrtc_lane_for_role(role, header, text)
                     title = text
                     if row_start and not parse_time_token(title)[0]:
@@ -1185,6 +1217,8 @@ def parse_mess_matrix(path: Path, events: list[dict[str, Any]], notes: list[dict
             for cell in row:
                 text = compact_text(cell.value)
                 if re.search(r"AIR\s*ASSAULT|AIRASSAULT|AASLT|AIR\s*ASLT", text, re.I):
+                    if is_ignored_mess_unit(text):
+                        continue
                     notes.append(
                         {
                             "file": path.name,
@@ -1211,7 +1245,7 @@ def parse_mess_matrix(path: Path, events: list[dict[str, Any]], notes: list[dict
             unit = compact_text(ws.cell(row_idx, 1).value)
             if not re.search(r"AIR\s*ASSAULT|AIRASSAULT|AASLT|AIR\s*ASLT", unit, re.I):
                 continue
-            if "TOTAL" in unit.upper():
+            if is_ignored_mess_unit(unit):
                 continue
             for col_idx in range(4, ws.max_column + 1):
                 value = compact_text(ws.cell(row_idx, col_idx).value).upper()
@@ -1539,9 +1573,6 @@ def source_refs_for_event(
                 "col": source.get("col"),
                 "notesCell": source.get("notesCell"),
                 "originalNotes": source.get("originalNotes"),
-                "medicalHeader": source.get("medicalHeader"),
-                "medicalDay": source.get("medicalDay"),
-                "medicalFontColor": source.get("medicalFontColor"),
             }
         )
     return refs

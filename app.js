@@ -75,11 +75,10 @@ const S4_FIELD_CONFIG = {
   },
 };
 
-const CATEGORY_ORDER = ["Training", "Instruction", "Medical", "Meals", "Cadre", "Logistics", "Operations"];
+const CATEGORY_ORDER = ["Training", "Instruction", "Meals", "Cadre", "Logistics", "Operations"];
 const CATEGORY_CLASS = {
   Training: "cat-training",
   Instruction: "cat-instruction",
-  Medical: "cat-medical",
   Meals: "cat-meals",
   Cadre: "cat-cadre",
   Logistics: "cat-logistics",
@@ -566,16 +565,12 @@ function normalizeSourceEvent(event) {
     sourceKind: event.sourceKind || "schedule",
     relatedSources: sourceRefs,
   };
-  if (normalized.category === "Medical" && /RUCK/i.test(`${normalized.title} ${normalized.location}`)) {
-    normalized.notes = normalized.notes.replace(/X\d+\s*FLA/i, "X3 FLA") || "X3 FLA W/ CREW";
-  }
   return normalized;
 }
 
-function shouldSuppressNonRuckMedicalFla(event) {
-  if (event.sourceKind === "manual-event") return false;
+function shouldSuppressMedicalCoverage(event) {
   const text = `${event.title || ""} ${event.category || ""} ${event.location || ""} ${event.notes || ""}`.toUpperCase();
-  return text.includes("FLA") && !text.includes("RUCK") && (event.category === "Medical" || event.sourceKind === "generated-medical");
+  return event.category === "Medical" || /\b(?:MEDIC|MEDICAL|FLA|KACH)\b/.test(text);
 }
 
 function eventText(event) {
@@ -835,7 +830,7 @@ function coalesceMealEvents(events) {
 }
 
 function buildOperationalEvents(rawEvents) {
-  const normalized = rawEvents.map(normalizeSourceEvent).filter((event) => isCanonicalLrtcEvent(event) && !shouldSuppressNonRuckMedicalFla(event));
+  const normalized = rawEvents.map(normalizeSourceEvent).filter((event) => isCanonicalLrtcEvent(event) && !shouldSuppressMedicalCoverage(event));
   buildClassDayLabels(normalized);
   const messMap = new Map();
   const messEvents = normalized.filter((event) => event.sourceKind === "mess");
@@ -916,7 +911,7 @@ function buildOperationalEvents(rawEvents) {
   const southDockNormalized = normalizeSouthDockPeEvents(operational);
   const withDayMinusTwoSupport = addDayMinusTwoMarneMedicalSupportEvents(southDockNormalized);
   const timedOperational = removeUntimedEvents(withDayMinusTwoSupport);
-  return coalesceSharedMedicalEvents(coalesceMealEvents(mergeEvents(timedOperational)));
+  return coalesceMealEvents(mergeEvents(timedOperational));
 }
 
 function filteredEvents(events = state.events) {
@@ -976,10 +971,12 @@ function applyEventOverrides(events) {
         isEdited: true,
       };
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((event) => !shouldSuppressMedicalCoverage(event));
   const manualEvents = Object.entries(state.eventOverrides)
     .filter(([id, override]) => override?.sourceKind === "manual-event" && !override.deleted && !sourceIds.has(id))
-    .map(([id, override]) => manualEventFromOverride(id, override));
+    .map(([id, override]) => manualEventFromOverride(id, override))
+    .filter((event) => !shouldSuppressMedicalCoverage(event));
   return [...editedSourceEvents, ...manualEvents].filter((event) => event.start);
 }
 
